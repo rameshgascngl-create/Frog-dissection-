@@ -307,4 +307,1084 @@
     }
 
     .guide-box {
-      background: linear-gradient(180deg, rgba(20, 184, 166, 0.1) 0%, rgba(15, 23, 42,
+      background: linear-gradient(180deg, rgba(20, 184, 166, 0.1) 0%, rgba(15, 23, 42, 0.65) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.35);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .guide-step-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: var(--accent-teal);
+    }
+
+    .guide-instruction {
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      line-height: 1.45;
+    }
+
+    .guide-actions {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .btn-sm {
+      flex: 1;
+      padding: 0.42rem 0.55rem;
+      border-radius: 7px;
+      font-size: 0.77rem;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    .btn-sm:hover:not(:disabled) {
+      border-color: var(--accent-teal);
+      background: var(--bg-card-hover);
+    }
+
+    .btn-sm:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--accent-teal);
+      color: #042f2e;
+      border-color: var(--accent-teal);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #2dd4bf;
+    }
+
+    /* ==========================================================================
+       5. CENTER STAGE: REAL SPECIMEN PLATES & INTERACTIVE HOTSPOTS
+       ========================================================================== */
+    .stage-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      min-height: 580px;
+    }
+
+    .stage-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.45rem;
+      background: var(--bg-card);
+      padding: 0.5rem 0.7rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .stage-toggles {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.38rem;
+    }
+
+    .toggle-chip {
+      padding: 0.34rem 0.62rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .toggle-chip.active {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: var(--accent-sky);
+      color: var(--accent-sky);
+    }
+
+    .toggle-chip.calibrating {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: var(--accent-amber);
+      color: #fef3c7;
+      animation: pulseGuide 1.4s infinite ease-in-out;
+    }
+
+    .calibration-bar {
+      display: none;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid var(--accent-amber);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.78rem;
+      color: #fef3c7;
+    }
+
+    .calibration-bar.visible {
+      display: flex;
+    }
+
+    .calibration-select {
+      background: var(--bg-app);
+      color: #ffffff;
+      border: 1px solid var(--accent-amber);
+      border-radius: 6px;
+      padding: 0.28rem 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .tray-container {
+      position: relative;
+      flex: 1;
+      background: radial-gradient(circle at center, #1e293b 0%, #090e17 100%);
+      border: 2px solid #334155;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 520px;
+      user-select: none;
+    }
+
+    .cursor-probe { cursor: crosshair; }
+    .cursor-scalpel { cursor: cell; }
+    .cursor-forceps { cursor: grab; }
+    .cursor-pin { cursor: copy; }
+
+    .realistic-specimen-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.75);
+      border: 1px solid #475569;
+      background: #0f172a;
+      transition: transform 0.25s ease;
+    }
+
+    .custom-photo-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #090d16;
+      display: none;
+      z-index: 1;
+    }
+
+    .custom-photo-layer.visible {
+      display: block;
+    }
+
+    .photo-helper-banner {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 26;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1px solid var(--accent-amber);
+      color: #fef3c7;
+      padding: 0.45rem 0.85rem;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      display: none;
+      align-items: center;
+      gap: 0.65rem;
+      max-width: 94%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .photo-helper-banner.visible {
+      display: flex;
+    }
+
+    .specimen-svg {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #vector-diagram-svg {
+      width: 100%;
+      height: 100%;
+      max-height: 640px;
+      display: none;
+      transition: transform 0.25s ease;
+    }
+
+    .organ-hotspot {
+      cursor: pointer;
+      transition: filter 0.18s ease, opacity 0.25s ease;
+    }
+
+    .organ-hotspot:hover {
+      filter: brightness(1.18) drop-shadow(0 0 8px rgba(20, 184, 166, 0.9));
+    }
+
+    .organ-hotspot.selected {
+      filter: brightness(1.25) drop-shadow(0 0 12px rgba(251, 191, 36, 0.98));
+    }
+
+    .organ-hotspot.retracted {
+      opacity: 0.14;
+      pointer-events: none;
+    }
+
+    .hotspot-ring {
+      transition: all 0.2s ease;
+    }
+
+    .organ-hotspot:hover .hotspot-ring,
+    .organ-hotspot.selected .hotspot-ring {
+      stroke: #fbbf24;
+      stroke-width: 3;
+      fill: rgba(251, 191, 36, 0.24);
+    }
+
+    .organ-hotspot.selected .hotspot-dot {
+      fill: #fbbf24;
+    }
+
+    .organ-node {
+      cursor: pointer;
+      transition: filter 0.18s ease, opacity 0.25s ease;
+    }
+
+    .organ-node:hover {
+      filter: brightness(1.18) drop-shadow(0 0 6px rgba(20, 184, 166, 0.75));
+    }
+
+    .organ-node.selected {
+      filter: brightness(1.25) drop-shadow(0 0 10px rgba(245, 158, 11, 0.95));
+      stroke: #fbbf24 !important;
+      stroke-width: 2.5px !important;
+    }
+
+    .organ-node.removed {
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .incision-target {
+      cursor: cell;
+      animation: pulseGuide 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulseGuide {
+      0%, 100% { opacity: 0.65; }
+      50% { opacity: 1; }
+    }
+
+    .stage-toast {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(11, 18, 30, 0.94);
+      border: 1px solid var(--accent-teal);
+      color: #f8fafc;
+      padding: 0.46rem 0.95rem;
+      border-radius: 999px;
+      font-size: 0.79rem;
+      font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      pointer-events: none;
+      z-index: 25;
+      max-width: 92%;
+      text-align: center;
+    }
+
+    .photo-attribution {
+      font-size: 0.71rem;
+      color: var(--text-secondary);
+      text-align: right;
+      padding-right: 0.25rem;
+    }
+
+    /* ==========================================================================
+       6. RIGHT SIDEBAR: BILINGUAL ORGAN INSPECTOR
+       ========================================================================== */
+    .inspector-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .organ-header {
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.6rem;
+    }
+
+    .organ-system-tag {
+      display: inline-block;
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.16rem 0.52rem;
+      border-radius: 999px;
+      background: rgba(20, 184, 166, 0.16);
+      color: var(--accent-teal);
+      margin-bottom: 0.3rem;
+    }
+
+    .organ-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .organ-tamil {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-amber);
+      margin-top: 0.12rem;
+    }
+
+    .organ-sci {
+      font-size: 0.78rem;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    .info-block h4 {
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent-sky);
+      margin-bottom: 0.18rem;
+    }
+
+    .info-block p {
+      font-size: 0.83rem;
+      color: var(--text-primary);
+      line-height: 1.46;
+    }
+
+    .viva-tip-box {
+      background: rgba(245, 158, 11, 0.11);
+      border-left: 3px solid var(--accent-amber);
+      padding: 0.6rem 0.72rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .viva-tip-box h4 {
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      color: var(--accent-amber);
+      margin-bottom: 0.18rem;
+    }
+
+    .viva-tip-box p {
+      font-size: 0.81rem;
+      color: #fef3c7;
+    }
+
+    .professor-note-banner {
+      background: rgba(56, 189, 248, 0.12);
+      border-left: 3px solid var(--accent-sky);
+      padding: 0.58rem 0.72rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.79rem;
+      color: #e0f2fe;
+      display: none;
+    }
+
+    .professor-note-banner.visible {
+      display: block;
+    }
+
+    .quick-organ-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.34rem;
+    }
+
+    .organ-chip {
+      font-size: 0.72rem;
+      padding: 0.26rem 0.52rem;
+      border-radius: 6px;
+      background: var(--bg-app);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .organ-chip:hover, .organ-chip.active {
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    /* ==========================================================================
+       7. PRACTICAL VIVA & SPOTTER QUIZ WORKSPACE
+       ========================================================================== */
+    .quiz-workspace, .glossary-workspace {
+      max-width: 1240px;
+      width: 100%;
+      margin: 1rem auto;
+      padding: 0 1rem;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .quiz-workspace.active, .glossary-workspace.active {
+      display: flex;
+    }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .quiz-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .mcq-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .mcq-option {
+      width: 100%;
+      text-align: left;
+      padding: 0.68rem 0.82rem;
+      border-radius: 8px;
+      background: var(--bg-app);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      margin-bottom: 0.48rem;
+      display: flex;
+      align-items: center;
+      gap: 0.58rem;
+    }
+
+    .mcq-option:hover:not(:disabled) {
+      border-color: var(--accent-teal);
+      background: var(--bg-card-hover);
+    }
+
+    .mcq-option.correct {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: #10b981;
+      color: #a7f3d0;
+    }
+
+    .mcq-option.wrong {
+      background: rgba(244, 63, 94, 0.18);
+      border-color: #f43f5e;
+      color: #fecdd3;
+    }
+
+    /* ==========================================================================
+       8. BILINGUAL TAMIL–ENGLISH GLOSSARY WORKSPACE
+       ========================================================================== */
+    .glossary-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .glossary-search {
+      flex: 1;
+      min-width: 240px;
+      background: var(--bg-app);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.86rem;
+      color: #ffffff;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .glossary-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      transition: border-color 0.18s ease;
+    }
+
+    .glossary-item:hover {
+      border-color: var(--accent-teal);
+    }
+
+    .app-footer {
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-panel);
+      padding: 0.8rem 1.25rem;
+      text-align: center;
+      font-size: 0.77rem;
+      color: var(--text-secondary);
+      margin-top: auto;
+    }
+
+    /* Print Lab Record Formatting */
+    @media print {
+      body { background: #ffffff !important; color: #0f172a !important; }
+      .app-header, .left-sidebar, .stage-toolbar, .app-footer, .stage-toast, .calibration-bar { display: none !important; }
+      .workspace { display: block !important; padding: 0 !important; }
+      .panel, .inspector-card {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        color: #0f172a !important;
+        margin-bottom: 1rem;
+      }
+      .organ-title, .info-block p { color: #0f172a !important; }
+      .print-header-only {
+        display: block !important;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #0f172a;
+        padding-bottom: 0.5rem;
+      }
+    }
+
+    .print-header-only { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- PRINT-ONLY LAB RECORD HEADER -->
+  <div class="print-header-only">
+    <h2>B.Sc. Zoology Practical Record — Virtual Dissection of Frog (<em>Hoplobatrachus tigerinus</em>)</h2>
+    <p><strong>Systematic Position:</strong> Phylum: Chordata | Subphylum: Vertebrata | Class: Amphibia | Order: Anura</p>
+  </div>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="8.5" cy="7" r="2.5"/>
+          <circle cx="15.5" cy="7" r="2.5"/>
+          <path d="M5 12c0-2.5 3.1-4.5 7-4.5s7 2 7 4.5c0 3.5-3 6.5-7 6.5s-7-3-7-6.5z"/>
+          <path d="M4 16l-2 3m18-3l2 3M8 18l-1 3m9-3l1 3"/>
+        </svg>
+      </div>
+      <div class="brand-title">
+        <h1>Virtual Frog Dissection Simulator</h1>
+        <p><em>Hoplobatrachus tigerinus</em> (Indian Bullfrog) • B.Sc. Zoology Practical Lab</p>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <nav class="mode-tabs" aria-label="Workspace Mode">
+        <button class="mode-tab active" id="tab-dissection" onclick="switchMode('dissection')">
+          Dissection Lab
+        </button>
+        <button class="mode-tab" id="tab-quiz" onclick="switchMode('quiz')">
+          Practical Viva & Pin Quiz (26 MCQs)
+        </button>
+        <button class="mode-tab" id="tab-glossary" onclick="switchMode('glossary')">
+          Tamil–English Glossary
+        </button>
+      </nav>
+
+      <button class="pill-btn active" id="btn-bilingual" onclick="toggleBilingual()">
+        EN + தமிழ்
+      </button>
+
+      <button class="pill-btn" onclick="window.print()">
+        Print Lab Record
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MODE 1: INTERACTIVE DISSECTION LABORATORY
+       ======================================================================== -->
+  <main class="workspace" id="dissection-workspace">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="panel left-sidebar">
+      <div>
+        <div class="panel-heading">
+          <span>1. Surgical Instruments</span>
+          <span id="active-tool-label" style="color: var(--text-secondary); font-size: 0.69rem;">PROBE</span>
+        </div>
+        <div class="tool-grid" style="margin-top: 0.55rem;">
+          <button class="tool-btn" id="tool-pin" onclick="selectTool('pin')">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="5" r="3"/><path d="M12 8v13"/></svg>
+            <span>Dissection Pins</span>
+          </button>
+          <button class="tool-btn" id="tool-scalpel" onclick="selectTool('scalpel')">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 4L8.5 15.5M4 20l4.5-4.5c1-1 2.5-1 3.5 0l-4.5 4.5H4z"/></svg>
+            <span>Scalpel</span>
+          </button>
+          <button class="tool-btn" id="tool-forceps" onclick="selectTool('forceps')">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4l14 14M4 4l6 16M4 4l16 6"/></svg>
+            <span>Forceps (Peel)</span>
+          </button>
+          <button class="tool-btn active" id="tool-probe" onclick="selectTool('probe')">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 21L19 5M16 4l4 4"/></svg>
+            <span>Blunt Probe</span>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel-heading">
+          <span>2. Anatomical Layers</span>
+        </div>
+        <div class="layer-list" style="margin-top: 0.55rem;">
+          <button class="layer-btn" id="layer-btn-1" onclick="setLayer(1)">
+            <div>
+              <span class="layer-title">1. External Morphology</span>
+              <span class="layer-sub">Dorsal/Ventral, Nares, Tympanum</span>
+            </div>
+            <span class="layer-badge">L1</span>
+          </button>
+
+          <button class="layer-btn" id="layer-btn-2" onclick="setLayer(2)">
+            <div>
+              <span class="layer-title">2. Skin & Muscular System</span>
+              <span class="layer-sub">Incision, Pectoralis, Linea Alba</span>
+            </div>
+            <span class="layer-badge">L2</span>
+          </button>
+
+          <button class="layer-btn active" id="layer-btn-3" onclick="setLayer(3)">
+            <div>
+              <span class="layer-title">3. Digestive & Respiratory</span>
+              <span class="layer-sub">3-Lobed Liver, Stomach, Lungs</span>
+            </div>
+            <span class="layer-badge">L3</span>
+          </button>
+
+          <button class="layer-btn" id="layer-btn-4" onclick="setLayer(4)">
+            <div>
+              <span class="layer-title">4. Circulatory System</span>
+              <span class="layer-sub">3-Chambered Heart, Aortic Arches</span>
+            </div>
+            <span class="layer-badge">L4</span>
+          </button>
+
+          <button class="layer-btn" id="layer-btn-5" onclick="setLayer(5)">
+            <div>
+              <span class="layer-title">5. Urogenital & Nervous</span>
+              <span class="layer-sub">Kidneys, Gonads, Brain & Nerves</span>
+            </div>
+            <span class="layer-badge">L5</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="guide-box">
+        <div class="guide-step-header">
+          <span id="guide-step-badge">STEP 3 OF 6</span>
+          <span>Guided Protocol</span>
+        </div>
+        <p class="guide-instruction" id="guide-text">
+          Examine the real dissection plate. Click any organ hotspot with the <strong>Blunt Probe</strong> or switch between <strong>Real Photo Plate</strong> and <strong>Vector Diagram</strong>.
+        </p>
+        <div class="guide-actions">
+          <button class="btn-sm" id="btn-prev-step" onclick="changeStep(-1)">← Prev</button>
+          <button class="btn-sm btn-primary" id="btn-next-step" onclick="changeStep(1)">Next Step →</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER STAGE -->
+    <section class="panel stage-panel">
+      <div class="stage-toolbar">
+        <div class="stage-toggles">
+          <button class="toggle-chip active" id="btn-specimen-realistic" onclick="setSpecimenMode('realistic')">
+            Real Photo Plate
+          </button>
+          <button class="toggle-chip" id="btn-specimen-vector" onclick="setSpecimenMode('vector')">
+            Vector Diagram
+          </button>
+
+          <label class="toggle-chip" id="btn-upload-photo" for="specimen-file-input" style="cursor: pointer; border-color: var(--accent-sky); color: var(--accent-sky);" title="Upload a real photo for the active layer (L1–L5)">
+            Upload Layer Photo
+          </label>
+          <input type="file" id="specimen-file-input" accept="image/*" style="display: none;" onchange="loadCustomSpecimenFile(event)" />
+
+          <button class="toggle-chip" id="btn-calibrate-pins" onclick="toggleCalibrationMode()" style="border-color: var(--accent-amber); color: #fde68a;" title="Click organs on the photo to align digital pins for the active layer">
+            Calibrate Pins
+          </button>
+
+          <button class="toggle-chip" id="btn-export-bundle" onclick="exportSelfContainedHTML()" style="border-color: var(--accent-teal); color: var(--accent-teal);" title="Download single-file index.html with all loaded photos and calibrated pins permanently embedded">
+            Export Single-File HTML
+          </button>
+
+          <button class="toggle-chip active" id="btn-view-ventral" onclick="setOrientation('ventral')" style="display: none;">
+            Ventral View
+          </button>
+          <button class="toggle-chip" id="btn-view-dorsal" onclick="setOrientation('dorsal')" style="display: none;">
+            Dorsal View
+          </button>
+          <button class="toggle-chip active" id="btn-toggle-labels" onclick="toggleLabels()">
+            Digital Pins: ON
+          </button>
+          <button class="toggle-chip" id="btn-toggle-sex" onclick="toggleSex()" style="display: none;">
+            Specimen: Male (♂)
+          </button>
+        </div>
+
+        <div class="stage-toggles">
+          <button class="toggle-chip" onclick="adjustZoom(0.15)">+ Zoom</button>
+          <button class="toggle-chip" onclick="adjustZoom(-0.15)">- Zoom</button>
+          <button class="toggle-chip" onclick="resetSimulation()" style="color: var(--accent-rose);">Reset Tray</button>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE PIN CALIBRATION BAR -->
+      <div class="calibration-bar" id="calibration-bar">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
+          <strong>Pin Calibration (<span id="cal-layer-label">Layer 3</span>):</strong>
+          <select id="calibrate-organ-select" class="calibration-select"></select>
+          <span>← Select organ, then click directly on the photo.</span>
+        </div>
+        <div style="display: flex; gap: 0.4rem;">
+          <button class="toggle-chip" onclick="resetCalibratedCoords()" style="border-color: var(--accent-rose); color: #fecdd3;">Reset Layer Pins</button>
+          <button class="toggle-chip active" onclick="toggleCalibrationMode()">Done</button>
+        </div>
+      </div>
+
+      <div class="tray-container cursor-probe" id="tray-stage">
+        <!-- ================================================================
+             VIEW A: MULTI-LAYER REAL PHOTO PLATE + CALIBRATED HOTSPOTS
+             ================================================================ -->
+        <div class="realistic-specimen-wrapper" id="realistic-specimen-container" ondragover="handleSpecimenDragOver(event)" ondrop="handleSpecimenDrop(event)">
+          <div class="photo-helper-banner" id="photo-helper-banner">
+            <span id="photo-banner-text">
+              <strong>Real Photo Plate:</strong> Upload a dissection photo for this layer (or save <code id="expected-filename-code">frog-viscera.jpg</code> in the repo folder). Showing procedural specimen fallback until loaded.
+            </span>
+            <button onclick="dismissPhotoBanner()" style="color: #94a3b8; font-weight: 700; padding: 0.15rem 0.4rem;" aria-label="Dismiss notice">×</button>
+          </div>
+
+          <img
+            id="photo-specimen"
+            src="frog-viscera.jpg"
+            class="custom-photo-layer"
+            alt="Real Dissected Frog Specimen Plate"
+            onload="handlePrimaryPhotoLoad()"
+            onerror="handlePrimaryPhotoError()"
+          />
+
+          <svg class="specimen-svg" id="realistic-frog-svg" viewBox="0 0 1000 562" preserveAspectRatio="xMidYMid meet" onclick="handleCalibrationClick(event)" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="labGraniteBg" cx="50%" cy="35%" r="78%">
+                <stop offset="0%" stop-color="#cbd5e1"/>
+                <stop offset="55%" stop-color="#94a3b8"/>
+                <stop offset="100%" stop-color="#475569"/>
+              </radialGradient>
+              <linearGradient id="brushedSteelRim" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#f8fafc"/>
+                <stop offset="22%" stop-color="#94a3b8"/>
+                <stop offset="48%" stop-color="#e2e8f0"/>
+                <stop offset="75%" stop-color="#64748b"/>
+                <stop offset="100%" stop-color="#cbd5e1"/>
+              </linearGradient>
+              <linearGradient id="steelInnerWall" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#334155"/>
+                <stop offset="45%" stop-color="#64748b"/>
+                <stop offset="100%" stop-color="#1e293b"/>
+              </linearGradient>
+              <radialGradient id="blackParaffinWax" cx="50%" cy="48%" r="60%">
+                <stop offset="0%" stop-color="#272b33"/>
+                <stop offset="65%" stop-color="#171a20"/>
+                <stop offset="100%" stop-color="#0d0f13"/>
+              </radialGradient>
+              <pattern id="realFrogSkinPattern" width="64" height="64" patternUnits="userSpaceOnUse">
+                <rect width="64" height="64" fill="#7c7d3b"/>
+                <circle cx="14" cy="16" r="14" fill="#9c994c" opacity="0.55"/>
+                <circle cx="46" cy="44" r="16" fill="#9c994c" opacity="0.5"/>
+                <circle cx="48" cy="14" r="11" fill="#63662c" opacity="0.6"/>
+                <path d="M8,10 Q18,4 24,14 Q20,24 10,20 Z" fill="#2b2e13" opacity="0.78"/>
+                <path d="M36,28 Q50,22 54,36 Q46,46 34,38 Z" fill="#252810" opacity="0.82"/>
+                <path d="M12,44 Q22,38 26,50 Q18,58 10,52 Z" fill="#2b2e13" opacity="0.75"/>
+                <circle cx="42" cy="12" r="4.5" fill="#1e210c" opacity="0.7"/>
+                <circle cx="28" cy="26" r="3.5" fill="#1e210c" opacity="0.65"/>
+              </pattern>
+              <radialGradient id="wetHeartShader" cx="36%" cy="32%" r="68%">
+                <stop offset="0%" stop-color="#c95b5b"/>
+                <stop offset="45%" stop-color="#881d24"/>
+                <stop offset="100%" stop-color="#2b0408"/>
+              </radialGradient>
+              <radialGradient id="wetLungShader" cx="40%" cy="35%" r="68%">
+                <stop offset="0%" stop-color="#d89d94"/>
+                <stop offset="55%" stop-color="#a66c65"/>
+                <stop offset="100%" stop-color="#693b37"/>
+              </radialGradient>
+              <radialGradient id="wetLiverShader" cx="32%" cy="28%" r="72%">
+                <stop offset="0%" stop-color="#692e21"/>
+                <stop offset="45%" stop-color="#3d150e"/>
+                <stop offset="100%" stop-color="#120402"/>
+              </radialGradient>
+              <radialGradient id="wetGallShader" cx="35%" cy="30%" r="68%">
+                <stop offset="0%" stop-color="#84cc16"/>
+                <stop offset="50%" stop-color="#3f6212"/>
+                <stop offset="100%" stop-color="#1a2e05"/>
+              </radialGradient>
+              <radialGradient id="wetStomachShader" cx="38%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#f5e1cc"/>
+                <stop offset="52%" stop-color="#cfa988"/>
+                <stop offset="100%" stop-color="#6e4e36"/>
+              </radialGradient>
+              <linearGradient id="wetIleumShader" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#d6b39c"/>
+                <stop offset="45%" stop-color="#a17d68"/>
+                <stop offset="100%" stop-color="#4d3528"/>
+              </linearGradient>
+              <linearGradient id="wetFatBodyShader" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fef08a"/>
+                <stop offset="45%" stop-color="#eab308"/>
+                <stop offset="100%" stop-color="#713f12"/>
+              </linearGradient>
+              <radialGradient id="wetKidneyShader" cx="35%" cy="32%" r="70%">
+                <stop offset="0%" stop-color="#611b24"/>
+                <stop offset="60%" stop-color="#330a10"/>
+                <stop offset="100%" stop-color="#170306"/>
+              </radialGradient>
+              <linearGradient id="retractedSkinFlap" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#f2cbc0"/>
+                <stop offset="55%" stop-color="#cf928a"/>
+                <stop offset="100%" stop-color="#8c4f4b"/>
+              </linearGradient>
+              <radialGradient id="coelomDeepShadow" cx="50%" cy="45%" r="58%">
+                <stop offset="0%" stop-color="#381016"/>
+                <stop offset="70%" stop-color="#1f070b"/>
+                <stop offset="100%" stop-color="#0d0204"/>
+              </radialGradient>
+              <filter id="wetTissueGlow" x="-15%" y="-15%" width="130%" height="130%">
+                <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.6"/>
+              </filter>
+              <filter id="specimenTrayShadow" x="-15%" y="-15%" width="130%" height="130%">
+                <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#000000" flood-opacity="0.78"/>
+              </filter>
+              <filter id="pinShadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="6" dy="8" stdDeviation="3" flood-color="#000000" flood-opacity="0.7"/>
+              </filter>
+            </defs>
+
+            <!-- FALLBACK PROCEDURAL SPECIMEN (SHOWN IF LAYER PHOTO NOT YET UPLOADED) -->
+            <g id="procedural-realistic-layer">
+              <rect x="0" y="0" width="1000" height="562" fill="url(#labGraniteBg)"/>
+              <polygon points="150,76 850,76 968,546 32,546" fill="url(#brushedSteelRim)" stroke="#475569" stroke-width="3" filter="url(#specimenTrayShadow)"/>
+              <polygon points="175,96 825,96 930,524 70,524" fill="url(#steelInnerWall)" stroke="#1e293b" stroke-width="2"/>
+              <polygon points="186,118 814,118 908,512 92,512" fill="url(#blackParaffinWax)" stroke="#090d16" stroke-width="2.5"/>
+
+              <g filter="url(#specimenTrayShadow)">
+                <path d="M398 190 C365 182, 342 186, 322 168 L302 146 M322 168 L296 164 M322 168 L304 182 M322 168 L320 192"
+                      fill="none" stroke="url(#realFrogSkinPattern)" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M602 190 C635 182, 658 186, 678 168 L698 146 M678 168 L704 164 M678 168 L696 182 M678 168 L680 192"
+                      fill="none" stroke="url(#realFrogSkinPattern)" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M430 375 C370 368, 328 386, 336 420 C344 446, 392 468, 416 485 C426 494, 412 508, 376 502 C322 492, 265 478, 212 475 L186 482 L212 475 L192 494 L212 475 L208 502"
+                      fill="url(#realFrogSkinPattern)" stroke="#262910" stroke-width="3" stroke-linejoin="round"/>
+                <path d="M570 375 C630 368, 672 386, 664 420 C656 446, 608 468, 584 485 C574 494, 588 508, 624 502 C678 492, 735 478, 788 475 L814 482 L788 475 L808 494 L788 475 L792 502"
+                      fill="url(#realFrogSkinPattern)" stroke="#262910" stroke-width="3" stroke-linejoin="round"/>
+                <path d="M500 94 C526 96, 566 135, 594 184 L406 184 C434 135, 474 96, 500 94 Z"
+                      fill="url(#realFrogSkinPattern)" stroke="#262910" stroke-width="2.5"/>
+                <ellipse cx="456" cy="126" rx="8" ry="12" transform="rotate(-18 456 126)" fill="#181b09"/>
+                <ellipse cx="544" cy="126" rx="8" ry="12" transform="rotate(18 544 126)" fill="#181b09"/>
+                <path d="M406 184 C382 232, 384 328, 428 386 C468 412, 532 412, 572 386 C616 328, 618 232, 594 184 Z"
+                      fill="url(#realFrogSkinPattern)" stroke="#262910" stroke-width="2.5"/>
+                <path d="M412 188 L385 204 L405 352 L444 384 C416 326, 412 242, 412 188 Z"
+                      fill="url(#retractedSkinFlap)" stroke="#6b2121" stroke-width="2"/>
+                <path d="M588 188 L615 204 L595 352 L556 384 C584 326, 588 242, 588 188 Z"
+                      fill="url(#retractedSkinFlap)" stroke="#6b2121" stroke-width="2"/>
+                <path d="M416 190 C456 176, 544 176, 584 190 C598 248, 594 334, 556 382 C520 400, 480 400, 444 382 C406 334, 402 248, 416 190 Z"
+                      fill="url(#coelomDeepShadow)" stroke="#3b0712" stroke-width="2.5"/>
+
+                <g filter="url(#wetTissueGlow)">
+                  <path d="M466 198 C444 190, 418 210, 418 242 C418 264, 438 272, 460 258 Z" fill="url(#wetLungShader)" stroke="#4a2522" stroke-width="1.8"/>
+                  <path d="M534 198 C556 190, 582 210, 582 242 C582 264, 562 272, 540 258 Z" fill="url(#wetLungShader)" stroke="#4a2522" stroke-width="1.8"/>
+                  <g fill="url(#wetFatBodyShader)" stroke="#713f12" stroke-width="1.3">
+                    <rect x="530" y="328" width="44" height="12" rx="6" transform="rotate(28 530 328)"/>
+                    <rect x="538" y="342" width="48" height="12" rx="6" transform="rotate(42 538 342)"/>
+                    <rect x="528" y="352" width="46" height="12" rx="6" transform="rotate(58 528 352)"/>
+                  </g>
+                  <path d="M564 274 C578 274, 586 296, 584 322 C582 344, 570 352, 560 340 C554 326, 556 290, 564 274 Z" fill="url(#wetKidneyShader)" stroke="#170306" stroke-width="1.8"/>
+                  <path d="M466 304 C448 314, 452 332, 488 330 C522 328, 522 348, 472 350 C436 352, 438 374, 494 376 C524 377, 520 392, 484 394" fill="none" stroke="url(#wetIleumShader)" stroke-width="15" stroke-linecap="round"/>
+                  <path d="M518 248 C544 246, 566 270, 558 298 C550 320, 512 324, 486 308 C474 300, 476 284, 494 282 C510 280, 514 264, 518 248 Z" fill="url(#wetStomachShader)" stroke="#5c4028" stroke-width="2"/>
+                  <path d="M502 246 C468 240, 424 260, 418 302 C414 322, 428 330, 446 314 C464 298, 490 276, 514 264 Z" fill="url(#wetLiverShader)" stroke="#170603" stroke-width="2"/>
+                  <circle cx="470" cy="288" r="10.5" fill="url(#wetGallShader)" stroke="#052e16" stroke-width="1.6"/>
+                  <path d="M474 206 C472 228, 494 248, 518 246 C534 244, 536 220, 524 206 Z" fill="url(#wetHeartShader)" stroke="#3b070b" stroke-width="1.8"/>
+                </g>
+
+                <g filter="url(#pinShadow)" stroke="#cbd5e1" stroke-linecap="round">
+                  <line x1="354" y1="184" x2="344" y2="128" stroke-width="2.4"/><line x1="336" y1="128" x2="352" y2="128" stroke-width="2.8"/>
+                  <line x1="646" y1="184" x2="656" y2="128" stroke-width="2.4"/><line x1="648" y1="128" x2="664" y2="128" stroke-width="2.8"/>
+                  <line x1="372" y1="382" x2="364" y2="322" stroke-width="2.4"/><line x1="356" y1="322" x2="372" y2="322" stroke-width="2.8"/>
+                  <line x1="628" y1="382" x2="636" y2="322" stroke-width="2.4"/><line x1="628" y1="322" x2="644" y2="322" stroke-width="2.8"/>
+                </g>
+              </g>
+            </g>
+
+            <!-- DYNAMIC CALIBRATED HOTSPOTS FOR ACTIVE LAYER -->
+            <g id="calibrated-photo-hotspots"></g>
+
+            <!-- Digital Callout Flags Overlay (Toggleable) -->
+            <g id="realistic-labels-layer" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700" pointer-events="none"></g>
+          </svg>
+        </div>
+
+        <!-- ================================================================
+             VIEW B: 5-LAYER PROGRESSIVE VECTOR DIAGRAM (LAYERS 1 TO 5)
+             ================================================================ -->
+        <svg id="vector-diagram-svg" viewBox="0 0 700 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="5-Layer Frog Anatomy Diagram">
+          <defs>
+            <linearGradient id="trayMetal" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#94a3b8"/>
+              <stop offset="50%" stop-color="#cbd5e1"/>
+              <stop offset="100%" stop-color="#64748b"/>
+            </linearGradient>
+            <radialGradient id="waxBed" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#22262e"/>
+              <stop offset="100%" stop-color="#111318"/>
+            </radialGradient>
+            <linearGradient id="ventralSkin" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fef3c7"/>
+              <stop offset="60%" stop-color="#fde68a"/>
+              <stop offset="100%" stop-color="#fcd34d"/>
+            </linearGradient>
+            <linearGradient id="muscleGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#be123c"/>
+              <stop offset="50%" stop-color="#e11d48"/>
+              <stop offset="100%" stop-color="#9f1239"/>
+            </linearGradient>
+            <linearGradient id="liverGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7c2d12"/>
+              <stop offset="100%" stop-color="#451a03"/>
+            </linearGradient>
+          </defs>
+
+          <rect x="45" y="18" width="610" height="624" rx="28" fill="url(#trayMetal)" stroke="#cbd5e1" stroke-width="3"/>
+          <rect x="65" y="36" width="570" height="588" rx="20" fill="url(#waxBed)" stroke="#090d16" stroke-width="3"/>
+
+          <g id="frog-base-limbs" onclick="handleTrayClick(event)">
+            <path class="organ-node" data-organ="forelimbs" d="M268 220 C225 215, 195 235, 180 265 L155 260 M180 265 L152 278 M180 265 L162 292 M180 265 L178 296"
+                  fill="none" stroke="url(#realFrogSkinPattern)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="organ-node" data-organ="forelimbs" d="M432 220 C475 215, 505 235, 520 265 L545 260 M520 265 L548 278 M520 265 L538 292 M520 265 L522 296"
+                  fill="none" stroke="url(#realFrogSkinPattern)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="organ-node" data-organ="hindlimbs" d="M275 435 C210 440, 175 475, 195 515 C215 545, 175 565, 130 580"
+                  fill="none" stroke="url(#realFrogSkinPattern)" stroke-width="26" stroke-linecap="round"/>
+            <path class="organ-node" data-organ="hindlimbs" d="M130 580 L88 565 Q100 582 85 595 Q102 600 94 615 Q115 608 112 622 Q128 606 135 616 Z"
+                  fill="#7c7d3b" fill-opacity="0.78" stroke="#363a17" stroke-width="2.5"/>
+            <path class="organ-node" data-organ="hindlimbs" d="M425 435 C490 440, 525 475, 505 515 C485 545, 525 565, 570 580"
+                  fill="none" stroke="url(#realFrogSkinPattern)" stroke-width="26" stroke-linecap="round"/>
+            <path class="organ-node" data-organ="hindlimbs" d="M570 580 L612 565 Q600 582 615 595 Q598 600 606 615 Q585 608 588 622 Q572 606 565 616 Z"
+                  fill="#7c7d3b" fill-opacity="0.78" stroke="#363a17" stroke-width="2.5"/>
+            <path id="body-outer-contour" d="M350 72 C395 72, 435 115, 442 165 C455 225, 462 325, 445 415 C432 465, 385 492, 350 495 C315 492, 268 465, 255 415 C238 325, 245 225, 258 165 C265 115, 305 72, 350 72 Z"
+                  fill="url(#ventralSkin)" stroke="#3f6212" stroke-width="4"/>
+          </g>
+
+          <!-- LAYER 1: EXTERNAL MORPHOLOGY -->
+          <g id="layer-1-group">
+            <g id="ventral-external">
+              <ellipse cx="350" cy="315" rx="84" ry="135" fill="#fef9c3" opacity="0.65"/>
+              <g id="male-vocal-sacs" class="organ-node" data-organ="vocal_sacs">
+                <ellipse cx="305" cy="175" rx="22" ry="14" fill="#94a3b8" opacity="0.55" stroke="#475569" stroke-width="1.5"/>
+                <ellipse cx="395" cy="175" rx="22" ry="14" fill="#94a3b8" opacity="0.55" stroke="#475569" stroke-width="1.5"/>
+              </g>
+              <path d="M278 135 Q350 154 422 135" fill="none" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+              <g class="organ-node" data-organ="external_nares">
+                <circle cx="332" cy="92" r="4" fill="#451a03"/>
+                <circle cx="368" cy="92" r="4" fill="#451a03"/>
+              </g>
+              <g class="organ-node" data-organ="eyes">
+                <ellipse cx="290" cy="118" rx="16" ry="12" fill="#facc15" stroke="#365314" stroke-width="2.5"/>
+                <ellipse cx="290" cy="118" rx="8" ry="6" fill="#090d16"/>
+                <ellipse cx="410" cy="118" rx="16" ry="12" fill="#facc15" stroke="#365314" stroke-width="2.5"/>
+                <ellipse cx="410" cy="118" rx="8" ry="6" fill="#090d16"/>
+              </g>
+              <ellipse class="organ-node" data-organ="cloaca" cx="350" cy="488" rx="9" ry="5" fill="#78350f"/>
+            </g>
+
+            <g id="dorsal-external" style="display: none;">
+              <path d="M350 72 C395 72, 435 115, 442 165 C455 225, 462 325, 445 415 C432 465, 385 492, 350 495 C315 492, 268 465, 255 415 C238 325, 245 225, 258 165 C265 115, 305 72, 350 72 Z"
+                    fill="url(#realFrogSkinPattern)" stroke="#1a2e05" stroke-width="4"/>
+              <line x1="350" y1="135" x2="350" y2="485" stroke="#d9f99d" stroke-width="4" stroke-dasharray="10,4" opacity="0.85"/>
+              <g class="organ-node" data-organ="tympanum">
+                <circle cx="272" cy="148" r="14" fill="#65a30d" stroke="#1a2e05" stroke-width="2.5"/>
+                <circle cx="272" cy="148" r="5" fill="#363a14"/>
+                <circle cx="428" cy="148" r="14" fill="#65a30d" stroke="#1a2e05" stroke-width="2.5"/>
+                <circle cx="428" cy="148" r="5" fill="#363a14"/>
+              </g>
+              <g class="organ-node" data-organ="external_nares">
+                <circle cx="334" cy="90" r="4" fill="#090d16"/>
+                <circle cx="366" cy="90" r="4" fill="#090d16"/>
+              </g>
+              <g class="organ-node" data-organ="eyes">
+                <circle cx="292" cy="116" r="14" fill="#eab308" stroke="#1a2e05" stroke-width="2.5"/>
+                <circle cx="292" cy="116" r="7" fill="#090d16"/>
+                <circle cx="408" cy="116" r="14" fill="#eab308" stroke="#1a2e05" stroke-width="2.5"/>
+                <circle cx="408" cy="116" r="7" fill="#090d16"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- LAYER 2: SKIN INCISION & VENTRAL MUSCULATURE -->
+          <g id="layer-2-group" style="display: none;">
+            <path d="M262 185 L205 215 L200 410 L262 445 Z" fill="#fef08a" stroke="#a16207" stroke-width="2.5"/>
+            <path d="M438 185 L495 215 L500 410 L438 445 Z" fill="#fef08a" stroke="#a16207" stroke-width="2.5"/>
+            <g id="muscle-wall">
+              <path class="organ-node" data-organ="pectoralis" d="M270 195 L350 225 L350 265 L265 245 Z" fill="url(#muscleGrad)" stroke="#881337" stroke-width="2"/>
+              <path class="organ-node" data-organ="pectoralis" d="M430 195 L350 225 L350 265 L435 245 Z" fill="url(#muscleGrad)" stroke="#881337" stroke-width="2"/>
+              <path class="organ-node" data-organ="rectus_abdominis" d="M272 265 L347 265 L347 445 L285 435 Z" fill="url(#muscleGrad)" stroke="#881337" stroke-width="2"/>
+              <path class="organ-node" data-organ="rectus_abdominis" d="M428 265 L353 265 L353 445 L415 435 Z" fill="url(#muscleGrad)" stroke="#881337" stroke-width="2"/>
+              <line x1="274" y1="310" x2="426" y2="310" stroke="#fecdd3" stroke-width="2" opacity="0.7"/>
+              <line x1="276" y1="355" x2="424" y2="355" stroke="#fecdd3" stroke-width="2" opacity="0.7"/>
+              <line x1="280" y1="400" x2="420" y2="400" stroke="#fecdd3" stroke-width="2" opacity="0.7"/>
+              <rect class="organ-node" data-organ="linea_alba" x="346" y="225" width="8" height="225" fill="#fff1f2" stroke="#e11d48" stroke-width="1"/>
+              <line x1="350" y1="230" x2="350" y2="448" stroke="#2563eb" stroke-width="2.5"/>
+              <path class="organ-node" data-organ="hindlimb_muscles" d="M278 442 L212 495 L226 512 L292 458 Z" fill="#e11d48" stroke="#881337" stroke-width="1.8"/>
+              <path class="organ-node" data-organ="hindlimb_muscles" d="M422 442 L488 495 L474 512 L408 458 Z" fill="#e11d48" stroke="#881337" stroke-width="1.8"/>
+            </g>
+            <g id="scalpel-incision-guide" class="incision-target" onclick="performIncision()">
+              <line x1="350" y1="190" x2="350" y2="455" stroke="#38bdf8" stroke-width="4" stroke-dasharray="9,6"/>
+              <rect x="275" y="305" width="150" height="26" rx="13" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+              <text x="350" y="322" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">
+                Use Scalpel Here to Incise
+              </text>
+            </g>
+          </g>
+
+          <!-- COELOMIC CAVITY (LAYERS 3-5) -->
+          <g id="coelomic-cavity" style="display: none;">
+            <path d="M262 185 L198 215 L195 415 L265 450 Z" fill="#fda4af" stroke="#be123c" stroke-width="2.5"/>
+            <path d="M438 185 L502 215 L505 415 L435 450 Z" fill="#fda4af" stroke="#be123c" stroke-width="2.5"/>
+            <path d="M265 188 C310 175, 390 175, 435 188 C448 265, 448 375, 432 448 C390 472, 310 472, 268 448 C252 375, 252
