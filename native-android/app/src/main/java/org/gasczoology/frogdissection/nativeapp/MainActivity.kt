@@ -36,6 +36,10 @@ import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -141,7 +145,7 @@ private fun NativeFrogLab() {
     var pinned by rememberSaveable { mutableStateOf(false) }
     var incised by rememberSaveable { mutableStateOf(false) }
     var exerciseExpanded by rememberSaveable { mutableStateOf(false) }
-    val retracted = remember { mutableStateListOf<String>() }
+    var retracted by rememberSaveable { mutableStateOf(emptySet<String>()) }
     var showPrivacy by rememberSaveable { mutableStateOf(false) }
     val selectLayer: (Int) -> Unit = { number ->
         layer = number
@@ -257,7 +261,7 @@ private fun NativeFrogLab() {
                                     "Scalpel" -> incised = true
                                     "Forceps" -> {
                                         val plateKey = corpus.viewKey(layer, female) + ":" + key
-                                        if (plateKey !in retracted) retracted.add(plateKey)
+                                        if (plateKey !in retracted) retracted = retracted + plateKey
                                     }
                                 }
                             }
@@ -368,7 +372,7 @@ private fun NativeFrogLab() {
                                         "Scalpel" -> incised = true
                                         "Forceps" -> if (selectedKey.isNotBlank()) {
                                             val plateKey = corpus.viewKey(layer, female) + ":" + selectedKey
-                                            if (plateKey !in retracted) retracted.add(plateKey)
+                                            if (plateKey !in retracted) retracted = retracted + plateKey
                                         }
                                     }
                                 }) {
@@ -385,7 +389,7 @@ private fun NativeFrogLab() {
                                 TextButton(onClick = {
                                     pinned = false
                                     incised = false
-                                    retracted.clear()
+                                    retracted = emptySet()
                                     tool = "Probe"
                                 }) { Text("Reset virtual exercise", fontSize = 11.sp) }
                             }
@@ -496,6 +500,19 @@ private fun AnatomyPlate(
             Box(
                 Modifier.fillMaxWidth().aspectRatio(ratio)
                     .clip(RoundedCornerShape(12.dp))
+                    .semantics {
+                        contentDescription = "Frog anatomical photograph: $imageName. " +
+                            "${pins.size} visible marked structures. Use accessibility actions " +
+                            "to inspect a structure, or choose it in the accessible organ list below."
+                        if (!isCalibrating) {
+                            customActions = pins.map { point ->
+                                CustomAccessibilityAction("Inspect " + point.label) {
+                                    onTap(point.key)
+                                    true
+                                }
+                            }
+                        }
+                    }
                     .graphicsLayer {
                         scaleX = zoom
                         scaleY = zoom
@@ -529,7 +546,7 @@ private fun AnatomyPlate(
             ) {
                 Image(
                     bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "Frog specimen: " + imageName,
+                    contentDescription = null,
                     modifier = Modifier.fillMaxWidth().aspectRatio(ratio),
                     contentScale = ContentScale.FillBounds
                 )
