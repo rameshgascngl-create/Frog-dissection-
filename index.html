@@ -362,6 +362,15 @@
       text-align: right;
     }
     .photo-attribution.visible { display: block; }
+    .calibration-review {
+      margin: 0.45rem 0;
+      padding: 0.5rem 0.7rem;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 8px;
+      color: #fde68a;
+      font-size: 0.79rem;
+    }
 
     /* RIGHT INSPECTOR PANEL */
     .inspector-card {
@@ -650,6 +659,10 @@
           <button class="toggle-chip" onclick="adjustZoom(-0.1)">Zoom −</button>
           <button class="toggle-chip" style="border-color: var(--accent-rose); color: var(--accent-rose);" onclick="resetSimulation()">Reset Tray</button>
         </div>
+      </div>
+
+      <div id="calibration-review" class="calibration-review" role="status" aria-live="polite">
+        Anatomical pins are provisional until checked against this exact specimen photograph.
       </div>
 
       <!-- PIN CALIBRATION TOOLBAR -->
@@ -1967,6 +1980,7 @@
       layerImages: loadSavedLayerImages(),
       layerCoords: loadSavedLayerCoords(),
       sexCoords: loadSavedSexCoords(),
+      adjustedPlates: loadAdjustedPlates(),
       pinTargetKey: "liver",
       pinCorrect: 0,
       pinTotal: 0,
@@ -2030,6 +2044,28 @@
         }
       } catch (e) {}
       return defaults;
+    }
+    function loadAdjustedPlates() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("frog_adjusted_plates_v1") || "{}");
+        return saved && typeof saved === "object" && !Array.isArray(saved) ? saved : {};
+      } catch (e) { return {}; }
+    }
+    function activePlateKey() {
+      return state.layer === 5 ? "5_" + state.sex : String(state.layer);
+    }
+    function noteAdjustedPlate() {
+      state.adjustedPlates[activePlateKey()] = true;
+      try { localStorage.setItem("frog_adjusted_plates_v1", JSON.stringify(state.adjustedPlates)); } catch (e) {}
+      updateCalibrationReview();
+    }
+    function updateCalibrationReview() {
+      const el = document.getElementById("calibration-review");
+      if (!el) return;
+      const plate = state.layer === 5 ? `Layer 5 (${state.sex})` : `Layer ${state.layer}`;
+      el.textContent = state.adjustedPlates[activePlateKey()]
+        ? `${plate}: locally adjusted pins. Scientific accuracy still requires anatomical review.`
+        : `${plate}: provisional pin positions. Select Calibrate Pins and verify each visible organ against the photograph.`;
     }
     function getActiveLayerCoords() {
       return state.layer === 5 ? state.sexCoords[state.sex] :
@@ -2150,6 +2186,7 @@
         activeCoords[organKey].y = y;
         activeCoords[organKey].side = x >= 500 ? "right" : "left";
         saveLayerCoordsToStorage();
+        noteAdjustedPlate();
         renderCalibratedHotspots();
         inspectOrgan(organKey);
         showToast(`Positioned <strong>${activeCoords[organKey].label}</strong> (Layer ${state.layer}) at (${x}, ${y}).`);
@@ -2160,8 +2197,11 @@
       if (state.layer === 5) state.sexCoords[state.sex] = JSON.parse(JSON.stringify(DEFAULT_SEX_COORDS[state.sex]));
       else state.layerCoords[state.layer] = JSON.parse(JSON.stringify(DEFAULT_LAYER_COORDS[state.layer]));
       saveLayerCoordsToStorage();
+      delete state.adjustedPlates[activePlateKey()];
+      try { localStorage.setItem("frog_adjusted_plates_v1", JSON.stringify(state.adjustedPlates)); } catch (e) {}
+      updateCalibrationReview();
       renderCalibratedHotspots();
-      showToast(`Restored default anatomical pin coordinates for Layer ${state.layer}.`);
+      showToast(`Restored provisional pin coordinates for Layer ${state.layer}.`);
     }
 
     function showToast(msg) {
@@ -2183,6 +2223,7 @@
       if (bannerTag) bannerTag.textContent = `Layer ${state.layer}`;
       if (bannerFile) bannerFile.textContent = state.layer === 5 ? UROGENITAL_IMAGES[state.sex] : DEFAULT_LAYER_IMAGES[state.layer];
       if (attrFile) attrFile.textContent = expectedSrc.startsWith("data:image/") ? `Embedded Layer ${state.layer} Photo` : expectedSrc;
+      updateCalibrationReview();
 
       if (imgEl) {
         // Keep image-loading feedback correct while the next plate is decoding.
@@ -2548,6 +2589,7 @@
           renderCalibratedHotspots();
         }
         renderLayerChips();
+        updateCalibrationReview();
       }
       showToast(`Switched specimen to <strong>${state.sex.toUpperCase()}</strong> anatomy. Calibrate anatomical pins for each photograph.`);
       if (state.selectedOrgan === "gonads" || state.selectedOrgan === "vocal_sacs") {
@@ -2656,9 +2698,21 @@
       tamilEl.style.display = state.bilingual ? "block" : "none";
 
       document.getElementById("insp-latin").textContent = sexGonad ? (state.sex === "male" ? "Testis" : "Ovarium et Oviductus") : data.latin;
-      document.getElementById("insp-morphology").textContent = data.morphology;
-      document.getElementById("insp-function").textContent = data.function;
-      document.getElementById("insp-viva").textContent = data.viva;
+      document.getElementById("insp-morphology").textContent = sexGonad
+        ? (state.sex === "male"
+          ? "Two small ovoid testes associated with the anterior kidneys through the mesorchium."
+          : "Paired ovaries contain developing ova; separate coiled oviducts convey released eggs towards the cloaca.")
+        : data.morphology;
+      document.getElementById("insp-function").textContent = sexGonad
+        ? (state.sex === "male"
+          ? "Testes produce sperm; sperm reaches the urinogenital duct through the kidney-associated efferent pathway."
+          : "Ovaries produce ova; oviducts transport eggs and add gelatinous coverings. Fertilisation is external.")
+        : data.function;
+      document.getElementById("insp-viva").textContent = sexGonad
+        ? (state.sex === "male"
+          ? "In male frogs, the Wolffian ducts function as urinogenital ducts."
+          : "Female frog oviducts are separate from the ureters; eggs are released into the coelom before entering the oviduct funnels.")
+        : data.viva;
 
       const noteBox = document.getElementById("professor-note-box");
       if (PROFESSOR_NOTES[key]) {
