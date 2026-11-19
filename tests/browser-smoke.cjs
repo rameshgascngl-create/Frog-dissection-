@@ -209,7 +209,7 @@ const server = http.createServer((req, res) => {
       'phone tray retains oversized empty 460px desktop minimum: '+JSON.stringify(mobileMetrics));
     assert.ok(mobileMetrics.stageY < mobileMetrics.toolsY,
       'photo workspace must appear before detailed tool controls on mobile');
-    assert.equal(await mobile.locator('#mobile-layer-caption').innerText(), 'Layer 3: Digestive and respiratory');
+    assert.equal(await mobile.locator('#mobile-layer-caption').innerText(), 'Active system: Digestive and respiratory systems');
     assert.ok(await mobile.locator('#mobile-anatomy-key [data-mobile-organ]').count() > 3);
     await mobile.locator('.stage-panel').screenshot({path:path.join(auditDir,'mobile-stage-390.png')});
     await mobile.locator('#btn-expand-plate').click();
@@ -225,7 +225,7 @@ const server = http.createServer((req, res) => {
     await mobile.locator('#tray-stage').screenshot({path:path.join(auditDir,'mobile-expanded-390.png')});
     await mobile.locator('#btn-close-expanded').click();
     await mobile.locator('[data-mobile-layer="1"]').click();
-    assert.equal(await mobile.locator('#mobile-layer-caption').innerText(),'Layer 1: External morphology');
+    assert.equal(await mobile.locator('#mobile-layer-caption').innerText(),'Active system: External morphology');
     await mobile.locator('[data-mobile-layer="5"]').click();
     assert.equal(await mobile.locator('#btn-toggle-sex').isVisible(),true);
     await mobile.locator('#btn-toggle-sex').click();
@@ -234,6 +234,10 @@ const server = http.createServer((req, res) => {
     const narrowWidth=await mobile.evaluate(() => ({vw:innerWidth,doc:document.documentElement.scrollWidth}));
     assert.ok(narrowWidth.doc<=narrowWidth.vw+2,
       '320px phone layout overflows: '+JSON.stringify(narrowWidth));
+    const footer = await mobile.locator('.app-footer').innerText();
+    assert.match(footer, /Department of Zoology, Government Arts and Science College, Nagercoil/);
+    assert.match(footer, /Developed by R\.Ramesh/);
+    assert.ok(!footer.includes('629004'), 'postal PIN should not appear in footer');
     await mobile.locator('#tab-quiz').click();
     assert.equal(await mobile.locator('#quiz-workspace').isVisible(),true);
     await mobile.locator('#tab-glossary').click();
