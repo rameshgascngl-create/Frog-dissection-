@@ -13,8 +13,8 @@ android {
         minSdk 31
         targetSdk 36
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        versionCode 4
-        versionName '2.0.3-native-audit-qa'
+        versionCode 5
+        versionName '2.0.4-native-a11y-qa'
     }
 
     buildTypes {
