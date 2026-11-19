@@ -1550,12 +1550,12 @@
       conus_arteriosus: {
         layer: 4,
         system: "Circulatory System",
-        name: "Conus Arteriosus & Spiral Valve",
+        name: "Conus / Truncus Arteriosus & Spiral Valve",
         tamil: "கோனஸ் ஆர்ட்டீரியோசஸ்",
         latin: "Conus arteriosus",
-        morphology: "A tubular muscular trunk arising ventrally from the ventricle, containing a longitudinal twisted fold called the spiral valve.",
+        morphology: "The arterial outflow tract arising from the ventricle, often labelled truncus arteriosus in teaching photographs. Its proximal conus portion contains the spiral valve; the valve is internal and cannot be identified directly on an intact external photograph.",
         function: "Directs deoxygenated blood toward the pulmocutaneous arches and oxygenated blood toward the carotid and systemic arches.",
-        viva: "The spiral valve inside the conus arteriosus explains how a 3-chambered heart separates blood streams."
+        viva: "The spiral valve helps direct blood into arterial pathways; do not claim to see this internal valve in a surface photograph of the heart."
       },
       aortic_arches: {
         layer: 4,
@@ -1585,7 +1585,7 @@
         latin: "Mesonephros & Glandula suprarenalis",
         morphology: "Pair of elongated, flattened, dark-red retroperitoneal organs lying dorsally on either side of the vertebral column.",
         function: "Filters nitrogenous waste (adult frogs are ureotelic, excreting urea; tadpoles are ammonotelic) and regulates osmoregulation.",
-        viva: "In male frogs, the anterior kidney connects with the testis via vasa efferentia (Bidder's canal)."
+        viva: "In male frogs, vasa efferentia carry sperm from each testis into kidney-associated passages; Bidder's canal is a separate longitudinal collecting channel communicating with the urinogenital duct."
       },
       fat_bodies: {
         layer: 5,
@@ -1600,11 +1600,11 @@
       gonads: {
         layer: 5,
         system: "Reproductive System (Sex Toggleable)",
-        name: "Testes (♂) / Ovaries & Oviducts (♀)",
-        tamil: "விந்தகங்கள் (♂) / அண்டகங்கள் & அண்டநாளம் (♀)",
-        latin: "Testis / Ovarium & Oviductus",
-        morphology: "Male: Pair of small ovoid yellow testes attached to kidneys via mesorchium. Female: Large lobulated ovaries packed with ova and long, white coiled oviducts.",
-        function: "Produces spermatozoa (male) or jelly-coated ova (female). Fertilization is external in water.",
+        name: "Testes (♂) / Ovaries (♀)",
+        tamil: "விந்தகங்கள் (♂) / அண்டகங்கள் (♀)",
+        latin: "Testis / Ovarium",
+        morphology: "Male: Paired ovoid testes lie near the anterior kidneys and are suspended by mesorchia. Female: Ovaries contain developing ova; the coiled oviducts are distinct organs.",
+        function: "Testes produce spermatozoa, while ovaries produce ova. The female oviducts add gelatinous coverings during egg transport. Fertilisation is external in water.",
         viva: "In male frogs, the Wolffian duct acts as a common urinogenital duct carrying both urine and sperm!"
       },
       oviducts: {
@@ -1661,7 +1661,7 @@
 
     const PROFESSOR_NOTES = {
       lungs: "Notice the spongy pinkish-tan paired lungs flanking the heart on both sides. Identify them by their paired, sac-like appearance and anterolateral position; the internal walls contain faveoli.",
-      liver: "Look at the large, smooth, dark mahogany 3-lobed liver on the specimen's right (viewer's left). Do not confuse it with the lighter, spongy lungs sitting directly superior to it!",
+      liver: "Identify the large smooth lobed liver after establishing the specimen's orientation. Its position in a teaching photograph depends on how the specimen was laid out; do not infer right and left from the screen alone.",
       gall_bladder: "Observe the small emerald-green spherical sac nestled cleanly between the right and median liver lobes—a classic practical spotter structure.",
       ventricle: "Notice the conical muscular ventricle and the two darker anterior atria positioned centrally between the left and right lungs.",
       kidneys: "Identify the paired, elongated kidneys against the dorsal body wall after carefully retracting the viscera. The spleen is a separate, rounded organ and must not be confused with a kidney."
@@ -1734,6 +1734,10 @@
     DEFAULT_SEX_COORDS.female.oviducts = {
       x: 500, y: 300, r: 20, label: "Oviducts (♀)", side: "right", unplaced: true
     };
+    // Deep nervous structures are not demonstrated by the ventral urinogenital
+    // photographs. Keep their inspector notes without a misleading photo pin.
+    DEFAULT_SEX_COORDS.male.nervous_system.unplaced = true;
+    DEFAULT_SEX_COORDS.female.nervous_system.unplaced = true;
     delete DEFAULT_SEX_COORDS.male.brain;
     delete DEFAULT_SEX_COORDS.female.brain;
     const GUIDED_STEPS = [
