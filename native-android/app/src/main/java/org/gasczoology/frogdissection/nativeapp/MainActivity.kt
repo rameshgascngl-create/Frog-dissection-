@@ -301,7 +301,11 @@ private fun NativeFrogLab() {
                 item {
                     val organ = corpus.organs[selectedKey]
                     if (organ != null) {
-                        OrganReader(organ, showTamil, corpus.notes[selectedKey])
+                        if (selectedKey == "brain") {
+                            Text("Supplementary dorsal neuroanatomy — not visible in the ventral urogenital photograph.",
+                                color = Amber, fontSize = 11.sp, lineHeight = 16.sp)
+                        }
+                        OrganReader(sexSpecificOrgan(organ, female), showTamil, corpus.notes[selectedKey])
                     }
                 }
                 item {
