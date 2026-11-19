@@ -50,6 +50,16 @@
 - New separate workflow: [Frog Native Android Emulator Acceptance](https://github.com/rameshgascngl-create/Frog-dissection-/actions/workflows/native-device-acceptance.yml), intended to execute Compose UI tests on API 34 **and API 36** at 100% and 200% font scaling. Its test invocation working-directory issue was corrected; results must be confirmed for the final commit.
 - **An emulator check is not a pass until the exact job finishes SUCCESS.** A debug APK passing compilation does not establish runtime/performance/physical-device acceptance.
 
+## Latest audited QA build
+
+- **Result:** SUCCESS for native JVM unit tests, Compose instrumentation-test APK compilation, offline asset packaging, APK compilation and artifact publishing.
+- **Exact application-code commit:** `620bd01314e664516a8e1afdf57e721246eb4ff6`
+- **Workflow:** [#44483812063](https://github.com/rameshgascngl-create/Frog-dissection-/actions/runs/44483812063)
+- **APK artifact:** [FrogDissection-Pure-Native-Compose-QA-APK #14509806320](https://github.com/rameshgascngl-create/Frog-dissection-/actions/runs/44483812063/artifacts/14509806320)
+- **Version:** `2.0.3-native-audit-qa`, native package `org.gasczoology.frogdissection.nativeapp`; `compileSdk=36`, `targetSdk=36`, `minSdk=31`.
+- **SHA-256:** `c918ed0339dde08e161af336102c25aa22f4e0afdccc3ebe3a97050ea705dab4`
+- **Limit:** Instrumentation tests **compiled** successfully, but the separate API 34/API 36 **emulator execution matrix** has not yet returned a fully confirmed SUCCESS and must remain independent release acceptance.
+
 ## Release gates remaining
 
 1. Achieve SUCCESS on exact-commit JVM, APK and instrumentation compilation and **API 34 plus API 36** emulators at both font scales, then verify on the user's actual Android device.
