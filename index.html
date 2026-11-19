@@ -2035,8 +2035,17 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           const merged = JSON.parse(JSON.stringify(DEFAULT_LAYER_COORDS));
-          for (const l in parsed) {
-            if (merged[l]) Object.assign(merged[l], parsed[l]);
+          // Legacy stores contained the old uncalibrated defaults as if they
+          // were manual calibration. Only restore explicitly adjusted plates.
+          const adjusted = JSON.parse(localStorage.getItem("frog_adjusted_plates_v1") || "{}");
+          for (const l of ["1", "2", "3", "4"]) {
+            if (adjusted[l] === true && parsed[l] && typeof parsed[l] === "object") {
+              Object.assign(merged[l], parsed[l]);
+            }
+          }
+          // Keep old values available for manual recovery, not active display.
+          if (!localStorage.getItem("frog_legacy_coords_backup_v1")) {
+            localStorage.setItem("frog_legacy_coords_backup_v1", raw);
           }
           return merged;
         }
@@ -2054,9 +2063,16 @@
     function loadSavedSexCoords() {
       const defaults = JSON.parse(JSON.stringify(DEFAULT_SEX_COORDS));
       try {
-        const saved = JSON.parse(localStorage.getItem("frog_sex_coords_v1") || "{}");
+        const raw = localStorage.getItem("frog_sex_coords_v1") || "{}";
+        const saved = JSON.parse(raw);
+        const adjusted = JSON.parse(localStorage.getItem("frog_adjusted_plates_v1") || "{}");
         for (const sex of ["male", "female"]) {
-          if (saved[sex]) Object.assign(defaults[sex], saved[sex]);
+          if (adjusted["5_" + sex] === true && saved[sex] && typeof saved[sex] === "object") {
+            Object.assign(defaults[sex], saved[sex]);
+          }
+        }
+        if (raw !== "{}" && !localStorage.getItem("frog_legacy_sex_coords_backup_v1")) {
+          localStorage.setItem("frog_legacy_sex_coords_backup_v1", raw);
         }
       } catch (e) {}
       return defaults;
