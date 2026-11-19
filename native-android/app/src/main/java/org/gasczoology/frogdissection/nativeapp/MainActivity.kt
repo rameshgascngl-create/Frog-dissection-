@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.Quiz
 import androidx.compose.material.icons.outlined.Science
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -576,23 +577,26 @@ private fun OrganReader(organ: Organ, showTamil: Boolean, note: String?) {
     }
 }
 
+
 @Composable
 private fun QuizScreen(corpus: FrogCorpus, modifier: Modifier = Modifier) {
-    var position by remember { mutableIntStateOf(0) }
-    var selectedOption by remember { mutableIntStateOf(-1) }
-    var marks by remember { mutableIntStateOf(0) }
-    var spotter by remember { mutableStateOf(false) }
-    var spotterIndex by remember { mutableIntStateOf(0) }
-    var spotterScore by remember { mutableIntStateOf(0) }
-    val spotterPins = remember(corpus) { corpus.platePins(3, false).filter { !it.unplaced && corpus.organs.containsKey(it.key) } }
-    val q = corpus.questions[position]
+    var position by rememberSaveable { mutableIntStateOf(0) }
+    var selectedOption by rememberSaveable { mutableIntStateOf(-1) }
+    var marks by rememberSaveable { mutableIntStateOf(0) }
+    var spotter by rememberSaveable { mutableStateOf(false) }
+    var spotterIndex by rememberSaveable { mutableIntStateOf(0) }
+    var spotterScore by rememberSaveable { mutableIntStateOf(0) }
+    val spotterPins = remember(corpus) {
+        corpus.platePins(3, false).filter { !it.unplaced && corpus.organs.containsKey(it.key) }
+    }
+
     LazyColumn(
         modifier.fillMaxSize(),
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         item {
-            Text("Practical assessment", fontSize = 21.sp, fontWeight = FontWeight.Bold)
+            Text("Practical assessment", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                 FilterChip(selected = !spotter, onClick = { spotter = false },
                     label = { Text("MCQs (" + corpus.questions.size + ")") })
@@ -600,34 +604,80 @@ private fun QuizScreen(corpus: FrogCorpus, modifier: Modifier = Modifier) {
                     label = { Text("Photo spotter") })
             }
         }
+
         if (spotter) {
-            if (spotterPins.isNotEmpty()) {
-                val target = spotterPins[spotterIndex % spotterPins.size]
+            item {
+                Text("Unverified photo markers · Educational practice only, not graded assessment.",
+                    fontSize = 12.sp, color = Amber, lineHeight = 17.sp)
+            }
+            if (spotterPins.isEmpty()) {
+                item { Text("No visible anatomical markers are available for this plate.") }
+            } else if (spotterIndex >= spotterPins.size) {
                 item {
-                    Text("Locate: " + target.label, fontWeight = FontWeight.Bold, color = Amber)
-                    Text("Score: " + spotterScore + " · " + (spotterIndex + 1) + "/" + spotterPins.size,
-                        color = Muted, fontSize = 13.sp)
+                    ElevatedCard {
+                        Column(Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Text("Spotter practice complete", color = Sea,
+                                fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text("Correct: " + spotterScore + "/" + spotterPins.size,
+                                fontSize = 17.sp)
+                            Text("Scores are provisional because the original photographic marker positions have not passed anatomical sign-off.",
+                                color = Amber, fontSize = 12.sp)
+                            Button(onClick = { spotterIndex = 0; spotterScore = 0 }) {
+                                Text("Restart spotter")
+                            }
+                        }
+                    }
+                }
+            } else {
+                val target = spotterPins[spotterIndex]
+                item {
+                    Text("Identify: " + target.label, fontWeight = FontWeight.Bold,
+                        color = Amber, fontSize = 16.sp)
+                    Text("Target " + (spotterIndex + 1) + "/" + spotterPins.size,
+                        color = Muted, fontSize = 12.sp)
                 }
                 item {
-                    AnatomyPlate("frog viscera.jpg", spotterPins, "", false,
+                    AnatomyPlate(
+                        imageName = "frog viscera.jpg", pins = spotterPins,
+                        selectedKey = "", isCalibrating = false,
                         onTap = { key ->
                             if (key == target.key) spotterScore++
-                            spotterIndex = (spotterIndex + 1) % spotterPins.size
+                            spotterIndex = advanceAssessment(spotterIndex, spotterPins.size)
                         },
-                        onCalibrate = {})
-                    Text("Select the corresponding hotspot. Photographic coordinates remain provisional.",
-                        color = Muted, fontSize = 12.sp)
-                    OutlinedButton(onClick = {
-                        spotterIndex = (spotterIndex + 1) % spotterPins.size
-                    }) { Text("Skip target") }
+                        onCalibrate = {}
+                    )
+                    OutlinedButton(
+                        onClick = { spotterIndex = advanceAssessment(spotterIndex, spotterPins.size) }
+                    ) { Text("Skip target") }
+                }
+            }
+        } else if (position >= corpus.questions.size) {
+            item {
+                ElevatedCard {
+                    Column(Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Text("MCQ assessment complete", fontSize = 19.sp,
+                            fontWeight = FontWeight.Bold, color = Sea)
+                        Text("Score: " + marks + "/" + corpus.questions.size, fontSize = 18.sp)
+                        Text("You have completed all 26 questions. Review the explanations or begin a fresh attempt.",
+                            fontSize = 12.sp, color = Muted)
+                        Button(onClick = {
+                            position = 0
+                            selectedOption = -1
+                            marks = 0
+                        }) { Text("Start again") }
+                    }
                 }
             }
         } else {
+            val q = corpus.questions[position]
             item {
-                Text("Question " + (position + 1) + " of " + corpus.questions.size +
+                Text("Question " + (position + 1) + "/" + corpus.questions.size +
                     " · Score " + marks, color = Amber, fontSize = 13.sp)
                 Text(q.topic, color = Sea, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                Text(q.question, fontSize = 18.sp, lineHeight = 25.sp, fontWeight = FontWeight.SemiBold)
+                Text(q.question, fontSize = 18.sp, lineHeight = 25.sp,
+                    fontWeight = FontWeight.SemiBold)
             }
             itemsIndexed(q.options) { index, option ->
                 val correct = selectedOption >= 0 && index == q.correct
@@ -647,24 +697,30 @@ private fun QuizScreen(corpus: FrogCorpus, modifier: Modifier = Modifier) {
                         }
                     )
                 ) {
-                    Text((index + 1).toString() + ". " + option,
+                    Text((index + 1) + ". " + option,
                         modifier = Modifier.fillMaxWidth().padding(13.dp),
                         fontSize = 14.sp, lineHeight = 20.sp)
                 }
             }
             if (selectedOption >= 0) item {
                 ElevatedCard {
-                    Column(Modifier.padding(12.dp)) {
-                        Text(if (selectedOption == q.correct) "Correct" else "Review the correct answer",
-                            color = if (selectedOption == q.correct) Sea else Amber, fontWeight = FontWeight.Bold)
+                    Column(Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(if (selectedOption == q.correct) "Correct" else "Review the answer",
+                            color = if (selectedOption == q.correct) Sea else Amber,
+                            fontWeight = FontWeight.Bold)
                         Text(q.explanation, fontSize = 13.sp, lineHeight = 20.sp)
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Button(onClick = {
-                                position = (position + 1) % corpus.questions.size
+                                position = advanceAssessment(position, corpus.questions.size)
                                 selectedOption = -1
-                            }) { Text("Next question") }
+                            }) {
+                                Text(if (position == corpus.questions.lastIndex) "Finish" else "Next")
+                            }
                             TextButton(onClick = {
-                                position = 0; selectedOption = -1; marks = 0
+                                position = 0
+                                selectedOption = -1
+                                marks = 0
                             }) { Text("Restart") }
                         }
                     }
