@@ -1468,6 +1468,16 @@
         function: "Produces spermatozoa (male) or jelly-coated ova (female). Fertilization is external in water.",
         viva: "In male frogs, the Wolffian duct acts as a common urinogenital duct carrying both urine and sperm!"
       },
+      oviducts: {
+        layer: 5,
+        system: "Female Reproductive System",
+        name: "Paired Coiled Oviducts (♀)",
+        tamil: "இணையான சுருண்ட அண்டநாளங்கள்",
+        latin: "Oviductus",
+        morphology: "Two long, coiled whitish tubes lateral to the kidneys, with anterior funnel-shaped openings (ostia). Distinct from the ureters.",
+        function: "Receive ova released into the coelom and transport them towards the cloaca while adding gelatinous coverings.",
+        viva: "In female frogs, oviducts and ureters are separate ducts. The oviduct does not arise from the kidney."
+      },
       ureters: {
         layer: 5,
         system: "Excretory System",
@@ -1580,6 +1590,11 @@
     };
     DEFAULT_SEX_COORDS.male.gonads.label = "Testis";
     DEFAULT_SEX_COORDS.female.gonads.label = "Ovary";
+    // The uploaded female specimen has not been anatomically signed off.
+    // Do not invent a location: the oviduct pin appears only after calibration.
+    DEFAULT_SEX_COORDS.female.oviducts = {
+      x: 500, y: 300, r: 20, label: "Oviducts (♀)", side: "right", unplaced: true
+    };
     delete DEFAULT_SEX_COORDS.male.brain;
     delete DEFAULT_SEX_COORDS.female.brain;
     const GUIDED_STEPS = [
@@ -2123,6 +2138,7 @@
       const activeCoords = getActiveLayerCoords();
 
       Object.entries(activeCoords).forEach(([key, pt]) => {
+        if (pt.unplaced) return;
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute("class", "organ-hotspot" + (state.selectedOrgan === key ? " selected" : "") + (state.removedOrgans.has(key) ? " retracted" : ""));
         g.setAttribute("data-organ", key);
@@ -2227,6 +2243,7 @@
         activeCoords[organKey].x = x;
         activeCoords[organKey].y = y;
         activeCoords[organKey].side = x >= 500 ? "right" : "left";
+        delete activeCoords[organKey].unplaced;
         saveLayerCoordsToStorage();
         noteAdjustedPlate();
         renderCalibratedHotspots();
@@ -2471,7 +2488,7 @@
 
       const entries = Object.entries(getActiveLayerCoords());
       entries.forEach(([key, pt]) => {
-        if (state.removedOrgans.has(key)) return;
+        if (pt.unplaced || state.removedOrgans.has(key)) return;
         const isRight = pt.side === "right" || pt.x >= 500;
         const lx = isRight ? Math.min(735, pt.x + 115) : Math.max(230, pt.x - 115);
         const ly = pt.y;
@@ -2747,21 +2764,21 @@
 
       document.getElementById("insp-system").textContent = data.system;
       const sexGonad = key === "gonads" && state.layer === 5;
-      document.getElementById("insp-name").textContent = sexGonad ? (state.sex === "male" ? "Testes" : "Ovaries and Oviducts") : data.name;
+      document.getElementById("insp-name").textContent = sexGonad ? (state.sex === "male" ? "Testes" : "Ovaries") : data.name;
       const tamilEl = document.getElementById("insp-tamil");
       tamilEl.textContent = sexGonad ? (state.sex === "male" ? "விந்தகங்கள்" : "அண்டகங்கள் மற்றும் அண்டநாளங்கள்") : data.tamil;
       tamilEl.style.display = state.bilingual ? "block" : "none";
 
-      document.getElementById("insp-latin").textContent = sexGonad ? (state.sex === "male" ? "Testis" : "Ovarium et Oviductus") : data.latin;
+      document.getElementById("insp-latin").textContent = sexGonad ? (state.sex === "male" ? "Testis" : "Ovarium") : data.latin;
       document.getElementById("insp-morphology").textContent = sexGonad
         ? (state.sex === "male"
           ? "Two small ovoid testes associated with the anterior kidneys through the mesorchium."
-          : "Paired ovaries contain developing ova; separate coiled oviducts convey released eggs towards the cloaca.")
+          : "Paired ovaries contain developing ova; the separately identifiable oviducts transport released eggs.")
         : data.morphology;
       document.getElementById("insp-function").textContent = sexGonad
         ? (state.sex === "male"
           ? "Testes produce sperm; sperm reaches the urinogenital duct through the kidney-associated efferent pathway."
-          : "Ovaries produce ova; oviducts transport eggs and add gelatinous coverings. Fertilisation is external.")
+          : "Ovaries produce ova. Fertilisation takes place externally in water.")
         : data.function;
       document.getElementById("insp-viva").textContent = sexGonad
         ? (state.sex === "male"
@@ -2782,11 +2799,11 @@
       const container = document.getElementById("layer-organ-chips");
       container.innerHTML = "";
       Object.entries(ORGAN_DB).forEach(([key, val]) => {
-        if (val.layer === state.layer) {
+        if (val.layer === state.layer && !(key === "oviducts" && state.sex !== "female")) {
           const btn = document.createElement("button");
           btn.className = "organ-chip" + (key === state.selectedOrgan ? " active" : "");
           btn.setAttribute("data-key", key);
-          btn.textContent = key === "gonads" && state.layer === 5 ? (state.sex === "male" ? "Testes" : "Ovaries & Oviducts") : val.name.split("(")[0].trim();
+          btn.textContent = key === "gonads" && state.layer === 5 ? (state.sex === "male" ? "Testes" : "Ovaries") : val.name.split("(")[0].trim();
           btn.onclick = () => {
             if (state.specimenMode === "realistic") inspectRealisticOrgan(key);
             else inspectOrgan(key);
