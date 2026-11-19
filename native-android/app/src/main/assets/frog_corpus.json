@@ -658,15 +658,15 @@
     {
       "category": "Digestive & Respiratory",
       "topic": "Dentition",
-      "question": "What type of teeth are present on the upper jaw and palate of Hoplobatrachus tigerinus?",
+      "question": "Which tooth-bearing regions are present in an adult Indian bullfrog (Hoplobatrachus tigerinus)?",
       "options": [
-        "Homodont, acrodont, polyphyodont maxillary and vomerine teeth (lower jaw is toothless)",
+        "Small premaxillary/maxillary and vomerine teeth on the upper jaw and palate; lower jaw toothless",
         "Heterodont, thecodont teeth on both jaws",
         "Completely edentulous (toothless) upper and lower jaws",
         "Venomous solenoglyphous fangs"
       ],
       "correct": 0,
-      "explanation": "Frogs possess uniform (homodont), surface-attached (acrodont), continuously replaced (polyphyodont) maxillary and vomerine teeth used solely to grip prey, not chew."
+      "explanation": "The adult Indian bullfrog has teeth along the upper jaw and on the vomerine region of the palate, used chiefly to hold prey. Typical toothed anurans have homodont, replaceable, pedicellate teeth; the lower jaw is toothless. Tooth attachment patterns vary among frog lineages."
     },
     {
       "category": "External & Muscular",
