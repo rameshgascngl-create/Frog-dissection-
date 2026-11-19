@@ -232,7 +232,10 @@ private fun NativeFrogLab() {
                                 when (tool) {
                                     "Pin" -> pinned = true
                                     "Scalpel" -> incised = true
-                                    "Forceps" -> if (key !in retracted) retracted.add(key)
+                                    "Forceps" -> {
+                                        val plateKey = corpus.viewKey(layer, female) + ":" + key
+                                        if (plateKey !in retracted) retracted.add(plateKey)
+                                    }
                                 }
                             }
                         },
@@ -242,7 +245,9 @@ private fun NativeFrogLab() {
                             persistOverrides(prefs, overrides)
                             calibrating = false
                         },
-                        retractedKeys = retracted.toSet()
+                        retractedKeys = retracted
+                            .filter { it.startsWith(corpus.viewKey(layer, female) + ":") }
+                            .map { it.substringAfter(":") }.toSet()
                     )
                 }
                 item {
@@ -334,8 +339,10 @@ private fun NativeFrogLab() {
                                     when (tool) {
                                         "Pin" -> pinned = true
                                         "Scalpel" -> incised = true
-                                        "Forceps" -> if (selectedKey.isNotBlank() &&
-                                            selectedKey !in retracted) retracted.add(selectedKey)
+                                        "Forceps" -> if (selectedKey.isNotBlank()) {
+                                            val plateKey = corpus.viewKey(layer, female) + ":" + selectedKey
+                                            if (plateKey !in retracted) retracted.add(plateKey)
+                                        }
                                     }
                                 }) {
                                     Text(when (tool) {
