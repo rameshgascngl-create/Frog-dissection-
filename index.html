@@ -315,7 +315,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: none;
       z-index: 1;
     }
@@ -2135,8 +2135,10 @@
       if (!state.isCalibrating) return;
       const svg = document.getElementById("realistic-frog-svg");
       const rect = svg.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
       const relX = (event.clientX - rect.left) / rect.width;
       const relY = (event.clientY - rect.top) / rect.height;
+      if (relX < 0 || relX > 1 || relY < 0 || relY > 1) return;
 
       const x = Math.round(Math.max(20, Math.min(980, relX * 1000)));
       const y = Math.round(Math.max(20, Math.min(542, relY * 562)));
@@ -2183,7 +2185,12 @@
       if (attrFile) attrFile.textContent = expectedSrc.startsWith("data:image/") ? `Embedded Layer ${state.layer} Photo` : expectedSrc;
 
       if (imgEl) {
+        // Keep image-loading feedback correct while the next plate is decoding.
+        imgEl.classList.remove("visible");
+        const procLayer = document.getElementById("procedural-realistic-layer");
+        if (procLayer) procLayer.style.display = "block";
         imgEl.src = expectedSrc;
+        if (imgEl.complete && imgEl.naturalWidth > 0) handlePrimaryPhotoLoad();
       }
     }
 
@@ -2194,7 +2201,14 @@
       const attr = document.getElementById("photo-attribution");
       const quizImg = document.getElementById("quiz-photo-specimen");
       const quizUse = document.getElementById("quiz-fallback-use");
-
+      // Match the SVG coordinate frame to the natural photograph proportions.
+      // A fixed 16:9 tray cropped portrait or differently proportioned plates.
+      const photoFrame = document.getElementById("realistic-specimen-container");
+      const overlay = document.getElementById("realistic-frog-svg");
+      if (imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
+        photoFrame.style.aspectRatio = `${imgEl.naturalWidth} / ${imgEl.naturalHeight}`;
+        overlay.setAttribute("preserveAspectRatio", "none");
+      }
       imgEl.classList.add("visible");
       if (procLayer) procLayer.style.display = "none";
       if (banner) banner.classList.remove("visible");
@@ -2216,6 +2230,8 @@
       const attr = document.getElementById("photo-attribution");
 
       imgEl.classList.remove("visible");
+      document.getElementById("realistic-specimen-container").style.aspectRatio = "16 / 9";
+      document.getElementById("realistic-frog-svg").setAttribute("preserveAspectRatio", "xMidYMid meet");
       if (procLayer) procLayer.style.display = "block";
       if (banner) banner.classList.add("visible");
       if (attr) attr.classList.remove("visible");
