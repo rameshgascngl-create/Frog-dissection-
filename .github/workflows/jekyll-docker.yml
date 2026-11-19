@@ -34,6 +34,14 @@ jobs:
           npm install --no-save playwright@1.58.2
       - name: Exercise anatomy, specimen switching and quiz
         run: node tests/browser-smoke.cjs
+      - name: Upload six-plate anatomical review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frog-anatomical-plate-review
+          path: qa-evidence/
+          if-no-files-found: warn
+          retention-days: 30
 
   build:
 
