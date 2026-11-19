@@ -36,8 +36,11 @@ public final class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        // Respect the Android status/navigation bars. Edge-to-edge flags caused
+        // the simulator header to render behind the phone's status bar.
+        getWindow().getDecorView().setSystemUiVisibility(0);
+        getWindow().setStatusBarColor(0xFF111827);
+        getWindow().setNavigationBarColor(0xFF090D16);
         webView = new WebView(this);
         setContentView(webView);
 
