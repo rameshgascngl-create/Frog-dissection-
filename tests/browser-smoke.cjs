@@ -189,7 +189,58 @@ const server = http.createServer((req, res) => {
     assert.notEqual(await migrationPage.locator('#calibrated-photo-hotspots [data-organ="gonads"] .hotspot-dot').getAttribute('cx'), '10',
       'uncalibrated legacy gonad position must not be restored');
     await migrationPage.close();
-    console.log('PASS: male/female switch, image decoding, photo alignment, guided step, quiz and no page errors');
+
+    // Android-size visual acceptance: no desktop-wide layout, no blank 460px tray,
+    // layer controls stay at the top and magnified plates remain pannable.
+    const mobile = await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:2});
+    mobile.on('pageerror',e => errors.push('mobile: '+e.message));
+    await mobile.goto('http://127.0.0.1:' + port, {waitUntil:'load'});
+    await mobile.waitForFunction(() => document.querySelector('#photo-specimen')?.naturalWidth > 0);
+    const mobileMetrics = await mobile.evaluate(() => {
+      const tray = document.querySelector('#tray-stage').getBoundingClientRect();
+      const stage = document.querySelector('.stage-panel').getBoundingClientRect();
+      const tools = document.querySelector('.tools-panel').getBoundingClientRect();
+      return {vw:innerWidth, documentWidth:document.documentElement.scrollWidth,
+        trayHeight:tray.height, stageY:stage.top, toolsY:tools.top};
+    });
+    assert.ok(mobileMetrics.documentWidth <= mobileMetrics.vw+2,
+      'phone layout causes horizontal document overflow: '+JSON.stringify(mobileMetrics));
+    assert.ok(mobileMetrics.trayHeight < 440,
+      'phone tray retains oversized empty 460px desktop minimum: '+JSON.stringify(mobileMetrics));
+    assert.ok(mobileMetrics.stageY < mobileMetrics.toolsY,
+      'photo workspace must appear before detailed tool controls on mobile');
+    assert.equal(await mobile.locator('#mobile-layer-caption').innerText(), 'Layer 3: Digestive and respiratory');
+    assert.ok(await mobile.locator('#mobile-anatomy-key [data-mobile-organ]').count() > 3);
+    await mobile.locator('.stage-panel').screenshot({path:path.join(auditDir,'mobile-stage-390.png')});
+    await mobile.locator('#btn-expand-plate').click();
+    assert.equal(await mobile.locator('#tray-stage').evaluate(el => el.classList.contains('plate-expanded')),true);
+    await mobile.getByText('Zoom +',{exact:true}).click({force:true});
+    const zoomMetrics=await mobile.evaluate(() => {
+      const tray=document.querySelector('#tray-stage');
+      const photo=document.querySelector('#realistic-specimen-container');
+      return {trayWidth:tray.clientWidth, photoWidth:photo.getBoundingClientRect().width};
+    });
+    assert.ok(zoomMetrics.photoWidth > zoomMetrics.trayWidth,
+      'mobile enlarged plate must support actual scrollable magnification');
+    await mobile.locator('#tray-stage').screenshot({path:path.join(auditDir,'mobile-expanded-390.png')});
+    await mobile.locator('#btn-close-expanded').click();
+    await mobile.locator('[data-mobile-layer="1"]').click();
+    assert.equal(await mobile.locator('#mobile-layer-caption').innerText(),'Layer 1: External morphology');
+    await mobile.locator('[data-mobile-layer="5"]').click();
+    assert.equal(await mobile.locator('#btn-toggle-sex').isVisible(),true);
+    await mobile.locator('#btn-toggle-sex').click();
+    await mobile.waitForFunction(() => document.querySelector('#photo-specimen')?.getAttribute('src') === 'Internal deep female.avif');
+    await mobile.setViewportSize({width:320,height:640});
+    const narrowWidth=await mobile.evaluate(() => ({vw:innerWidth,doc:document.documentElement.scrollWidth}));
+    assert.ok(narrowWidth.doc<=narrowWidth.vw+2,
+      '320px phone layout overflows: '+JSON.stringify(narrowWidth));
+    await mobile.locator('#tab-quiz').click();
+    assert.equal(await mobile.locator('#quiz-workspace').isVisible(),true);
+    await mobile.locator('#tab-glossary').click();
+    assert.equal(await mobile.locator('#glossary-workspace').isVisible(),true);
+    await mobile.close();
+    assert.deepEqual(errors, [], 'uncaught application errors');
+    console.log('PASS: Android-width layout, compact tray, six-view anatomy, magnification and mobile navigation');
   } finally {
     await browser.close();
     await new Promise(resolve => server.close(resolve));
