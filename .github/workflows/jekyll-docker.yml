@@ -7,6 +7,17 @@ on:
     branches: [ "main" ]
 
 jobs:
+  anatomical-smoke:
+    name: Anatomical image and JavaScript checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check anatomy plates and application JavaScript
+        run: node --test tests/frog-smoke.test.cjs
+
   build:
 
     runs-on: ubuntu-latest
