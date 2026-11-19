@@ -29,6 +29,27 @@ class CorpusContractTest {
         assertFalse(corpus.platePins(5, true).any { it.key == "brain" })
     }
 
+    @Test fun reproductiveDescriptionNeverCombinesTheSexes() {
+        val source = corpus.organs.getValue("gonads")
+        val male = sexSpecificOrgan(source, false)
+        val female = sexSpecificOrgan(source, true)
+        assertEquals("Testes", male.name)
+        assertEquals("Ovaries", female.name)
+        assertEquals("விந்தகங்கள்", male.tamil)
+        assertEquals("அண்டகங்கள்", female.tamil)
+        assertTrue(male.morphology.contains("testes"))
+        assertFalse(female.morphology.contains("testes"))
+        assertTrue(female.viva.contains("oviducts"))
+        assertFalse(male.viva.contains("oviducts"))
+    }
+
+    @Test fun dentitionQuestionAvoidsUnqualifiedAttachmentTerminology() {
+        val dentition = corpus.questions.first { it.topic == "Dentition" }
+        assertTrue(dentition.options[dentition.correct].contains("vomerine"))
+        assertTrue(dentition.explanation.contains("pedicellate"))
+        assertFalse(dentition.options[dentition.correct].contains("acrodont"))
+    }
+
     @Test fun preservesSourceLanguageAndUnverifiedPins() {
         assertEquals("புற நாசித்துளைகள்", corpus.organs.getValue("external_nares").tamil)
         assertTrue(corpus.platePins(1, false).first { it.key == "cloaca" }.unplaced)
