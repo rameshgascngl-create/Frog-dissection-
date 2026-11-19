@@ -47,7 +47,21 @@ const server = http.createServer((req, res) => {
       assert.ok(actual.aspect.includes('/'), sex + ' photograph did not set aspect ratio');
     }
     await assertPlate('male', 'Internal deep male.avif');
+    assert.match(await page.locator('#calibration-review').innerText(), /provisional pin positions/i);
+    // Calibrate a male marker, then verify that the female position is independent.
+    await page.locator('#btn-calibrate-pins').click();
+    await page.locator('#calibrate-organ-select').selectOption('gonads');
+    const maleBefore = await page.locator('#calibrated-photo-hotspots [data-organ="gonads"] .hotspot-dot').getAttribute('cx');
+    await page.locator('#realistic-frog-svg').click({position:{x:170,y:110},force:true});
+    assert.match(await page.locator('#calibration-review').innerText(), /locally adjusted pins/i);
+    const maleAfter = await page.locator('#calibrated-photo-hotspots [data-organ="gonads"] .hotspot-dot').getAttribute('cx');
+    assert.notEqual(maleBefore, maleAfter, 'male calibration did not update the hotspot');
+    await page.locator('#btn-calibrate-pins').click();
     await page.locator('#btn-toggle-sex').click();
+    assert.match(await page.locator('#calibration-review').innerText(), /provisional pin positions/i);
+    const femalePosition = await page.locator('#calibrated-photo-hotspots [data-organ="gonads"] .hotspot-dot').getAttribute('cx');
+    assert.notEqual(femalePosition, maleAfter, 'female calibration was overwritten by the male');
+
     await assertPlate('female', 'Internal deep female.avif');
     await page.locator('#btn-toggle-sex').click();
     await assertPlate('male', 'Internal deep male.avif');
