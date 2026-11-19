@@ -1504,12 +1504,13 @@
       kidneys: "On the lower right side beside the golden-yellow finger-like fat bodies lies the dark elongated kidney/spleen region exposed after retracting the intestinal coils."
     };
 
+    const UROGENITAL_IMAGES = { male: "Internal deep male.avif", female: "Internal deep female.avif" };
     const DEFAULT_LAYER_IMAGES = {
-      1: "frog-external.jpg",
-      2: "frog-muscular.jpg",
-      3: "frog-viscera.jpg",
-      4: "frog-circulatory.jpg",
-      5: "frog-urogenital.jpg"
+      1: "frog external.jpg",
+      2: "frog muscle.jpg",
+      3: "frog viscera.jpg",
+      4: "frog heart.jpg",
+      5: "Internal deep male.avif"
     };
 
     const DEFAULT_LAYER_COORDS = {
@@ -1558,6 +1559,15 @@
       }
     };
 
+    // Male and female anatomy must be calibrated separately for each photo.
+    const DEFAULT_SEX_COORDS = {
+      male: JSON.parse(JSON.stringify(DEFAULT_LAYER_COORDS[5])),
+      female: JSON.parse(JSON.stringify(DEFAULT_LAYER_COORDS[5]))
+    };
+    DEFAULT_SEX_COORDS.male.gonads.label = "Testis";
+    DEFAULT_SEX_COORDS.female.gonads.label = "Ovary";
+    delete DEFAULT_SEX_COORDS.male.brain;
+    delete DEFAULT_SEX_COORDS.female.brain;
     const GUIDED_STEPS = [
       {
         step: 1,
@@ -1956,6 +1966,7 @@
       removedOrgans: new Set(),
       layerImages: loadSavedLayerImages(),
       layerCoords: loadSavedLayerCoords(),
+      sexCoords: loadSavedSexCoords(),
       pinTargetKey: "liver",
       pinCorrect: 0,
       pinTotal: 0,
@@ -2001,11 +2012,23 @@
     function saveLayerCoordsToStorage() {
       try {
         localStorage.setItem("frog_dissection_layer_coords_v2", JSON.stringify(state.layerCoords));
+        localStorage.setItem("frog_sex_coords_v1", JSON.stringify(state.sexCoords));
       } catch (e) {}
     }
 
+    function loadSavedSexCoords() {
+      const defaults = JSON.parse(JSON.stringify(DEFAULT_SEX_COORDS));
+      try {
+        const saved = JSON.parse(localStorage.getItem("frog_sex_coords_v1") || "{}");
+        for (const sex of ["male", "female"]) {
+          if (saved[sex]) Object.assign(defaults[sex], saved[sex]);
+        }
+      } catch (e) {}
+      return defaults;
+    }
     function getActiveLayerCoords() {
-      return state.layerCoords[state.layer] || state.layerCoords[3];
+      return state.layer === 5 ? state.sexCoords[state.sex] :
+        (state.layerCoords[state.layer] || state.layerCoords[3]);
     }
 
     function renderCalibratedHotspots() {
@@ -2127,7 +2150,8 @@
     }
 
     function resetCalibratedCoords() {
-      state.layerCoords[state.layer] = JSON.parse(JSON.stringify(DEFAULT_LAYER_COORDS[state.layer]));
+      if (state.layer === 5) state.sexCoords[state.sex] = JSON.parse(JSON.stringify(DEFAULT_SEX_COORDS[state.sex]));
+      else state.layerCoords[state.layer] = JSON.parse(JSON.stringify(DEFAULT_LAYER_COORDS[state.layer]));
       saveLayerCoordsToStorage();
       renderCalibratedHotspots();
       showToast(`Restored default anatomical pin coordinates for Layer ${state.layer}.`);
@@ -2145,10 +2169,12 @@
       const attrFile = document.getElementById("attr-filename");
       const badge = document.getElementById("active-plate-badge");
 
-      const expectedSrc = state.layerImages[state.layer] || DEFAULT_LAYER_IMAGES[state.layer];
+      const expectedSrc = state.layer === 5
+        ? (state.layerImages["5_" + state.sex] || UROGENITAL_IMAGES[state.sex])
+        : (state.layerImages[state.layer] || DEFAULT_LAYER_IMAGES[state.layer]);
       if (badge) badge.textContent = `L${state.layer}`;
       if (bannerTag) bannerTag.textContent = `Layer ${state.layer}`;
-      if (bannerFile) bannerFile.textContent = DEFAULT_LAYER_IMAGES[state.layer];
+      if (bannerFile) bannerFile.textContent = state.layer === 5 ? UROGENITAL_IMAGES[state.sex] : DEFAULT_LAYER_IMAGES[state.layer];
       if (attrFile) attrFile.textContent = expectedSrc.startsWith("data:image/") ? `Embedded Layer ${state.layer} Photo` : expectedSrc;
 
       if (imgEl) {
@@ -2216,7 +2242,7 @@
     function applyCustomSpecimenFile(file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-        state.layerImages[state.layer] = e.target.result;
+        state.layerImages[state.layer === 5 ? "5_" + state.sex : state.layer] = e.target.result;
         saveLayerImagesToStorage();
         setSpecimenMode("realistic");
         loadActiveLayerImage();
@@ -2232,7 +2258,7 @@
       const cloneBanner = cloneDoc.querySelector("#photo-helper-banner");
       const cloneCalBar = cloneDoc.querySelector("#calibration-bar");
 
-      const l3Src = state.layerImages[3];
+      const l3Src = state.layerImages[3] || DEFAULT_LAYER_IMAGES[3];
       if (cloneImg) {
         cloneImg.setAttribute("src", l3Src);
         if (l3Src.startsWith("data:image/")) cloneImg.classList.add("visible");
@@ -2291,7 +2317,7 @@
 
       document.getElementById("btn-view-ventral").style.display = isRealistic ? "none" : "inline-block";
       document.getElementById("btn-view-dorsal").style.display = isRealistic ? "none" : "inline-block";
-      document.getElementById("btn-toggle-sex").style.display = isRealistic ? "none" : "inline-block";
+      document.getElementById("btn-toggle-sex").style.display = (!isRealistic || state.layer === 5) ? "inline-block" : "none";
 
       document.getElementById("btn-toggle-labels").textContent = isRealistic
         ? (state.showLabels ? "Digital Pins: ON" : "Digital Pins: OFF")
@@ -2442,6 +2468,7 @@
 
     function setLayer(layerNum) {
       state.layer = layerNum;
+      document.getElementById("btn-toggle-sex").style.display = (state.specimenMode === "vector" || layerNum === 5) ? "inline-block" : "none";
 
       for (let i = 1; i <= 5; i++) {
         document.getElementById(`layer-btn-${i}`).classList.toggle("active", i === layerNum);
@@ -2494,7 +2521,11 @@
       document.getElementById("male-gonads").style.display = state.sex === "male" ? "block" : "none";
       document.getElementById("female-gonads").style.display = state.sex === "female" ? "block" : "none";
 
-      showToast(`Switched specimen to <strong>${state.sex.toUpperCase()}</strong> anatomy.`);
+      if (state.layer === 5 && state.specimenMode === "realistic") {
+        loadActiveLayerImage();
+        renderCalibratedHotspots();
+      }
+      showToast(`Switched specimen to <strong>${state.sex.toUpperCase()}</strong> anatomy. Calibrate anatomical pins for each photograph.`);
       if (state.selectedOrgan === "gonads" || state.selectedOrgan === "vocal_sacs") {
         inspectOrgan(state.selectedOrgan);
       }
