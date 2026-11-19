@@ -1539,19 +1539,19 @@
 
     const DEFAULT_LAYER_COORDS = {
       1: {
-        external_nares: { x: 465, y: 120, r: 16, label: "External Nares", side: "left" },
-        eyes:           { x: 425, y: 155, r: 22, label: "Bulging Eye", side: "left" },
-        tympanum:       { x: 580, y: 175, r: 20, label: "Tympanum (Ear Drum)", side: "right" },
-        vocal_sacs:     { x: 440, y: 215, r: 20, label: "Vocal Sacs (♂)", side: "left" },
-        forelimbs:      { x: 340, y: 245, r: 24, label: "Forelimb (4 Digits)", side: "left" },
-        hindlimbs:      { x: 640, y: 420, r: 30, label: "Webbed Hindlimb", side: "right" },
-        cloaca:         { x: 500, y: 430, r: 18, label: "Cloacal Aperture", side: "right" }
+        external_nares: { x: 881, y: 236, r: 14, label: "External Nares", side: "right" },
+        eyes:           { x: 819, y: 204, r: 16, label: "Eye", side: "right" },
+        tympanum:       { x: 773, y: 251, r: 16, label: "Tympanum (Ear Drum)", side: "right" },
+        vocal_sacs:     { x: 500, y: 300, r: 20, label: "Vocal Sac (male; not exposed)", side: "right", unplaced: true },
+        forelimbs:      { x: 655, y: 363, r: 25, label: "Forelimb", side: "right" },
+        hindlimbs:      { x: 354, y: 366, r: 30, label: "Hindlimb", side: "left" },
+        cloaca:         { x: 500, y: 450, r: 18, label: "Cloacal Aperture (not exposed)", side: "right", unplaced: true }
       },
       2: {
-        pectoralis:       { x: 455, y: 220, r: 26, label: "Pectoralis Major", side: "left" },
-        linea_alba:       { x: 500, y: 295, r: 18, label: "Linea Alba & Ant. Abd. Vein", side: "right" },
-        rectus_abdominis: { x: 460, y: 325, r: 26, label: "Rectus Abdominis", side: "left" },
-        hindlimb_muscles: { x: 410, y: 395, r: 30, label: "Sartorius & Gastrocnemius", side: "left" }
+        pectoralis:       { x: 340, y: 273, r: 20, label: "Pectoral Region", side: "left" },
+        linea_alba:       { x: 352, y: 402, r: 14, label: "Linea Alba", side: "left" },
+        rectus_abdominis: { x: 319, y: 344, r: 24, label: "Rectus Abdominis", side: "left" },
+        hindlimb_muscles: { x: 415, y: 465, r: 30, label: "Deep Hindlimb Muscles (not exposed)", side: "left", unplaced: true }
       },
       3: {
         ventricle:        { x: 495, y: 205, r: 22, label: "Heart (3-Chambered)", side: "right" },
@@ -1565,12 +1565,12 @@
         kidneys:          { x: 562, y: 275, r: 18, label: "Kidney", side: "right" }
       },
       4: {
-        aortic_arches:    { x: 465, y: 195, r: 22, label: "Aortic Arches", side: "left" },
-        right_atrium:     { x: 482, y: 215, r: 18, label: "Right Atrium", side: "left" },
-        left_atrium:      { x: 518, y: 215, r: 18, label: "Left Atrium", side: "right" },
-        ventricle:        { x: 500, y: 242, r: 22, label: "Muscular Ventricle", side: "right" },
-        conus_arteriosus: { x: 500, y: 212, r: 15, label: "Conus Arteriosus", side: "right" },
-        venous_system:    { x: 538, y: 275, r: 22, label: "Postcaval & Portal Veins", side: "right" }
+        aortic_arches:    { x: 494, y: 139, r: 20, label: "Aortic Arches", side: "left" },
+        right_atrium:     { x: 382, y: 217, r: 18, label: "Right Atrium", side: "left" },
+        left_atrium:      { x: 544, y: 224, r: 18, label: "Left Atrium", side: "right" },
+        ventricle:        { x: 472, y: 350, r: 22, label: "Muscular Ventricle", side: "left" },
+        conus_arteriosus: { x: 391, y: 247, r: 15, label: "Truncus Arteriosus", side: "left" },
+        venous_system:    { x: 500, y: 410, r: 22, label: "Postcaval & Portal Veins (not shown)", side: "right", unplaced: true }
       },
       5: {
         fat_bodies:      { x: 452, y: 275, r: 24, label: "Corpora Adiposa (Fat Bodies)", side: "left" },
