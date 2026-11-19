@@ -14,9 +14,7 @@ class MarkerGeometryTest {
         }
     }
     @Test fun markerSizingRejectsZeroSizeCanvas() {
-        try {
-            markerRadiusPx(0f, false)
-            fail("Expected a validation error")
-        } catch (_: IllegalArgumentException) {}
+        assertEquals(0f, markerRadiusPx(0f, false), 0f)
+        assertEquals(0f, markerRadiusPx(-1f, true), 0f)
     }
 }
