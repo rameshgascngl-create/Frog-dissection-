@@ -160,6 +160,8 @@ private fun NativeFrogLab() {
             title = { Text("Privacy and scientific status") },
             text = {
                 Text(PRIVACY_DISCLOSURE.trimIndent(),
+                    modifier = Modifier.heightIn(max = 340.dp)
+                        .verticalScroll(rememberScrollState()),
                     fontSize = 12.sp, lineHeight = 18.sp)
             },
             confirmButton = {
