@@ -697,7 +697,7 @@ private fun QuizScreen(corpus: FrogCorpus, modifier: Modifier = Modifier) {
                         }
                     )
                 ) {
-                    Text((index + 1) + ". " + option,
+                    Text((index + 1).toString() + ". " + option,
                         modifier = Modifier.fillMaxWidth().padding(13.dp),
                         fontSize = 14.sp, lineHeight = 20.sp)
                 }
