@@ -58,7 +58,14 @@
 - **APK artifact:** [FrogDissection-Pure-Native-Compose-QA-APK #14509806320](https://github.com/rameshgascngl-create/Frog-dissection-/actions/runs/44483812063/artifacts/14509806320)
 - **Version:** `2.0.3-native-audit-qa`, native package `org.gasczoology.frogdissection.nativeapp`; `compileSdk=36`, `targetSdk=36`, `minSdk=31`.
 - **SHA-256:** `c918ed0339dde08e161af336102c25aa22f4e0afdccc3ebe3a97050ea705dab4`
-- **Limit:** Instrumentation tests **compiled** successfully, but the separate API 34/API 36 **emulator execution matrix** has not yet returned a fully confirmed SUCCESS and must remain independent release acceptance.
+- **Emulator acceptance now verified:** [workflow #44483812089](https://github.com/rameshgascngl-create/Frog-dissection-/actions/runs/44483812089) returned SUCCESS for API 34 and API 36, both 100% and 200% font settings. Evidence artifacts: API 34 #14510545426; API 36 #14510610086.
+- **Next native accessibility QA candidate:** v2.0.4 code adds screen-reader actions for every visible organ pin, four directional pin-adjustment controls, and rotation-safe forceps state. Build and emulator reacceptance require an exact-commit PASS before distributing as an updated QA APK.
+
+## Accessibility follow-up
+
+Canvas-drawn pins did not have individual TalkBack actions in v2.0.3; the native photo now exports labeled `CustomAccessibilityAction` handlers. A screen-reader user can inspect an individual organ through the photograph's accessibility actions or through the organ-list chips. During calibration, an additional four-direction control permits measured adjustments without pixel-perfect tapping. Tests exercise the named actions and directional controls; final TalkBack usability must still be checked on a device.
+
+The new QA candidate retains original unapproved source coordinates and six educational photographs. **No scientific or copyright sign-off is implied** by accessibility test success.
 
 ## Release gates remaining
 
