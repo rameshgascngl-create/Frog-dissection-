@@ -30,6 +30,7 @@
 | Rotation and process death | Primitive UI and quiz state uses rememberSaveable; calibration uses local preferences | PARTIAL; exercise list and image gesture state still need recovery tests |
 | Accessibility | Material controls have native semantics; individual Canvas pins are not independently TalkBack-addressable | **BLOCKER** pending accessibility improvements |
 | Android data protection | No Internet permission; backup disabled; no analytics SDK; in-APK privacy statement included | SOURCE REVIEW PASS; store review still required |
+| Google Play API policy | Upgraded native module to compile/target SDK 36 with Android Gradle Plugin 8.11.1 and Gradle 8.13; new API 34/API 36 emulator matrix added | SOURCE CORRECTED; exact build validation pending |
 | Signing and store | CI generates a debug APK, not a signed production AAB | NOT RELEASE READY |
 | Photos and attribution | Image rights evidence incomplete; muscular composite includes a Jenna Hellack Fall 2000 attribution lead, not a licence | **RELEASE BLOCKER** |
 
@@ -39,18 +40,19 @@
 - **Corrected:** MCQ 25 now tests the upper-jaw and vomerine tooth-bearing regions instead of treating `acrodont` as the single diagnostic property of anuran dentition; the explanation acknowledges the typically pedicellate, replaceable dentition.
 - **Preserved:** all 26 questions and 31 organ records, with no summary replacement.
 - **Not yet accepted:** photo-by-photo marker positions, all six image reuse rights, full corpus peer review and a formal Tamil Nadu Zoology editorial glossary check.
+- **Source audit updates:** male/female reproductive inspector content is now sex-specific; MCQ and photo spotter terminate after one round and present practice/score summaries; in-app privacy disclosure is scrollable; glossary oviduct selection opens the female plate.
 - **Tamil coverage limitation:** Tamil organ labels are present, but much of the explanatory morphology, function, viva and MCQ material remains English. This is **not** a complete bilingual textbook.
 - **Nervous system limitation:** a dorsal brain record is supplementary text, not visible in the Layer 5 ventral urogenital specimen.
 
 ## Automated validation
 
 - Build workflow: [Pure Native Frog Dissection Android QA](https://github.com/rameshgascngl-create/Frog-dissection-/actions/workflows/native-compose-apk.yml), now requires JVM corpus/marker/assessment tests, native APK compilation, and Android UI-test APK compilation.
-- New separate workflow: [Frog Native Android Emulator Acceptance](https://github.com/rameshgascngl-create/Frog-dissection-/actions/workflows/native-device-acceptance.yml), intended to execute Compose UI tests on API 34 at 100% and 200% font scaling.
+- New separate workflow: [Frog Native Android Emulator Acceptance](https://github.com/rameshgascngl-create/Frog-dissection-/actions/workflows/native-device-acceptance.yml), intended to execute Compose UI tests on API 34 **and API 36** at 100% and 200% font scaling. Its test invocation working-directory issue was corrected; results must be confirmed for the final commit.
 - **An emulator check is not a pass until the exact job finishes SUCCESS.** A debug APK passing compilation does not establish runtime/performance/physical-device acceptance.
 
 ## Release gates remaining
 
-1. Achieve SUCCESS on exact-commit JVM, APK and instrumentation compilation and API 34 emulator at both font scales, then verify on the user's actual Android device.
+1. Achieve SUCCESS on exact-commit JVM, APK and instrumentation compilation and **API 34 plus API 36** emulators at both font scales, then verify on the user's actual Android device.
 2. Confirm all six specimen photos and calibrate every visible organ hotspot against the actual pixel coordinates, with review evidence and reviewer sign-off.
 3. Resolve reuse licences/creator attribution for all bundled photographs, or replace with appropriately licensed originals.
 4. Make canvas hotspots individually discoverable and operable with TalkBack/Switch Access; test at larger fonts and in landscape.
