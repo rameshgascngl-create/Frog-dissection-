@@ -325,6 +325,43 @@ private fun NativeFrogLab() {
                         }) { Text("Reset pin", fontSize = 12.sp) }
                     }
                 }
+                if (calibrating) item {
+                    val view = corpus.viewKey(layer, female)
+                    val sourcePin = corpus.platePins(layer, female)
+                        .firstOrNull { it.key == selectedKey }
+                    if (sourcePin != null) {
+                        val key = "$view:$selectedKey"
+                        val current = overrides[key] ?: Offset(sourcePin.x, sourcePin.y)
+                        ElevatedCard {
+                            Column(Modifier.fillMaxWidth().padding(11.dp),
+                                verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Text("Precision pin adjustment",
+                                    fontWeight = FontWeight.SemiBold, color = Sea, fontSize = 13.sp)
+                                Text("Selected: " + sourcePin.label +
+                                    " · X " + current.x.toInt() + " · Y " + current.y.toInt(),
+                                    fontSize = 11.sp, color = Muted)
+                                Text("Tap the photograph or use accessible step buttons (10 coordinate units).",
+                                    fontSize = 11.sp, color = Muted, lineHeight = 16.sp)
+                                LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                                    items(listOf(
+                                        Triple("Move left", -10f, 0f),
+                                        Triple("Move right", 10f, 0f),
+                                        Triple("Move up", 0f, -10f),
+                                        Triple("Move down", 0f, 10f)
+                                    )) { direction ->
+                                        OutlinedButton(onClick = {
+                                            overrides[key] = Offset(
+                                                (current.x + direction.second).coerceIn(0f, 1000f),
+                                                (current.y + direction.third).coerceIn(0f, 562f)
+                                            )
+                                            persistOverrides(prefs, overrides)
+                                        }) { Text(direction.first, fontSize = 11.sp, maxLines = 1) }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 item {
                     val organ = corpus.organs[selectedKey]
                     if (organ != null) {
