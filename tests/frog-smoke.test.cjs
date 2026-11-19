@@ -30,7 +30,9 @@ test('Layer 5 has independent male and female image selection', () => {
 test('male and female photo controls and descriptions exist', () => {
   assert.match(html, /id="btn-toggle-sex"/);
   assert.match(script, /state\.layer === 5/);
-  assert.match(script, /Ovaries and Oviducts/);
+  assert.match(script, /name: "Paired Coiled Oviducts/);
+  assert.match(script, /unplaced: true/);
+  assert.match(script, /key === "oviducts" && state.sex !== "female"/);
   assert.match(script, /Testes/);
   assert.match(html, /id="calibrate-organ-select"/);
 });
