@@ -226,17 +226,21 @@ private fun NativeFrogLab() {
                     LayerPicker(corpus, layer, selectLayer)
                 }
                 if (layer == 5) item {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        FilterChip(
-                            selected = !female,
-                            onClick = { female = false; selectedKey = "gonads" },
-                            label = { Text("Male specimen") }
-                        )
-                        FilterChip(
-                            selected = female,
-                            onClick = { female = true; selectedKey = "gonads" },
-                            label = { Text("Female specimen") }
-                        )
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        item {
+                            FilterChip(
+                                selected = !female,
+                                onClick = { female = false; selectedKey = "gonads" },
+                                label = { Text("Male specimen") }
+                            )
+                        }
+                        item {
+                            FilterChip(
+                                selected = female,
+                                onClick = { female = true; selectedKey = "gonads" },
+                                label = { Text("Female specimen") }
+                            )
+                        }
                     }
                 }
                 item {
@@ -395,12 +399,16 @@ private fun NativeFrogLab() {
                             Text("GUIDED LAB PROTOCOL · " + (step + 1) + "/" + corpus.steps.size,
                                 fontSize = 12.sp, color = Amber, fontWeight = FontWeight.Bold)
                             Text(current.instruction, fontSize = 12.sp, lineHeight = 19.sp)
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                OutlinedButton(onClick = { selectStep(step - 1) }, enabled = step > 0) {
-                                    Text("Previous")
+                            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                item {
+                                    OutlinedButton(onClick = { selectStep(step - 1) }, enabled = step > 0) {
+                                        Text("Previous", maxLines = 1)
+                                    }
                                 }
-                                Button(onClick = { selectStep(step + 1) }, enabled = step < corpus.steps.lastIndex) {
-                                    Text("Next step")
+                                item {
+                                    Button(onClick = { selectStep(step + 1) }, enabled = step < corpus.steps.lastIndex) {
+                                        Text("Next step", maxLines = 1)
+                                    }
                                 }
                             }
                         }
