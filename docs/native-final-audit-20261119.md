@@ -1,0 +1,61 @@
+# Frog Dissection Native — Final Engineering and Zoology Audit
+**Date:** 19 November 2026  
+**Scope:** `native/compose-frog-dissection-20261119`, source of the pure Kotlin/Jetpack Compose module `native-android/`.  
+**Decision:** **QA ONLY — not approved for unqualified classroom release or Play Store submission.**
+
+## Scope and evidence
+- Source inspected: Kotlin UI, corpus parser, JSON asset data, marker geometry, Android manifest and Gradle configurations.
+- Content inventory at review: 5 anatomical layers, **6** photographs (sex-specific Layer 5), **31** organ records, **26** MCQs and **6** guided steps.
+- The previous HTML/WebView implementation is stored separately in `android-app/`. The **`native-android/`** module contains no WebView code or HTML runtime.
+- Earlier device photographs demonstrate that the initial Compose build rendered the anatomy images but had an excessively tall toolbar, clipped layer controls and oversized/clustered markers. The corresponding corrections are in the native branch, but a follow-up screenshot comparison on the actual phone has not been accepted.
+- Baseline exact-commit GitHub Actions run [44480399161](https://github.com/rameshgascngl-create/Frog-dissection-/actions/runs/44480399161): success. It predates the additional final-audit changes.
+
+## Engineering findings
+
+| Area | Audit finding / action | Status |
+|---|---|---|
+| Native architecture | Kotlin, Compose, Material 3, no WebView; legacy hybrid module retained | PASS (source) |
+| Offline assets | Five anatomical layers, male and female AVIF plates, content JSON packaged by CI | PASS (build-level) |
+| Repository organisation | Native project isolated; verified image count, corpus and Gradle build | PASS |
+| Layer navigation | Replaced clipped layer chips with five fixed-width selection controls | SOURCE CORRECTED; device recheck |
+| Header / mobile typography | Compact native header, fewer wrapped labels | SOURCE CORRECTED; 200% font test pending |
+| Photo overlays | Pixel-bounded markers now avoid blocking the original printed specimen labels | SOURCE CORRECTED; anatomical alignment pending |
+| Photo gestures | Native pinch zoom and pan implemented | PRESENT; device interaction not accepted |
+| Male/female specificity | Male and female photographs remain separate; independent calibration and reproductive descriptions implemented | SOURCE CORRECTED; scientific review pending |
+| Anatomy glossary | Thirty-one organ records searchable; selecting oviduct opens female Layer 5 | SOURCE CORRECTED |
+| MCQ grading | Removed indefinite wraparound after question 26; completion and reset provided; state is rotation-saveable | SOURCE CORRECTED; emulator verification pending |
+| Spotter scoring | Practice now terminates, resets and explicitly disclaims unverified photographic positions | SOURCE CORRECTED; not a graded exam |
+| Guided steps | Six steps retained; available tool actions record interaction state | PARTIAL SIMULATOR |
+| Tissue removal | Forceps merely changes marker/retraction state; underlying photography is not modified | **RELEASE BLOCKER** for claims of complete dissection simulation |
+| Rotation and process death | Primitive UI and quiz state uses rememberSaveable; calibration uses local preferences | PARTIAL; exercise list and image gesture state still need recovery tests |
+| Accessibility | Material controls have native semantics; individual Canvas pins are not independently TalkBack-addressable | **BLOCKER** pending accessibility improvements |
+| Android data protection | No Internet permission; backup disabled; no analytics SDK; in-APK privacy statement included | SOURCE REVIEW PASS; store review still required |
+| Signing and store | CI generates a debug APK, not a signed production AAB | NOT RELEASE READY |
+| Photos and attribution | Image rights evidence incomplete; muscular composite includes a Jenna Hellack Fall 2000 attribution lead, not a licence | **RELEASE BLOCKER** |
+
+## Scientific and Tamil editorial checks
+
+- **Corrected:** female ovarian inspector text is now separate from male testicular descriptions; separate female oviduct pin starts deliberately unplaced.
+- **Corrected:** MCQ 25 now tests the upper-jaw and vomerine tooth-bearing regions instead of treating `acrodont` as the single diagnostic property of anuran dentition; the explanation acknowledges the typically pedicellate, replaceable dentition.
+- **Preserved:** all 26 questions and 31 organ records, with no summary replacement.
+- **Not yet accepted:** photo-by-photo marker positions, all six image reuse rights, full corpus peer review and a formal Tamil Nadu Zoology editorial glossary check.
+- **Tamil coverage limitation:** Tamil organ labels are present, but much of the explanatory morphology, function, viva and MCQ material remains English. This is **not** a complete bilingual textbook.
+- **Nervous system limitation:** a dorsal brain record is supplementary text, not visible in the Layer 5 ventral urogenital specimen.
+
+## Automated validation
+
+- Build workflow: [Pure Native Frog Dissection Android QA](https://github.com/rameshgascngl-create/Frog-dissection-/actions/workflows/native-compose-apk.yml), now requires JVM corpus/marker/assessment tests, native APK compilation, and Android UI-test APK compilation.
+- New separate workflow: [Frog Native Android Emulator Acceptance](https://github.com/rameshgascngl-create/Frog-dissection-/actions/workflows/native-device-acceptance.yml), intended to execute Compose UI tests on API 34 at 100% and 200% font scaling.
+- **An emulator check is not a pass until the exact job finishes SUCCESS.** A debug APK passing compilation does not establish runtime/performance/physical-device acceptance.
+
+## Release gates remaining
+
+1. Achieve SUCCESS on exact-commit JVM, APK and instrumentation compilation and API 34 emulator at both font scales, then verify on the user's actual Android device.
+2. Confirm all six specimen photos and calibrate every visible organ hotspot against the actual pixel coordinates, with review evidence and reviewer sign-off.
+3. Resolve reuse licences/creator attribution for all bundled photographs, or replace with appropriately licensed originals.
+4. Make canvas hotspots individually discoverable and operable with TalkBack/Switch Access; test at larger fonts and in landscape.
+5. Implement genuinely interactive tissue-visibility progression before describing the exercise as complete dissection, or explicitly market it as an anatomical plate explorer with virtual tools.
+6. Complete Tamil explanatory-language review and scientific MCQ editorial acceptance.
+7. Provide production signing, AAB, screenshots, app listing, public privacy-policy location and store compliance checks.
+
+**Release decision:** Use only the verified debug QA APK for testing. Do not label the current app an approved, fully simulated, published or scientifically signed-off practical manual.
