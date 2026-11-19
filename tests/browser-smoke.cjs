@@ -77,7 +77,18 @@ const server = http.createServer((req, res) => {
     assert.notEqual(femalePosition, maleAfter, 'female calibration was overwritten by the male');
 
     await assertPlate('female', 'Internal deep female.avif');
+    assert.equal(await page.locator('#layer-organ-chips [data-key="oviducts"]').count(), 1);
+    assert.equal(await page.locator('#calibrated-photo-hotspots [data-organ="oviducts"]').count(), 0,
+      'unreviewed oviduct should not have an invented position');
+    await page.locator('#btn-calibrate-pins').click();
+    await page.locator('#calibrate-organ-select').selectOption('oviducts');
+    await page.locator('#realistic-frog-svg').click({position:{x:200,y:90},force:true});
+    assert.equal(await page.locator('#calibrated-photo-hotspots [data-organ="oviducts"]').count(), 1,
+      'oviduct becomes available after manual calibration');
+    await page.locator('#btn-calibrate-pins').click();
     await page.locator('#btn-toggle-sex').click();
+    assert.equal(await page.locator('#layer-organ-chips [data-key="oviducts"]').count(), 0,
+      'male view must not show female oviducts');
     await assertPlate('male', 'Internal deep male.avif');
     await page.locator('#layer-btn-3').click();
     await assertPlate('viscera', 'frog viscera.jpg');
