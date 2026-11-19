@@ -56,6 +56,20 @@ const server = http.createServer((req, res) => {
     assert.match(await page.locator('#calibration-review').innerText(), /locally adjusted pins/i);
     const maleAfter = await page.locator('#calibrated-photo-hotspots [data-organ="gonads"] .hotspot-dot').getAttribute('cx');
     assert.notEqual(maleBefore, maleAfter, 'male calibration did not update the hotspot');
+    // The exported manifest must carry independent coordinates for both sexes.
+    const downloadPromise = page.waitForEvent('download');
+    await page.locator('#btn-export-calibration').click();
+    const calibrationDownload = await downloadPromise;
+    assert.equal(calibrationDownload.suggestedFilename(), 'frog-calibration-review.json');
+    const stream = await calibrationDownload.createReadStream();
+    let serialized = '';
+    for await (const chunk of stream) serialized += chunk.toString('utf8');
+    const review = JSON.parse(serialized);
+    assert.equal(review.schema, 'frog-dissection-calibration-v1');
+    assert.equal(review.images['5_male'], 'Internal deep male.avif');
+    assert.equal(review.images['5_female'], 'Internal deep female.avif');
+    assert.equal(review.coordinates['5_male'].gonads.x, Number(maleAfter));
+    assert.notEqual(review.coordinates['5_male'].gonads.x, review.coordinates['5_female'].gonads.x);
     await page.locator('#btn-calibrate-pins').click();
     await page.locator('#btn-toggle-sex').click();
     assert.match(await page.locator('#calibration-review').innerText(), /provisional pin positions/i);
