@@ -218,7 +218,7 @@
       justify-content: space-between;
     }
     .stage-toggles { display: flex; flex-wrap: wrap; gap: 0.38rem; align-items: center; }
-    .mobile-layer-nav, .mobile-anatomy-key, .mobile-plate-action { display: none; }
+    .mobile-layer-nav, .mobile-layer-caption, .mobile-anatomy-key, .mobile-plate-action { display: none; }
     .mobile-anatomy-key button {
       background: #1e293b;
       color: #f8fafc;
@@ -231,7 +231,7 @@
       min-height: 40px;
     }
     .mobile-anatomy-key button.active { border-color: var(--accent-amber); color: #fde68a; }
-    .plate-exit-button { display: none; }
+    .plate-exit-button, .plate-zoom-control { display: none; }
     .toggle-chip {
       background: var(--bg-card);
       color: var(--text-secondary);
@@ -631,6 +631,14 @@
         padding: 3.25rem .45rem .7rem; overflow: auto; overscroll-behavior: contain;
         align-items: flex-start; justify-content: flex-start;
       }
+      .tray-container.plate-expanded .plate-zoom-control {
+        display: block; position: fixed; top: max(.4rem, env(safe-area-inset-top));
+        z-index: 5010; min-width: 40px; min-height: 40px;
+        padding: .4rem .65rem; background: #1e293b; color: white;
+        border: 1px solid #64748b; border-radius: 8px; font-size: 1.1rem;
+      }
+      .tray-container.plate-expanded #btn-expanded-zoom-in { left: .55rem; }
+      .tray-container.plate-expanded #btn-expanded-zoom-out { left: 3.5rem; }
       .tray-container.plate-expanded .plate-exit-button {
         display: block; position: fixed; top: max(.4rem, env(safe-area-inset-top)); right: .75rem;
         z-index: 5010; padding: .45rem .85rem; background: #0f766e;
@@ -803,6 +811,8 @@
       </div>
 
       <div class="tray-container cursor-probe" id="tray-stage" onclick="handleTrayClick()">
+        <button type="button" class="plate-zoom-control" id="btn-expanded-zoom-in" onclick="event.stopPropagation(); adjustZoom(0.25)" aria-label="Magnify anatomical photograph">+</button>
+        <button type="button" class="plate-zoom-control" id="btn-expanded-zoom-out" onclick="event.stopPropagation(); adjustZoom(-0.25)" aria-label="Reduce anatomical photograph">−</button>
         <button type="button" class="plate-exit-button" id="btn-close-expanded" onclick="event.stopPropagation(); togglePlateFullscreen()">✕ Close Plate</button>
         <!-- REAL PHOTOGRAPH + INTERACTIVE HOTSPOT OVERLAY -->
         <div id="realistic-specimen-container" ondragover="handleSpecimenDragOver(event)" ondrop="handleSpecimenDrop(event)">
