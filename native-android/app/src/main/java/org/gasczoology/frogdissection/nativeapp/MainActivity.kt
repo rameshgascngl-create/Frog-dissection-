@@ -221,18 +221,6 @@ private fun NativeFrogLab() {
                     }
                 }
                 item {
-                    val isCalibrated = overrides.keys.any { it.startsWith(corpus.viewKey(layer, female) + ":") }
-                    Text(
-                        (if (isCalibrated) "Locally adjusted plate. " else "Provisional anatomical pins. ") +
-                            "Confirm each marker against the original photograph; not academically signed off.",
-                        modifier = Modifier.fillMaxWidth()
-                            .background(Color(0xFF2B2519), RoundedCornerShape(9.dp))
-                            .padding(10.dp),
-                        color = Color(0xFFFFDF91),
-                        fontSize = 12.sp, lineHeight = 17.sp
-                    )
-                }
-                item {
                     AnatomyPlate(
                         imageName = corpus.imageName(layer, female),
                         pins = visiblePins(corpus, layer, female, overrides),
@@ -255,6 +243,21 @@ private fun NativeFrogLab() {
                             calibrating = false
                         },
                         retractedKeys = retracted.toSet()
+                    )
+                }
+                item {
+                    val isCalibrated = overrides.keys.any {
+                        it.startsWith(corpus.viewKey(layer, female) + ":")
+                    }
+                    Text(
+                        if (isCalibrated) "Pins adjusted locally; anatomical review pending."
+                        else "Pins provisional · Verify against this photograph.",
+                        modifier = Modifier.fillMaxWidth()
+                            .background(Color(0xFF2B2519), RoundedCornerShape(9.dp))
+                            .padding(horizontal = 10.dp, vertical = 7.dp),
+                        color = Color(0xFFFFDF91),
+                        fontSize = 11.sp, lineHeight = 15.sp,
+                        maxLines = 3
                     )
                 }
                 item {
@@ -514,7 +517,7 @@ private fun AnatomyPlate(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Photo · " + pins.size + " markers",
+            Text(pins.firstOrNull { it.key == selectedKey }?.label ?: "Tap an organ",
                 modifier = Modifier.weight(1f),
                 color = Muted, fontSize = 10.sp,
                 maxLines = 1, overflow = TextOverflow.Ellipsis)
