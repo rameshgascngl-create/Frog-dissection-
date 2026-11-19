@@ -214,7 +214,7 @@ const server = http.createServer((req, res) => {
     await mobile.locator('.stage-panel').screenshot({path:path.join(auditDir,'mobile-stage-390.png')});
     await mobile.locator('#btn-expand-plate').click();
     assert.equal(await mobile.locator('#tray-stage').evaluate(el => el.classList.contains('plate-expanded')),true);
-    await mobile.getByText('Zoom +',{exact:true}).click({force:true});
+    await mobile.locator('#btn-expanded-zoom-in').click();
     const zoomMetrics=await mobile.evaluate(() => {
       const tray=document.querySelector('#tray-stage');
       const photo=document.querySelector('#realistic-specimen-container');
