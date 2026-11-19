@@ -18,6 +18,22 @@ jobs:
       - name: Check anatomy plates and application JavaScript
         run: node --test tests/frog-smoke.test.cjs
 
+  browser-smoke:
+    name: Chromium interaction smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Exercise anatomy, specimen switching and quiz
+        run: node tests/browser-smoke.cjs
+
   build:
 
     runs-on: ubuntu-latest
