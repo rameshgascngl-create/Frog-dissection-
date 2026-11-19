@@ -7,7 +7,7 @@ Updated: 19 November 2026
 | Review ID | Layer/view | Repository asset | Anatomical points to verify | Image creator/source | Licence/permission | Hotspot positions | Status |
 |---|---|---|---|---|---|---|---|
 | FROG-P01 | External | `frog external.jpg` | Nares, eyes, tympana, fore-/hindlimbs, cloaca; vocal sac visibility and sex | Not recorded | Not verified | Provisional | HOLD |
-| FROG-P02 | Muscular | `frog muscle.jpg` | Pectoral region, rectus abdominis, linea alba, exposed limb muscles | Not recorded | Not verified | Provisional | HOLD |
+| FROG-P02 | Muscular | `frog muscle.jpg` | Pectoral region, rectus abdominis, linea alba, exposed limb muscles | Jenna Hellack, Fall 2000 (matching slide transcription; see below) | Not verified | Provisional | HOLD |
 | FROG-P03 | Visceral | `frog viscera.jpg` | Liver, gall bladder, stomach, intestine, lungs, heart, fat bodies; kidneys only if visible | Not recorded | Not verified | Provisional | HOLD |
 | FROG-P04 | Circulatory | `frog heart.jpg` | Both atria, single ventricle, conus/arterial outlet; only label systemic arches or portal vessels if actually visible | Not recorded | Not verified | Provisional | HOLD |
 | FROG-P05 | Male urogenital | `Internal deep male.avif` | Testes, kidneys, fat bodies, male urinogenital duct, urinary bladder; do not label an unseen brain | Not recorded | Not verified | Provisional | HOLD |
@@ -24,7 +24,7 @@ The following observations are grounded in inspection of the repository JPEG pla
 | FROG-P04 | A close-up image already printed with aortic arches, right/left atrium, truncus arteriosus, ventricle and lung labels | Improved provisional overlay positions using visual landmarks; withheld unsupported portal-venous hotspot | Verify organ targets against original pixels and avoid overlapping annotation arrows |
 | FROG-P03, P05, P06 | Full visual sign-off not completed in this checkpoint | Preserve provisional status and separate calibration/exports | Review source photograph pixels and confirm sex-specific visible structures |
 
-**Attribution evidence:** The muscular image contains the text "Jenna Hellack Fall 2000". This is a source-identification lead only, not proof of licence or redistribution rights.
+**Attribution evidence:** The muscular image contains the text "Jenna Hellack Fall 2000". I also located a matching slide transcription, [Frog Dissection — Jenna Hellack, Fall 2000](https://studyres.com/doc/8495744/frog-dissection---powerpoint-presentation), which explicitly includes "Frog ventral anterior muscles" and identifies pectoralis, rectus abdominis, linea alba and external oblique. This strengthens the creator/source attribution but **does not establish a reuse licence**. Obtain permission or replace with a licensed/original plate before public redistribution.
 
 **Image identity:** The Git blob SHA for `frog viscera.jpg` and `3840px-Frog_dissection,_5.jpg` is identical: `03e1bcc0172992cbc7df8e776cc9027185d0ddf4`. Do not count them as separate anatomical views.
 
