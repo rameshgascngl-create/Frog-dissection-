@@ -11,3 +11,11 @@ Native features implemented so far: Material 3 navigation, five anatomical layer
 To build locally: install Android SDK Platform 35 and build-tools 35.0.0, ensure Gradle 8.9 and JDK 17, copy the six named JPG/AVIF plates into `app/src/main/assets/`, then run `gradle :app:testDebugUnitTest :app:assembleDebug` from `native-android`.
 
 The branch-level GitHub Actions workflow is `.github/workflows/native-compose-apk.yml`.
+
+## Native mobile UI refinement — November 19, 2026
+
+Phone screenshots from the initial Compose QA build identified three usability defects: the oversized header at large font settings, clipped scrolling layer selectors and hotspot circles that obscured anatomical structures. The updated source uses a compact two-line app header, five permanently visible numbered layer controls, a selected-organ label, and small pixel-bounded hotspot markers. The specimen image is positioned before the abbreviated provisional-pin notice. The virtual practical-tool panel is collapsed initially and expands for action selection; image touches can update the selected tool state.
+
+**Lab integrity:** Scalpels and forceps in this QA build do not alter the underlying photo or expose deeper tissue. A virtual retraction changes marker status only, with explicit explanatory text. Do not describe this as a complete dissection simulator until functional tissue-removal/progression is separately implemented and accepted. All original anatomical notes and six photographs remain unchanged.
+
+**Verification:** Native Gradle JVM tests verify the retained corpus and marker-size bounds, and GitHub Actions compiles the Compose APK. Physical-device testing at normal and 200% system font, pinch-to-zoom, rotation and TalkBack still require screenshot/device acceptance.
