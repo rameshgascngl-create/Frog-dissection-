@@ -53,6 +53,22 @@ const server = http.createServer((req, res) => {
         hotspots:document.querySelectorAll('#calibrated-photo-hotspots .organ-hotspot').length
       }));
       capturedPlates.push({view:p.label, ...details, reviewStatus:'PROVISIONAL'});
+      if (p.layer === 1) {
+        assert.equal(await page.locator('#calibrated-photo-hotspots [data-organ="cloaca"]').count(), 0,
+          'side-view external photograph must not claim an exposed cloacal opening');
+        assert.equal(await page.locator('#calibrated-photo-hotspots [data-organ="vocal_sacs"]').count(), 0,
+          'unexposed vocal sac must not have a photographic hotspot');
+      }
+      if (p.layer === 2) {
+        assert.equal(await page.locator('#calibrated-photo-hotspots [data-organ="hindlimb_muscles"]').count(), 0,
+          'cropped muscle teaching plate must not suggest fully exposed deep hindlimb muscles');
+      }
+      if (p.layer === 4) {
+        assert.equal(await page.locator('#calibrated-photo-hotspots [data-organ="venous_system"]').count(), 0,
+          'heart close-up does not demonstrate the portal venous system');
+        assert.equal(await page.locator('#calibrated-photo-hotspots [data-organ="ventricle"]').count(), 1,
+          'ventricle must remain available');
+      }
       await page.locator('#realistic-specimen-container').screenshot({
         path:path.join(auditDir,p.label+'.png')
       });
