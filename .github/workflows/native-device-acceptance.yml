@@ -50,11 +50,10 @@ jobs:
           profile: pixel_4
           disable-animations: true
           script: |
-            cd native-android
             adb shell settings put system font_scale 1.0
-            gradle --no-daemon :app:connectedDebugAndroidTest
+            gradle --project-dir native-android --no-daemon :app:connectedDebugAndroidTest
             adb shell settings put system font_scale 2.0
-            gradle --no-daemon :app:connectedDebugAndroidTest
+            gradle --project-dir native-android --no-daemon :app:connectedDebugAndroidTest
       - name: Publish emulator reports
         if: always()
         uses: actions/upload-artifact@v4
