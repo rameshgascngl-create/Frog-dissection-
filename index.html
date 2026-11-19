@@ -694,7 +694,7 @@
             id="photo-specimen"
             src="frog viscera.jpg"
             class="custom-photo-layer"
-            alt="Real Frog Dissection Specimen"
+            alt="Dissected frog specimen photograph for the selected anatomical layer"
             onload="handlePrimaryPhotoLoad()"
             onerror="handlePrimaryPhotoError()"
           />
@@ -2079,9 +2079,19 @@
       const el = document.getElementById("calibration-review");
       if (!el) return;
       const plate = state.layer === 5 ? `Layer 5 (${state.sex})` : `Layer ${state.layer}`;
-      el.textContent = state.adjustedPlates[activePlateKey()]
+      const cautions = {
+        "1": "Lateral external view; cloaca and vocal sac are not labelled where not visible.",
+        "2": "Two-view muscle plate; deep hindlimb musculature is not exposed.",
+        "3": "Visceral plate; distinguish exposed organs from structures behind the viscera.",
+        "4": "Heart close-up; the image does not show the renal or portal venous system.",
+        "5_male": "Male urinogenital anatomy; confirm each structure against the photograph.",
+        "5_female": "Female anatomy; ovary and oviduct are distinct, and the oviduct pin begins unplaced."
+      };
+      const caution = cautions[activePlateKey()] || "";
+      el.textContent = (state.adjustedPlates[activePlateKey()]
         ? `${plate}: locally adjusted pins. Scientific accuracy still requires anatomical review.`
-        : `${plate}: provisional pin positions. Select Calibrate Pins and verify each visible organ against the photograph.`;
+        : `${plate}: provisional pin positions. Select Calibrate Pins and verify each visible organ against the photograph.`)
+        + (caution ? " " + caution : "");
     }
     function exportCalibrationJSON() {
       const payload = {
@@ -2282,6 +2292,14 @@
       if (bannerTag) bannerTag.textContent = `Layer ${state.layer}`;
       if (bannerFile) bannerFile.textContent = state.layer === 5 ? UROGENITAL_IMAGES[state.sex] : DEFAULT_LAYER_IMAGES[state.layer];
       if (attrFile) attrFile.textContent = expectedSrc.startsWith("data:image/") ? `Embedded Layer ${state.layer} Photo` : expectedSrc;
+      if (imgEl) imgEl.alt = state.layer === 5
+        ? `Frog ${state.sex} urogenital specimen photograph`
+        : ({
+          1: "Lateral external morphology of a frog",
+          2: "Ventral frog muscular anatomy teaching plate with two specimen views",
+          3: "Frog visceral anatomy photograph",
+          4: "Dissected frog heart with printed anatomical labels"
+        }[state.layer] || "Frog anatomical photograph");
       updateCalibrationReview();
 
       if (imgEl) {
