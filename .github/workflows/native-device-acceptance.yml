@@ -8,6 +8,10 @@ on:
       - '.github/workflows/native-device-acceptance.yml'
   workflow_dispatch:
 
+concurrency:
+  group: frog-native-emulator-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   emulator-qa:
     name: API ${{ matrix.api }} Compose UI at 100% and 200% fonts
