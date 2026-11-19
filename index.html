@@ -674,6 +674,7 @@
         <div style="display: flex; gap: 0.4rem; align-items: center;">
           <select id="calibrate-organ-select"></select>
           <button class="btn-sm" onclick="resetCalibratedCoords()">Reset Layer Pins</button>
+          <button class="btn-sm" id="btn-export-calibration" onclick="exportCalibrationJSON()" title="Export all male, female and five-layer pin coordinates for scientific review">Export Pin Data (JSON)</button>
           <button class="btn-sm btn-primary" onclick="toggleCalibrationMode()">Done</button>
         </div>
       </div>
@@ -2067,6 +2068,47 @@
         ? `${plate}: locally adjusted pins. Scientific accuracy still requires anatomical review.`
         : `${plate}: provisional pin positions. Select Calibrate Pins and verify each visible organ against the photograph.`;
     }
+    function exportCalibrationJSON() {
+      const payload = {
+        schema: "frog-dissection-calibration-v1",
+        generatedAt: new Date().toISOString(),
+        coordinateFrame: { width: 1000, height: 562, unit: "svg-viewBox" },
+        approvalStatus: "UNVERIFIED — requires plate-by-plate anatomical review",
+        images: {
+          "1": state.layerImages[1] || DEFAULT_LAYER_IMAGES[1],
+          "2": state.layerImages[2] || DEFAULT_LAYER_IMAGES[2],
+          "3": state.layerImages[3] || DEFAULT_LAYER_IMAGES[3],
+          "4": state.layerImages[4] || DEFAULT_LAYER_IMAGES[4],
+          "5_male": state.layerImages["5_male"] || UROGENITAL_IMAGES.male,
+          "5_female": state.layerImages["5_female"] || UROGENITAL_IMAGES.female
+        },
+        coordinates: {
+          "1": state.layerCoords[1],
+          "2": state.layerCoords[2],
+          "3": state.layerCoords[3],
+          "4": state.layerCoords[4],
+          "5_male": state.sexCoords.male,
+          "5_female": state.sexCoords.female
+        },
+        locallyAdjustedPlates: state.adjustedPlates
+      };
+      // Do not embed large uploaded images into the calibration manifest.
+      for (const key of Object.keys(payload.images)) {
+        if (String(payload.images[key]).startsWith("data:")) {
+          payload.images[key] = "user-uploaded data URL (not included)";
+        }
+      }
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {type: "application/json"});
+      const downloadUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = "frog-calibration-review.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+      showToast("Exported calibration data for six plates, including separate male and female coordinates. Anatomical approval is still required.");
+    }
     function getActiveLayerCoords() {
       return state.layer === 5 ? state.sexCoords[state.sex] :
         (state.layerCoords[state.layer] || state.layerCoords[3]);
@@ -2304,11 +2346,24 @@
     function applyCustomSpecimenFile(file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-        state.layerImages[state.layer === 5 ? "5_" + state.sex : state.layer] = e.target.result;
+        const key = activePlateKey();
+        state.layerImages[key] = e.target.result;
+        // Coordinates from the previous photo must never be treated as aligned
+        // with a newly uploaded specimen.
+        if (state.layer === 5) {
+          state.sexCoords[state.sex] = JSON.parse(JSON.stringify(DEFAULT_SEX_COORDS[state.sex]));
+        } else {
+          state.layerCoords[state.layer] = JSON.parse(JSON.stringify(DEFAULT_LAYER_COORDS[state.layer]));
+        }
+        delete state.adjustedPlates[key];
+        saveLayerCoordsToStorage();
+        try { localStorage.setItem("frog_adjusted_plates_v1", JSON.stringify(state.adjustedPlates)); } catch (e) {}
         saveLayerImagesToStorage();
+        updateCalibrationReview();
         setSpecimenMode("realistic");
         loadActiveLayerImage();
-        showToast(`Loaded <strong>${file.name}</strong> into <strong>Layer ${state.layer}</strong> — use <strong>Calibrate Pins</strong> to align hotspots, then <strong>Export Single-File HTML</strong>.`);
+        renderCalibratedHotspots();
+        showToast(`Loaded <strong>${file.name}</strong> into <strong>Layer ${state.layer}</strong>. Previous pin alignment for this plate has been reset. Calibrate against the new image, then export its coordinate JSON for review.`);
       };
       reader.readAsDataURL(file);
     }
