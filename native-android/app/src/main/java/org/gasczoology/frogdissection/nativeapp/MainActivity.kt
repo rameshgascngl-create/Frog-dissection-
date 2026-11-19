@@ -237,13 +237,23 @@ private fun NativeFrogLab() {
                         pins = visiblePins(corpus, layer, female, overrides),
                         selectedKey = selectedKey,
                         isCalibrating = calibrating,
-                        onTap = { key -> selectedKey = key },
+                        onTap = { key ->
+                            selectedKey = key
+                            if (!calibrating) {
+                                when (tool) {
+                                    "Pin" -> pinned = true
+                                    "Scalpel" -> incised = true
+                                    "Forceps" -> if (key !in retracted) retracted.add(key)
+                                }
+                            }
+                        },
                         onCalibrate = { pos ->
                             val code = corpus.viewKey(layer, female) + ":" + selectedKey
                             overrides[code] = pos
                             persistOverrides(prefs, overrides)
                             calibrating = false
-                        }
+                        },
+                        retractedKeys = retracted.toSet()
                     )
                 }
                 item {
@@ -401,7 +411,8 @@ private fun AnatomyPlate(
     selectedKey: String,
     isCalibrating: Boolean,
     onTap: (String) -> Unit,
-    onCalibrate: (Offset) -> Unit
+    onCalibrate: (Offset) -> Unit,
+    retractedKeys: Set<String> = emptySet()
 ) {
     val context = LocalContext.current
     val bitmap = remember(imageName) { readImage(context, imageName) }
@@ -469,12 +480,17 @@ private fun AnatomyPlate(
                     for (point in pins) {
                         val at = Offset(point.x * scaleX, point.y * scaleY)
                         val selected = point.key == selectedKey
-                        val paint = if (selected) Amber else Sea
-                        val ring = if (selected) 16.dp.toPx() else 12.dp.toPx()
-                        drawCircle(Color.Black.copy(alpha = 0.6f), ring + 2.dp.toPx(), at)
-                        drawCircle(paint.copy(alpha = .22f), ring, at)
-                        drawCircle(paint, ring, at, style = Stroke(width = 2.2.dp.toPx()))
-                        drawCircle(paint, 3.5.dp.toPx(), at)
+                        val retracted = point.key in retractedKeys
+                        // Markers must not hide organs or the photographs' original labels.
+                        // Keep unselected points tiny and only ring the selected structure.
+                        val radius = markerRadiusPx(size.minDimension, selected)
+                        val paint = if (retracted) Muted else if (selected) Amber else Sea
+                        drawCircle(Color.Black.copy(alpha = 0.68f), radius + 1.5.dp.toPx(), at)
+                        if (selected) {
+                            drawCircle(paint.copy(alpha = 0.14f), radius + 2.dp.toPx(), at)
+                            drawCircle(paint, radius, at, style = Stroke(width = 1.4.dp.toPx()))
+                        }
+                        drawCircle(paint, if (selected) radius * .44f else radius, at)
                     }
                 }
             }
@@ -484,11 +500,17 @@ private fun AnatomyPlate(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Native photo · " + bitmap.width + "×" + bitmap.height,
-                color = Muted, fontSize = 11.sp)
+            Text("Photo · " + pins.size + " markers",
+                modifier = Modifier.weight(1f),
+                color = Muted, fontSize = 10.sp,
+                maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = { zoom = (zoom + .5f).coerceAtMost(5f) }) { Text("Zoom +") }
-                TextButton(onClick = { zoom = 1f; pan = Offset.Zero }) { Text("Reset") }
+                TextButton(onClick = { zoom = (zoom + .5f).coerceAtMost(5f) }) {
+                    Text("Zoom +", fontSize = 11.sp, maxLines = 1)
+                }
+                TextButton(onClick = { zoom = 1f; pan = Offset.Zero }) {
+                    Text("Reset", fontSize = 11.sp, maxLines = 1)
+                }
             }
         }
     }
