@@ -138,6 +138,7 @@ private fun NativeFrogLab() {
     var step by remember { mutableIntStateOf(2) }
     var pinned by remember { mutableStateOf(false) }
     var incised by remember { mutableStateOf(false) }
+    var exerciseExpanded by remember { mutableStateOf(false) }
     val retracted = remember { mutableStateListOf<String>() }
     val selectLayer: (Int) -> Unit = { number ->
         layer = number
@@ -257,11 +258,8 @@ private fun NativeFrogLab() {
                     )
                 }
                 item {
-                    Text(
-                        "Select an organ below, then tap its marker on the photograph. " +
-                            "Use two fingers to magnify and pan.",
-                        fontSize = 12.sp, color = Muted
-                    )
+                    Text("Tap a marker or choose an organ below. Pinch to zoom.",
+                        fontSize = 11.sp, color = Muted, maxLines = 2)
                     Spacer(Modifier.height(6.dp))
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         val candidates = corpus.organsForLayer(layer, female)
@@ -300,43 +298,59 @@ private fun NativeFrogLab() {
                 }
                 item {
                     ElevatedCard {
-                        Column(Modifier.fillMaxWidth().padding(13.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("Native dissection exercise", fontWeight = FontWeight.Bold, color = Sea)
-                            Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                                listOf("Pin", "Scalpel", "Forceps", "Probe").forEach { item ->
-                                    FilterChip(
-                                        selected = tool == item, onClick = { tool = item },
-                                        label = { Text(item, fontSize = 11.sp) }
-                                    )
+                        Column(Modifier.fillMaxWidth().padding(11.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Column(Modifier.weight(1f)) {
+                                    Text("Virtual practical tools", color = Sea,
+                                        fontSize = 14.sp, fontWeight = FontWeight.Bold,
+                                        maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text("Pin · Scalpel · Forceps · Probe",
+                                        fontSize = 10.sp, color = Muted, maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis)
+                                }
+                                TextButton(onClick = { exerciseExpanded = !exerciseExpanded }) {
+                                    Text(if (exerciseExpanded) "Hide" else "Open", fontSize = 11.sp)
                                 }
                             }
-                            Button(onClick = {
-                                when (tool) {
-                                    "Pin" -> pinned = true
-                                    "Scalpel" -> incised = true
-                                    "Forceps" -> if (selectedKey.isNotBlank() && !retracted.contains(selectedKey))
-                                        retracted.add(selectedKey)
-                                    else -> Unit
+                            Text("Pins: " + (if (pinned) "placed" else "—") +
+                                " · Incision: " + (if (incised) "marked" else "—") +
+                                " · Retracted markers: " + retracted.size,
+                                color = Muted, fontSize = 11.sp, maxLines = 2)
+                            if (exerciseExpanded) {
+                                LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    items(listOf("Pin", "Scalpel", "Forceps", "Probe")) { item ->
+                                        FilterChip(
+                                            selected = tool == item,
+                                            onClick = { tool = item },
+                                            label = { Text(item, fontSize = 11.sp) }
+                                        )
+                                    }
                                 }
-                            }) {
-                                Text(when (tool) {
-                                    "Pin" -> "Position specimen pins"
-                                    "Scalpel" -> "Record virtual incision"
-                                    "Forceps" -> "Retract selected organ"
-                                    else -> "Inspect selected organ"
-                                })
-                            }
-                            Text(
-                                "Pins: " + (if (pinned) "placed" else "not placed") +
-                                    " · Incision: " + (if (incised) "recorded" else "not recorded") +
-                                    " · Retracted: " + retracted.size,
-                                color = Muted, fontSize = 12.sp
-                            )
-                            Text("Exercise controls update native state; the source photograph is not modified.",
-                                color = Muted, fontSize = 11.sp)
-                            TextButton(onClick = { pinned = false; incised = false; retracted.clear() }) {
-                                Text("Reset exercise")
+                                Button(onClick = {
+                                    when (tool) {
+                                        "Pin" -> pinned = true
+                                        "Scalpel" -> incised = true
+                                        "Forceps" -> if (selectedKey.isNotBlank() &&
+                                            selectedKey !in retracted) retracted.add(selectedKey)
+                                    }
+                                }) {
+                                    Text(when (tool) {
+                                        "Pin" -> "Place virtual pins"
+                                        "Scalpel" -> "Record virtual incision"
+                                        "Forceps" -> "Retract selected marker"
+                                        else -> "Inspect selected organ"
+                                    }, fontSize = 12.sp, maxLines = 2)
+                                }
+                                Text("Tap a photo marker to use the chosen tool. " +
+                                    "Retraction changes marker status, not the underlying specimen photo.",
+                                    color = Muted, fontSize = 11.sp, lineHeight = 15.sp)
+                                TextButton(onClick = {
+                                    pinned = false
+                                    incised = false
+                                    retracted.clear()
+                                    tool = "Probe"
+                                }) { Text("Reset virtual exercise", fontSize = 11.sp) }
                             }
                         }
                     }
@@ -347,7 +361,7 @@ private fun NativeFrogLab() {
                         Column(Modifier.padding(13.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text("GUIDED LAB PROTOCOL · " + (step + 1) + "/" + corpus.steps.size,
                                 fontSize = 12.sp, color = Amber, fontWeight = FontWeight.Bold)
-                            Text(current.instruction, fontSize = 14.sp, lineHeight = 21.sp)
+                            Text(current.instruction, fontSize = 12.sp, lineHeight = 19.sp)
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 OutlinedButton(onClick = { selectStep(step - 1) }, enabled = step > 0) {
                                     Text("Previous")
