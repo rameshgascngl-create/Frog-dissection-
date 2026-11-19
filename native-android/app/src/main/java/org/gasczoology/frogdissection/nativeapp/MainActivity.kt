@@ -129,18 +129,19 @@ private fun NativeFrogLab() {
     val prefs = remember { context.getSharedPreferences("native_frog_lab", Context.MODE_PRIVATE) }
     val overrides = remember { readOverrides(prefs) }
 
-    var tab by remember { mutableIntStateOf(0) }
-    var layer by remember { mutableIntStateOf(3) }
-    var female by remember { mutableStateOf(false) }
-    var selectedKey by remember { mutableStateOf("liver") }
-    var tool by remember { mutableStateOf("Probe") }
-    var calibrating by remember { mutableStateOf(false) }
-    var showTamil by remember { mutableStateOf(true) }
-    var step by remember { mutableIntStateOf(2) }
-    var pinned by remember { mutableStateOf(false) }
-    var incised by remember { mutableStateOf(false) }
-    var exerciseExpanded by remember { mutableStateOf(false) }
+    var tab by rememberSaveable { mutableIntStateOf(0) }
+    var layer by rememberSaveable { mutableIntStateOf(3) }
+    var female by rememberSaveable { mutableStateOf(false) }
+    var selectedKey by rememberSaveable { mutableStateOf("liver") }
+    var tool by rememberSaveable { mutableStateOf("Probe") }
+    var calibrating by rememberSaveable { mutableStateOf(false) }
+    var showTamil by rememberSaveable { mutableStateOf(true) }
+    var step by rememberSaveable { mutableIntStateOf(2) }
+    var pinned by rememberSaveable { mutableStateOf(false) }
+    var incised by rememberSaveable { mutableStateOf(false) }
+    var exerciseExpanded by rememberSaveable { mutableStateOf(false) }
     val retracted = remember { mutableStateListOf<String>() }
+    var showPrivacy by rememberSaveable { mutableStateOf(false) }
     val selectLayer: (Int) -> Unit = { number ->
         layer = number
         selectedKey = corpus.organsForLayer(number, female).firstOrNull()?.key ?: ""
@@ -151,6 +152,20 @@ private fun NativeFrogLab() {
         val guided = corpus.steps[step]
         selectLayer(guided.layer)
         tool = guided.tool.replaceFirstChar { it.uppercase() }
+    }
+
+    if (showPrivacy) {
+        AlertDialog(
+            onDismissRequest = { showPrivacy = false },
+            title = { Text("Privacy and scientific status") },
+            text = {
+                Text(PRIVACY_DISCLOSURE.trimIndent(),
+                    fontSize = 12.sp, lineHeight = 18.sp)
+            },
+            confirmButton = {
+                TextButton(onClick = { showPrivacy = false }) { Text("Close") }
+            }
+        )
     }
 
     Scaffold(
@@ -389,14 +404,18 @@ private fun NativeFrogLab() {
                     }
                 }
                 item {
-                    Text("Scientific review pending for some photographic pin positions and image licences.",
+                    Text("Scientific review pending for photographic marker positions and image licences.",
                         color = Muted, fontSize = 11.sp)
+                    TextButton(onClick = { showPrivacy = true }) {
+                        Text("Privacy and local data", fontSize = 12.sp)
+                    }
                 }
             }
             1 -> QuizScreen(corpus, Modifier.padding(contentPadding))
             else -> GlossaryScreen(corpus, showTamil, Modifier.padding(contentPadding)) {
                 selectedKey = it.key
                 layer = it.layer
+                if (it.key == "oviducts") female = true
                 tab = 0
             }
         }
