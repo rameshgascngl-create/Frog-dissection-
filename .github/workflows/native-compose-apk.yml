@@ -11,6 +11,10 @@ on:
       - '*.avif'
   workflow_dispatch:
 
+concurrency:
+  group: frog-native-build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   native-compose-qa:
     name: Build and test native Compose APK
@@ -27,7 +31,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.13'
-      - name: Ensure Android SDK 35
+      - name: Ensure Android SDK 36
         run: |
           set -euo pipefail
           SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | head -n 1)"
@@ -54,9 +58,21 @@ jobs:
                   assert (d/item['femaleImage']).is_file()
           print('Native corpus and six offline plates verified')
           PY
-      - name: Native JVM unit tests
+      - name: Native JVM unit tests (bounded transient-network retry)
         working-directory: native-android
-        run: gradle --no-daemon --stacktrace :app:testDebugUnitTest
+        shell: bash
+        run: |
+          set -o pipefail
+          for attempt in 1 2 3; do
+            if gradle --no-daemon --stacktrace :app:testDebugUnitTest 2>&1 | tee /tmp/frog-gradle-test.log; then
+              exit 0
+            fi
+            if ! grep -Eq 'status code 429|Too Many Requests|status code 502|status code 503|status code 504' /tmp/frog-gradle-test.log; then
+              exit 1
+            fi
+            if [ "$attempt" -eq 3 ]; then exit 1; fi
+            sleep "$((attempt * 15))"
+          done
       - name: Compile Compose Android instrumentation tests
         working-directory: native-android
         run: gradle --no-daemon --stacktrace :app:assembleDebugAndroidTest
