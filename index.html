@@ -668,7 +668,7 @@
       <!-- PHOTO HELPER BANNER (SHOWN ONLY IF LAYER IMAGE FILE NOT FOUND YET) -->
       <div class="photo-helper-banner" id="photo-helper-banner">
         <span>
-          Showing procedural plate for <strong id="banner-layer-tag">Layer 3</strong>. Upload <code id="banner-expected-file">frog-viscera.jpg</code> to your GitHub folder or click <strong>Upload Plate Photo</strong> above.
+          Showing procedural plate for <strong id="banner-layer-tag">Layer 3</strong>. Upload <code id="banner-expected-file">frog viscera.jpg</code> to your GitHub folder or click <strong>Upload Plate Photo</strong> above.
         </span>
         <button class="btn-sm" onclick="dismissPhotoBanner()">Dismiss</button>
       </div>
@@ -678,7 +678,7 @@
         <div id="realistic-specimen-container" ondragover="handleSpecimenDragOver(event)" ondrop="handleSpecimenDrop(event)">
           <img
             id="photo-specimen"
-            src="frog-viscera.jpg"
+            src="frog viscera.jpg"
             class="custom-photo-layer"
             alt="Real Frog Dissection Specimen"
             onload="handlePrimaryPhotoLoad()"
@@ -1032,7 +1032,7 @@
       </div>
 
       <div class="photo-attribution" id="photo-attribution">
-        Active Layer Image: <code id="attr-filename">frog-viscera.jpg</code> • Use <strong>Calibrate Pins</strong> if aligning a custom lab specimen photo.
+        Active Layer Image: <code id="attr-filename">frog viscera.jpg</code> • Use <strong>Calibrate Pins</strong> if aligning a custom lab specimen photo.
       </div>
     </section>
 
@@ -1104,7 +1104,7 @@
 
         <div class="tray-container" style="min-height: 410px;">
           <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid #475569;">
-            <img id="quiz-photo-specimen" src="frog-viscera.jpg" class="custom-photo-layer" alt="Spotter Specimen" onerror="this.style.display='none'" onload="this.classList.add('visible')" />
+            <img id="quiz-photo-specimen" src="frog viscera.jpg" class="custom-photo-layer" alt="Spotter Specimen" onerror="this.style.display='none'" onload="this.classList.add('visible')" />
             <svg viewBox="0 0 1000 562" preserveAspectRatio="xMidYMid meet" style="position: relative; z-index: 2; width: 100%; height: 100%; display: block;">
               <use id="quiz-fallback-use" href="#procedural-realistic-layer" />
               <g id="quiz-spotter-hotspots"></g>
@@ -1982,7 +1982,12 @@
       try {
         const raw = localStorage.getItem("frog_dissection_layer_images_v2");
         if (raw) {
-          return Object.assign({}, DEFAULT_LAYER_IMAGES, JSON.parse(raw));
+          const saved = JSON.parse(raw);
+          const outdated = {1:"frog-external.jpg",2:"frog-muscular.jpg",3:"frog-viscera.jpg",4:"frog-circulatory.jpg",5:"frog-urogenital.jpg"};
+          for (const layer of Object.keys(outdated)) {
+            if (saved[layer] === outdated[layer]) delete saved[layer];
+          }
+          return Object.assign({}, DEFAULT_LAYER_IMAGES, saved);
         }
       } catch (e) {}
       return Object.assign({}, DEFAULT_LAYER_IMAGES);
@@ -2097,7 +2102,7 @@
       const sel = document.getElementById("calibrate-organ-select");
       const labelEl = document.getElementById("cal-layer-label");
       if (!sel) return;
-      if (labelEl) labelEl.textContent = `Layer ${state.layer}`;
+      if (labelEl) labelEl.textContent = state.layer === 5 ? `Layer 5 — ${state.sex === "male" ? "Male" : "Female"}` : `Layer ${state.layer}`;
       const prevVal = sel.value;
       sel.innerHTML = "";
       const activeCoords = getActiveLayerCoords();
@@ -2295,7 +2300,7 @@
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-      showToast("Exported <strong>index.html</strong> with all layer photos and calibrated pin positions permanently embedded!");
+      showToast("Exported <strong>index.html</strong>. Keep repository photos alongside it unless each photo was uploaded as embedded data; verify the exported image paths.");
     }
 
     function setSpecimenMode(mode) {
@@ -2521,9 +2526,12 @@
       document.getElementById("male-gonads").style.display = state.sex === "male" ? "block" : "none";
       document.getElementById("female-gonads").style.display = state.sex === "female" ? "block" : "none";
 
-      if (state.layer === 5 && state.specimenMode === "realistic") {
-        loadActiveLayerImage();
-        renderCalibratedHotspots();
+      if (state.layer === 5) {
+        if (state.specimenMode === "realistic") {
+          loadActiveLayerImage();
+          renderCalibratedHotspots();
+        }
+        renderLayerChips();
       }
       showToast(`Switched specimen to <strong>${state.sex.toUpperCase()}</strong> anatomy. Calibrate anatomical pins for each photograph.`);
       if (state.selectedOrgan === "gonads" || state.selectedOrgan === "vocal_sacs") {
@@ -2625,12 +2633,13 @@
       });
 
       document.getElementById("insp-system").textContent = data.system;
-      document.getElementById("insp-name").textContent = data.name;
+      const sexGonad = key === "gonads" && state.layer === 5;
+      document.getElementById("insp-name").textContent = sexGonad ? (state.sex === "male" ? "Testes" : "Ovaries and Oviducts") : data.name;
       const tamilEl = document.getElementById("insp-tamil");
-      tamilEl.textContent = data.tamil;
+      tamilEl.textContent = sexGonad ? (state.sex === "male" ? "விந்தகங்கள்" : "அண்டகங்கள் மற்றும் அண்டநாளங்கள்") : data.tamil;
       tamilEl.style.display = state.bilingual ? "block" : "none";
 
-      document.getElementById("insp-latin").textContent = data.latin;
+      document.getElementById("insp-latin").textContent = sexGonad ? (state.sex === "male" ? "Testis" : "Ovarium et Oviductus") : data.latin;
       document.getElementById("insp-morphology").textContent = data.morphology;
       document.getElementById("insp-function").textContent = data.function;
       document.getElementById("insp-viva").textContent = data.viva;
@@ -2652,7 +2661,7 @@
           const btn = document.createElement("button");
           btn.className = "organ-chip" + (key === state.selectedOrgan ? " active" : "");
           btn.setAttribute("data-key", key);
-          btn.textContent = val.name.split("(")[0].trim();
+          btn.textContent = key === "gonads" && state.layer === 5 ? (state.sex === "male" ? "Testes" : "Ovaries & Oviducts") : val.name.split("(")[0].trim();
           btn.onclick = () => {
             if (state.specimenMode === "realistic") inspectRealisticOrgan(key);
             else inspectOrgan(key);
