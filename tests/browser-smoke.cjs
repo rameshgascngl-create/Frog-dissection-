@@ -30,6 +30,50 @@ const server = http.createServer((req, res) => {
   try {
     await page.goto('http://127.0.0.1:' + port, {waitUntil: 'load'});
     await page.locator('#tab-dissection').waitFor();
+    // Collect reviewable visual evidence without claiming organ coordinates are approved.
+    const auditDir = path.join(root, 'qa-evidence');
+    fs.mkdirSync(auditDir, {recursive:true});
+    const plateCases = [
+      {layer:1, label:'01-external', file:'frog external.jpg'},
+      {layer:2, label:'02-muscular', file:'frog muscle.jpg'},
+      {layer:3, label:'03-viscera', file:'frog viscera.jpg'},
+      {layer:4, label:'04-circulatory', file:'frog heart.jpg'},
+      {layer:5, label:'05-urogenital-male', file:'Internal deep male.avif'}
+    ];
+    const capturedPlates = [];
+    for (const p of plateCases) {
+      await page.locator('#layer-btn-' + p.layer).click();
+      await page.waitForFunction((file) => {
+        const img = document.querySelector('#photo-specimen');
+        return img?.getAttribute('src') === file && img.complete && img.naturalWidth > 0;
+      }, p.file, {timeout:15000});
+      const details = await page.locator('#photo-specimen').evaluate(img => ({
+        width:img.naturalWidth,height:img.naturalHeight,
+        src:img.getAttribute('src'),
+        hotspots:document.querySelectorAll('#calibrated-photo-hotspots .organ-hotspot').length
+      }));
+      capturedPlates.push({view:p.label, ...details, reviewStatus:'PROVISIONAL'});
+      await page.locator('#realistic-specimen-container').screenshot({
+        path:path.join(auditDir,p.label+'.png')
+      });
+    }
+    await page.locator('#btn-toggle-sex').click();
+    await page.waitForFunction(() => {
+      const img = document.querySelector('#photo-specimen');
+      return img?.getAttribute('src') === 'Internal deep female.avif' && img.complete && img.naturalWidth > 0;
+    });
+    const femaleDetails = await page.locator('#photo-specimen').evaluate(img => ({
+      width:img.naturalWidth,height:img.naturalHeight,
+      src:img.getAttribute('src'),
+      hotspots:document.querySelectorAll('#calibrated-photo-hotspots .organ-hotspot').length
+    }));
+    capturedPlates.push({view:'06-urogenital-female',...femaleDetails,reviewStatus:'PROVISIONAL'});
+    await page.locator('#realistic-specimen-container').screenshot({
+      path:path.join(auditDir,'06-urogenital-female.png')
+    });
+    fs.writeFileSync(path.join(auditDir,'plate-index.json'), JSON.stringify(capturedPlates,null,2));
+    assert.equal(capturedPlates.length,6);
+    await page.locator('#btn-toggle-sex').click();
     await page.locator('#layer-btn-5').click();
     const photo = page.locator('#photo-specimen');
     async function assertPlate(sex, file) {
