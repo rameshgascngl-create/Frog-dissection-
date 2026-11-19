@@ -2365,6 +2365,33 @@
 
       populateCalibrationDropdown();
       renderRealisticLabels();
+      renderMobileAnatomyKey();
+    }
+
+    function renderMobileAnatomyKey() {
+      const container = document.getElementById("mobile-anatomy-key");
+      if (!container) return;
+      container.replaceChildren();
+      const header = document.createElement("div");
+      header.className = "mobile-key-heading";
+      header.textContent = "TAP A STRUCTURE FOR ANATOMY NOTES";
+      container.appendChild(header);
+      Object.entries(getActiveLayerCoords()).forEach(([key, point]) => {
+        if (point.unplaced || state.removedOrgans.has(key) || !ORGAN_DB[key]) return;
+        const button = document.createElement("button");
+        button.type = "button";
+        button.setAttribute("data-mobile-organ", key);
+        button.classList.toggle("active", state.selectedOrgan === key);
+        button.textContent = point.label;
+        button.onclick = () => {
+          if (state.isCalibrating) return;
+          inspectRealisticOrgan(key);
+          if (window.matchMedia("(max-width: 700px)").matches) {
+            document.querySelector(".inspector-column").scrollIntoView({behavior:"smooth",block:"start"});
+          }
+        };
+        container.appendChild(button);
+      });
     }
 
     function populateCalibrationDropdown() {
@@ -2627,6 +2654,8 @@
       document.getElementById("btn-view-ventral").style.display = isRealistic ? "none" : "inline-block";
       document.getElementById("btn-view-dorsal").style.display = isRealistic ? "none" : "inline-block";
       document.getElementById("btn-toggle-sex").style.display = (!isRealistic || state.layer === 5) ? "inline-block" : "none";
+      document.getElementById("mobile-anatomy-key").style.display =
+        isRealistic && window.matchMedia("(max-width: 700px)").matches ? "grid" : "none";
 
       document.getElementById("btn-toggle-labels").textContent = isRealistic
         ? (state.showLabels ? "Digital Pins: ON" : "Digital Pins: OFF")
@@ -2653,6 +2682,9 @@
         const selected = el.getAttribute("data-organ") === key;
         el.classList.toggle("selected", selected);
         el.setAttribute("aria-pressed", String(selected));
+      });
+      document.querySelectorAll("#mobile-anatomy-key [data-mobile-organ]").forEach(el => {
+        el.classList.toggle("active", el.getAttribute("data-mobile-organ") === key);
       });
       inspectOrgan(key);
     }
@@ -2784,6 +2816,24 @@
       for (let i = 1; i <= 5; i++) {
         document.getElementById(`layer-btn-${i}`).classList.toggle("active", i === layerNum);
       }
+      const layerNames = {
+        1: "External morphology", 2: "Muscular system",
+        3: "Digestive and respiratory", 4: "Circulatory system",
+        5: "Urogenital and nervous"
+      };
+      const mobileCaption = document.getElementById("mobile-layer-caption");
+      if (mobileCaption) mobileCaption.textContent = `Layer ${layerNum}: ${layerNames[layerNum]}`;
+      document.querySelectorAll("[data-mobile-layer]").forEach(button => {
+        const active = Number(button.getAttribute("data-mobile-layer")) === layerNum;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-current", active ? "step" : "false");
+      });
+      if (window.matchMedia("(max-width: 700px)").matches) {
+        const tray = document.getElementById("realistic-specimen-container");
+        tray.style.width = "100%";
+        tray.style.transform = "none";
+        state.zoom = 1;
+      }
 
       const firstOrgan = Object.keys(ORGAN_DB).find(k => ORGAN_DB[k].layer === layerNum);
       if (firstOrgan) inspectOrgan(firstOrgan);
@@ -2846,9 +2896,24 @@
       }
     }
 
+    function togglePlateFullscreen() {
+      const tray = document.getElementById("tray-stage");
+      const expanded = tray.classList.toggle("plate-expanded");
+      document.getElementById("btn-expand-plate").textContent = expanded ? "✕ Close Plate" : "⛶ Enlarge Plate";
+      document.body.style.overflow = expanded ? "hidden" : "";
+    }
+
     function adjustZoom(delta) {
-      state.zoom = Math.min(1.5, Math.max(0.8, +(state.zoom + delta).toFixed(2)));
-      document.getElementById("realistic-specimen-container").style.transform = `scale(${state.zoom})`;
+      const mobile = window.matchMedia("(max-width: 700px)").matches;
+      state.zoom = Math.min(mobile ? 3 : 1.5, Math.max(0.8, +(state.zoom + delta).toFixed(2)));
+      const photo = document.getElementById("realistic-specimen-container");
+      if (mobile) {
+        photo.style.width = `${Math.round(state.zoom * 100)}%`;
+        photo.style.transform = "none";
+      } else {
+        photo.style.width = "100%";
+        photo.style.transform = `scale(${state.zoom})`;
+      }
       document.getElementById("vector-diagram-svg").style.transform = `scale(${state.zoom})`;
     }
 
@@ -2857,9 +2922,11 @@
       state.isIncised = false;
       state.removedOrgans.clear();
       state.zoom = 1;
+      if (document.getElementById("tray-stage").classList.contains("plate-expanded")) togglePlateFullscreen();
       state.stepIndex = 2;
 
       document.getElementById("realistic-specimen-container").style.transform = "scale(1)";
+      document.getElementById("realistic-specimen-container").style.width = "100%";
       document.getElementById("vector-diagram-svg").style.transform = "scale(1)";
       document.getElementById("limb-pins").style.display = "none";
       document.getElementById("scalpel-incision-guide").style.display = "block";
