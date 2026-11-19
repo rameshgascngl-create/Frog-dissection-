@@ -67,6 +67,17 @@ Canvas-drawn pins did not have individual TalkBack actions in v2.0.3; the native
 
 The new QA candidate retains original unapproved source coordinates and six educational photographs. **No scientific or copyright sign-off is implied** by accessibility test success.
 
+## Native accessibility checkpoint (v2.0.4)
+
+- **Feature source:** commit `73a4a29bede418691a0dacb0a6cee8d335f313c1`.
+- **Successful CI build:** [workflow #44493964374](https://github.com/rameshgascngl-create/Frog-dissection-/actions/runs/44493964374), which passed JVM tests, Compose instrumentation-test compilation, debug APK packaging and verification.
+- **Downloadable QA APK:** [artifact #14513318975](https://github.com/rameshgascngl-create/Frog-dissection-/actions/runs/44493964374/artifacts/14513318975).
+- **APK SHA-256:** `01151c8e3039ecdae4ed428c9817bfa09577e755d7f6362d18c2fb0906e44a0c`.
+- **Changes:** photographed organ markers are exposed as named native accessibility actions; pin calibration has four directional step buttons; virtual forceps state is saved across rotation.
+- **CI hardening since the APK build:** workflow-level concurrency cancels obsolete runs; bounded retries occur only on HTTP 429/502/503/504 dependency failures, not on failed app assertions.
+- **Emulator status for newest accessibility tests:** API 34/36 matrix is independent and must finish successfully before reporting v2.0.4 runtime acceptance.
+- **Scientific limitations:** custom actions expose existing **provisional** coordinates; they do not constitute new photographic verification. Existing image licences remain unresolved except for a strong CC0 match for the visceral plate documented in `docs/native-image-rights-register-20261119.md`.
+
 ## Release gates remaining
 
 1. Achieve SUCCESS on exact-commit JVM, APK and instrumentation compilation and **API 34 plus API 36** emulators at both font scales, then verify on the user's actual Android device.
