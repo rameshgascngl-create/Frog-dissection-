@@ -1,0 +1,1022 @@
+{
+  "source": "index.html — native migration snapshot",
+  "sourceBlobSha": "fde00bc7808488ba7364a3c3c795946ee8865b27",
+  "review": "Hotspots provisional pending anatomical sign-off",
+  "layers": [
+    {
+      "id": 1,
+      "title": "External Morphology",
+      "image": "frog external.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Muscular System",
+      "image": "frog muscle.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Digestive & Respiratory",
+      "image": "frog viscera.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Circulatory System",
+      "image": "frog heart.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Urogenital & Nervous",
+      "image": "Internal deep male.avif",
+      "femaleImage": "Internal deep female.avif"
+    }
+  ],
+  "organs": {
+    "external_nares": {
+      "layer": 1,
+      "system": "External Morphology",
+      "name": "External Nares (Nostrils)",
+      "tamil": "புற நாசித்துளைகள்",
+      "latin": "Apertura nasalis externa",
+      "morphology": "A pair of small dorsal openings situated near the anterior tip of the triangular snout, guarded by internal nasal valves.",
+      "function": "Allows air to enter and exit the buccopharyngeal cavity during pulmonary and buccopharyngeal respiration while keeping eyes and nares above water.",
+      "viva": "During inspiration, the frog lowers the floor of its mouth with glottis closed to draw air through the nares, then closes the nares and raises the floor to force air into the lungs."
+    },
+    "eyes": {
+      "layer": 1,
+      "system": "External Morphology",
+      "name": "Bulging Eyes & Nictitating Membrane",
+      "tamil": "கண்கள் மற்றும் கண் இமைப்படலம்",
+      "latin": "Oculus & Membrana nictitans",
+      "morphology": "Large, dorsolaterally placed spherical eyes with a fixed upper eyelid and a transparent, movable third eyelid (nictitating membrane) arising from the lower lid.",
+      "function": "Provides wide-angle vision; the nictitating membrane protects and moistens the cornea underwater.",
+      "viva": "Retraction of the eyeballs into the roof of the buccal cavity also assists in pushing swallowed prey down the esophagus!"
+    },
+    "tympanum": {
+      "layer": 1,
+      "system": "External Morphology",
+      "name": "Tympanum (Ear Drum)",
+      "tamil": "செவிப்பறைச் சவ்வு",
+      "latin": "Membrana tympani",
+      "morphology": "A prominent circular, tightly stretched dark patch of skin located immediately behind each eye. Frogs lack external pinnae.",
+      "function": "Receives airborne sound waves and transmits vibrations via a single rod-like middle ear bone (columella auris) to the inner ear.",
+      "viva": "In male bullfrogs, the diameter of the tympanum is noticeably larger than the eye; in females, it is equal to or smaller than the eye."
+    },
+    "vocal_sacs": {
+      "layer": 1,
+      "system": "External Morphology (Sexual Dimorphism)",
+      "name": "Paired Vocal Sacs",
+      "tamil": "குரல் பைகள்",
+      "latin": "Saccus vocalis",
+      "morphology": "A pair of extensible, bluish-wrinkled skin pouches located ventrolaterally beneath the lower jaw (present exclusively in male frogs).",
+      "function": "Acts as acoustic resonating chambers to amplify mating croaks during the monsoon breeding season.",
+      "viva": "Vocal sacs open into the floor of the buccal cavity via small slits near the angles of the jaw."
+    },
+    "forelimbs": {
+      "layer": 1,
+      "system": "External Morphology",
+      "name": "Forelimbs & Nuptial Pads",
+      "tamil": "முன்னங்கால்கள் மற்றும் கலவித் திண்டு",
+      "latin": "Membrum anterius",
+      "morphology": "Short, stout limbs bearing four digits (pollex is rudimentary). Males develop swollen nuptial pads on the inner finger.",
+      "function": "Absorbs shock upon landing from leaps and enables the male to clasp the female firmly during amplexus.",
+      "viva": "Forelimb has 4 digits; hindlimb has 5 webbed toes."
+    },
+    "hindlimbs": {
+      "layer": 1,
+      "system": "External Morphology",
+      "name": "Webbed Hindlimbs",
+      "tamil": "சவ்வுடைய பின்னங்கால்கள்",
+      "latin": "Membrum posterius",
+      "morphology": "Long, muscular Z-folded limbs (femur, tibiofibula, elongated astragalus-calcaneum tarsals, and five long toes connected by interdigital webs).",
+      "function": "Provides powerful propulsion for swimming in water and leaping (saltation) on land.",
+      "viva": "Elongation of the ankle bones (astragalus and calcaneum) adds an extra lever segment for jumping."
+    },
+    "cloaca": {
+      "layer": 1,
+      "system": "External Morphology / Digestive",
+      "name": "Cloaca & Cloacal Aperture",
+      "tamil": "பொதுக்கழிவறைத் துளை",
+      "latin": "Cloaca",
+      "morphology": "A median terminal chamber opening posteriorly between the hindlimbs via the cloacal aperture.",
+      "function": "Serves as a common exit chamber for fecal matter, urine, and gametes (sperm or ova).",
+      "viva": "A shared cloaca is a hallmark feature of amphibians, reptiles, and birds."
+    },
+    "pectoralis": {
+      "layer": 2,
+      "system": "Muscular System",
+      "name": "Pectoralis Major Muscle",
+      "tamil": "மார்புத் தசை (பெக்டோரலிஸ்)",
+      "latin": "Musculus pectoralis",
+      "morphology": "Large, fan-shaped striated chest muscle radiating from the sternum to the humerus.",
+      "function": "Adducts and flexes the forelimb toward the chest, stabilizing the pectoral girdle.",
+      "viva": "Cut carefully through the sternum/pectoral girdle during dissection so you do not puncture the underlying heart."
+    },
+    "rectus_abdominis": {
+      "layer": 2,
+      "system": "Muscular System",
+      "name": "Rectus Abdominis",
+      "tamil": "வயிற்று நேர்த்தசை",
+      "latin": "Musculus rectus abdominis",
+      "morphology": "Paired longitudinal sheets of ventral abdominal muscle divided transversely by white fibrous bands (inscriptiones tendineae).",
+      "function": "Compresses the abdomen, supports visceral organs, and assists in forced expiration.",
+      "viva": "The transverse white bands are called inscriptiones tendineae."
+    },
+    "linea_alba": {
+      "layer": 2,
+      "system": "Muscular System & Venous Landmark",
+      "name": "Linea Alba & Anterior Abdominal Vein",
+      "tamil": "லீனியா ஆல்பா மற்றும் வயிற்றுச் சிரை",
+      "latin": "Linea alba & Vena abdominalis anterior",
+      "morphology": "A median white connective tissue raphe separating the left and right rectus abdominis muscles. Directly beneath it runs the dark blue anterior abdominal vein.",
+      "function": "Linea alba anchors abdominal muscles; the anterior abdominal vein carries blood toward the hepatic portal system.",
+      "viva": "Always make your muscle incision slightly lateral to the linea alba to avoid severing the anterior abdominal vein!"
+    },
+    "hindlimb_muscles": {
+      "layer": 2,
+      "system": "Muscular System",
+      "name": "Hindlimb Musculature (Sartorius & Gastrocnemius)",
+      "tamil": "பின்னங்கால் தசைகள் (சார்டோரியஸ் & காஸ்ட்ரோக்னீமியஸ்)",
+      "latin": "Musculus sartorius & gastrocnemius",
+      "morphology": "Sartorius is a strap-like muscle crossing the ventral thigh; gastrocnemius is the prominent calf muscle terminating in the Achilles tendon.",
+      "function": "Flexes the thigh/shank and extends the foot during leaping and swimming.",
+      "viva": "The gastrocnemius muscle with the sciatic nerve is the classic nerve-muscle preparation in physiology."
+    },
+    "liver": {
+      "layer": 3,
+      "system": "Digestive System",
+      "name": "Three-Lobed Liver",
+      "tamil": "மூன்று கதுப்புடைய கல்லீரல்",
+      "latin": "Hepar",
+      "morphology": "The largest reddish-brown gland in the coelom, divided into a large right lobe, a smaller median lobe, and a large left lobe.",
+      "function": "Secretes bile (emulsifies fats), stores glycogen, deaminates excess amino acids into urea, and detoxifies blood.",
+      "viva": "The frog liver has 3 lobes (Right, Median, Left), whereas the mammalian liver typically has 4 lobes."
+    },
+    "gall_bladder": {
+      "layer": 3,
+      "system": "Digestive System",
+      "name": "Gall Bladder",
+      "tamil": "பித்தப்பை",
+      "latin": "Vesica biliaris",
+      "morphology": "A small, spherical, dark-green sac nestled between the right and median lobes of the liver.",
+      "function": "Stores and concentrates alkaline bile produced by the liver, releasing it into the duodenum via the hepatopancreatic duct.",
+      "viva": "Bile contains no digestive enzymes, but bile salts emulsify lipids and neutralize acidic chyme."
+    },
+    "stomach": {
+      "layer": 3,
+      "system": "Digestive System",
+      "name": "J-Shaped Stomach",
+      "tamil": "இரைப்பை",
+      "latin": "Gaster / Ventriculus",
+      "morphology": "A thick-walled, curved muscular sac on the left side of the coelom, divided into a wide cardiac end and a narrow pyloric end guarded by the pyloric sphincter.",
+      "function": "Churns food mechanically and secretes HCl and pepsinogen (activated to pepsin) to initiate protein digestion.",
+      "viva": "Internal longitudinal folds of the stomach mucosa are called rugae."
+    },
+    "small_intestine": {
+      "layer": 3,
+      "system": "Digestive System",
+      "name": "Small Intestine (Duodenum & Ileum)",
+      "tamil": "சிறுகுடல்",
+      "latin": "Intestinum tenue",
+      "morphology": "Consists of a U-shaped proximal duodenum and a highly coiled ileum suspended by a vascularized fan-like mesentery.",
+      "function": "Primary site of enzymatic digestion (trypsin, amylase, lipase) and nutrient absorption.",
+      "viva": "The translucent membrane holding the intestinal coils in place and carrying blood vessels is the mesentery."
+    },
+    "large_intestine": {
+      "layer": 3,
+      "system": "Digestive System",
+      "name": "Large Intestine (Rectum)",
+      "tamil": "பெருங்குடல்",
+      "latin": "Intestinum crassum",
+      "morphology": "A short, wide, thin-walled terminal tube leading straight into the cloaca.",
+      "function": "Reabsorbs water and electrolytes from undigested residue and forms fecal pellets.",
+      "viva": "Unlike mammals, amphibians lack a caecum and vermiform appendix."
+    },
+    "lungs": {
+      "layer": 3,
+      "system": "Respiratory System",
+      "name": "Paired Spongy Lungs",
+      "tamil": "நுரையீரல்கள்",
+      "latin": "Pulmones",
+      "morphology": "Two thin-walled, pinkish-tan, ovoid elastic sacs situated anterolaterally flanking the heart. Their internal walls form numerous chambers (faveoli) that increase the respiratory surface area.",
+      "function": "Carries out pulmonary gas exchange during active periods on land.",
+      "viva": "Frogs utilize three modes of respiration: cutaneous (skin), buccopharyngeal (mouth lining), and pulmonary (lungs)."
+    },
+    "right_atrium": {
+      "layer": 4,
+      "system": "Circulatory System",
+      "name": "Right Atrium (Auricle)",
+      "tamil": "வலது ஆரிக்கிள் (இதய மேலறை)",
+      "latin": "Atrium dextrum",
+      "morphology": "The larger, darker thin-walled anterior-right chamber of the 3-chambered heart, receiving deoxygenated blood from the dorsal sinus venosus.",
+      "function": "Collects systemic deoxygenated blood and pumps it into the single ventricle.",
+      "viva": "The sinus venosus (pacemaker of the frog heart) opens exclusively into the right atrium."
+    },
+    "left_atrium": {
+      "layer": 4,
+      "system": "Circulatory System",
+      "name": "Left Atrium (Auricle)",
+      "tamil": "இடது ஆரிக்கிள் (இதய மேலறை)",
+      "latin": "Atrium sinistrum",
+      "morphology": "Smaller, brighter red thin-walled anterior-left chamber separated from the right atrium by the interatrial septum.",
+      "function": "Receives oxygenated blood directly from the lungs via the common pulmonary vein.",
+      "viva": "Because the frog has two atria and one ventricle, it exhibits incomplete double circulation."
+    },
+    "ventricle": {
+      "layer": 4,
+      "system": "Circulatory System",
+      "name": "Three-Chambered Heart (Ventricle & Atria)",
+      "tamil": "மூன்று அறை இதயம் (வென்ட்ரிக்கிள்)",
+      "latin": "Ventriculus cordis",
+      "morphology": "Conical, thick-walled muscular ventricle posterior to the two darker atria. Internal spongy muscular ridges (columnae carneae) minimize mixing of blood.",
+      "function": "Contracts forcefully to propel blood into the conus arteriosus and aortic arches.",
+      "viva": "Frog erythrocytes (RBCs) are large, oval, biconvex, and nucleated—unlike mammalian RBCs!"
+    },
+    "conus_arteriosus": {
+      "layer": 4,
+      "system": "Circulatory System",
+      "name": "Conus / Truncus Arteriosus & Spiral Valve",
+      "tamil": "கோனஸ் ஆர்ட்டீரியோசஸ்",
+      "latin": "Conus arteriosus",
+      "morphology": "The arterial outflow tract arising from the ventricle, often labelled truncus arteriosus in teaching photographs. Its proximal conus portion contains the spiral valve; the valve is internal and cannot be identified directly on an intact external photograph.",
+      "function": "Directs deoxygenated blood toward the pulmocutaneous arches and oxygenated blood toward the carotid and systemic arches.",
+      "viva": "The spiral valve helps direct blood into arterial pathways; do not claim to see this internal valve in a surface photograph of the heart."
+    },
+    "aortic_arches": {
+      "layer": 4,
+      "system": "Circulatory System",
+      "name": "Aortic Arches & Dorsal Aorta",
+      "tamil": "மகாதமனி வளைவுகள்",
+      "latin": "Arcus aortae",
+      "morphology": "Truncus arteriosus bifurcates into left and right trunks, each dividing into Carotid, Systemic, and Pulmocutaneous arches.",
+      "function": "Distributes blood to the head, visceral organs, limbs, lungs, and skin.",
+      "viva": "The left and right systemic arches unite dorsally behind the heart to form the median dorsal aorta."
+    },
+    "venous_system": {
+      "layer": 4,
+      "system": "Circulatory System",
+      "name": "Precaval & Postcaval Veins",
+      "tamil": "பெருஞ்சிரைகள்",
+      "latin": "Vena cava anterior & posterior",
+      "morphology": "Two anterior precavals and one large median postcaval vein empty into the triangular sinus venosus on the dorsal side of the heart.",
+      "function": "Returns deoxygenated systemic blood to the heart. Frogs retain both hepatic and renal portal systems.",
+      "viva": "Unlike mammals, frogs retain a functional renal portal system carrying blood from the hindlimbs into the kidneys."
+    },
+    "kidneys": {
+      "layer": 5,
+      "system": "Excretory / Urogenital System",
+      "name": "Mesonephric Kidneys & Adrenal Glands",
+      "tamil": "சிறுநீரகங்கள் மற்றும் அட்ரீனல் சுரப்பி",
+      "latin": "Mesonephros & Glandula suprarenalis",
+      "morphology": "Pair of elongated, flattened, dark-red retroperitoneal organs lying dorsally on either side of the vertebral column.",
+      "function": "Filters nitrogenous waste (adult frogs are ureotelic, excreting urea; tadpoles are ammonotelic) and regulates osmoregulation.",
+      "viva": "In male frogs, vasa efferentia carry sperm from each testis into kidney-associated passages; Bidder's canal is a separate longitudinal collecting channel communicating with the urinogenital duct."
+    },
+    "fat_bodies": {
+      "layer": 5,
+      "system": "Urogenital System",
+      "name": "Corpora Adiposa (Fat Bodies)",
+      "tamil": "கொழுப்பு உடலங்கள்",
+      "latin": "Corpora adiposa",
+      "morphology": "Bright golden-yellow, finger-like branched adipose lobes attached just anterior to the kidneys and gonads.",
+      "function": "Stores reserve lipids utilized during hibernation (winter sleep), aestivation (summer sleep), and gametogenesis.",
+      "viva": "Fat bodies are largest just before hibernation and shrink significantly after the breeding season."
+    },
+    "gonads": {
+      "layer": 5,
+      "system": "Reproductive System (Sex Toggleable)",
+      "name": "Testes (♂) / Ovaries (♀)",
+      "tamil": "விந்தகங்கள் (♂) / அண்டகங்கள் (♀)",
+      "latin": "Testis / Ovarium",
+      "morphology": "Male: Paired ovoid testes lie near the anterior kidneys and are suspended by mesorchia. Female: Ovaries contain developing ova; the coiled oviducts are distinct organs.",
+      "function": "Testes produce spermatozoa, while ovaries produce ova. The female oviducts add gelatinous coverings during egg transport. Fertilisation is external in water.",
+      "viva": "In male frogs, the Wolffian duct acts as a common urinogenital duct carrying both urine and sperm!"
+    },
+    "oviducts": {
+      "layer": 5,
+      "system": "Female Reproductive System",
+      "name": "Paired Coiled Oviducts (♀)",
+      "tamil": "இணையான சுருண்ட அண்டநாளங்கள்",
+      "latin": "Oviductus",
+      "morphology": "Two long, coiled whitish tubes lateral to the kidneys, with anterior funnel-shaped openings (ostia). Distinct from the ureters.",
+      "function": "Receive ova released into the coelom and transport them towards the cloaca while adding gelatinous coverings.",
+      "viva": "In female frogs, oviducts and ureters are separate ducts. The oviduct does not arise from the kidney."
+    },
+    "ureters": {
+      "layer": 5,
+      "system": "Excretory System",
+      "name": "Ureters (Wolffian Ducts)",
+      "tamil": "சிறுநீர் நாளங்கள்",
+      "latin": "Ductus mesonephricus",
+      "morphology": "Pair of slender ducts emerging from the outer posterior margins of the kidneys and opening dorsally into the cloaca.",
+      "function": "Transports urine from the kidneys to the cloaca (and carries sperm in males).",
+      "viva": "In female frogs, the ureter carries only urine, while eggs travel separately through the oviducts."
+    },
+    "urinary_bladder": {
+      "layer": 5,
+      "system": "Excretory System",
+      "name": "Bilobed Urinary Bladder",
+      "tamil": "இரு கதுப்பு சிறுநீர்ப்பை",
+      "latin": "Vesica urinaria",
+      "morphology": "A thin-walled, transparent, bilobed sac attached ventrally to the cloaca.",
+      "function": "Stores dilute urine and acts as an emergency water reservoir during terrestrial dehydration.",
+      "viva": "Ureters open into the dorsal wall of the cloaca, and urine backs up into the ventral bilobed bladder."
+    },
+    "nervous_system": {
+      "layer": 5,
+      "system": "Nervous System",
+      "name": "Spinal Cord & Sciatic Plexus",
+      "tamil": "தண்டுவடம் மற்றும் சயாட்டிக் நரம்புப் பின்னல்",
+      "latin": "Medulla spinalis & Plexus ischiadicus",
+      "morphology": "White glistening spinal nerves emerging symmetrically from the vertebral column; the 7th, 8th, and 9th spinal nerves unite to form the sciatic plexus.",
+      "function": "Conducts sensory impulses to the CNS and motor commands to skeletal muscles.",
+      "viva": "Adult frogs possess 10 pairs of cranial nerves and 10 pairs of spinal nerves."
+    },
+    "brain": {
+      "layer": 5,
+      "system": "Central Nervous System (Dorsal Inset)",
+      "name": "Dorsal Brain (Forebrain, Midbrain, Hindbrain)",
+      "tamil": "மூளை (முன்மூளை, நடுமூளை, பின்மூளை)",
+      "latin": "Encephalon",
+      "morphology": "Enclosed in the cranium: olfactory lobes, smooth cerebral hemispheres, diencephalon, spherical optic lobes, narrow cerebellum, and triangular medulla oblongata.",
+      "function": "Coordinates olfaction, voluntary motor activity, vision, equilibrium, and vital reflexes.",
+      "viva": "The cerebellum in frogs is a rudimentary transverse band due to simpler locomotor balance."
+    }
+  },
+  "questions": [
+    {
+      "category": "Circulatory & Hematology",
+      "topic": "Circulatory System",
+      "question": "How many chambers are present in the heart of an adult frog, and how is blood mixing minimized?",
+      "options": [
+        "3 chambers (2 atria, 1 ventricle); minimized by the spiral valve in the conus arteriosus",
+        "4 chambers (2 atria, 2 ventricles); completely separated by an interventricular septum",
+        "2 chambers (1 atrium, 1 ventricle); single venous circulation",
+        "3 chambers (1 atrium, 2 ventricles); separated by the foramen of Panizza"
+      ],
+      "correct": 0,
+      "explanation": "The frog heart has 2 atria and 1 spongy ventricle. The longitudinal spiral valve inside the conus arteriosus directs oxygenated and deoxygenated blood into separate aortic arches."
+    },
+    {
+      "category": "External & Muscular",
+      "topic": "Surgical Anatomy",
+      "question": "Why should the mid-ventral abdominal muscle incision be made slightly lateral to the linea alba?",
+      "options": [
+        "To avoid cutting the underlying anterior abdominal vein",
+        "To prevent puncturing the urinary bladder directly",
+        "Because the linea alba is calcified bone",
+        "To keep the gall bladder intact"
+      ],
+      "correct": 0,
+      "explanation": "The large anterior abdominal vein runs directly beneath the median white linea alba; incising slightly off-center prevents excessive bleeding."
+    },
+    {
+      "category": "Digestive & Respiratory",
+      "topic": "Digestive System",
+      "question": "How many lobes constitute the liver of Hoplobatrachus tigerinus, and where is the gall bladder situated?",
+      "options": [
+        "3 lobes (Right, Median, Left); gall bladder lies between the right and median lobes",
+        "2 lobes (Right and Left); gall bladder lies beneath the stomach",
+        "4 lobes; gall bladder is absent in amphibians",
+        "5 lobes; gall bladder is embedded inside the pancreas"
+      ],
+      "correct": 0,
+      "explanation": "The frog liver is distinctly 3-lobed, with the spherical green gall bladder nestled between the right and median lobes."
+    },
+    {
+      "category": "External & Muscular",
+      "topic": "Sexual Dimorphism",
+      "question": "Which external morphological combination reliably identifies a male frog?",
+      "options": [
+        "Paired vocal sacs under the throat + nuptial pads on the inner digit of forelimbs",
+        "Absence of tympanum + webbed forelimbs",
+        "Bright yellow dorsal stripes + 6 toes on hindlimbs",
+        "Presence of a tail stub + larger body size than females"
+      ],
+      "correct": 0,
+      "explanation": "Male frogs possess paired vocal sacs for mating calls and swollen copulatory (nuptial) pads on the first digit of the hand to clasp the female during amplexus."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Excretory Physiology",
+      "question": "What is the primary nitrogenous excretory product of an adult frog compared to its aquatic tadpole larva?",
+      "options": [
+        "Adult is ureotelic (urea); tadpole is ammonotelic (ammonia)",
+        "Adult is uricotelic (uric acid); tadpole is ureotelic (urea)",
+        "Both adult and tadpole are strictly ammonotelic",
+        "Adult is ammonotelic; tadpole is uricotelic"
+      ],
+      "correct": 0,
+      "explanation": "During metamorphosis, amphibians switch from excreting toxic ammonia in water (tadpole) to less toxic urea (adult) to conserve water on land."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Urogenital System",
+      "question": "In male frogs, the mesonephric duct (Wolffian duct) functions as:",
+      "options": [
+        "A common urinogenital duct transporting both urine and spermatozoa",
+        "A purely reproductive duct carrying only spermatozoa",
+        "A purely excretory duct carrying only bile and urine",
+        "A lymphatic vessel draining the coelom"
+      ],
+      "correct": 0,
+      "explanation": "Vasa efferentia from the testes pass through the kidney (Bidder's canal) into the Wolffian duct, making it a true urinogenital duct in males."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Nervous System",
+      "question": "How many pairs of cranial nerves are found in an adult frog?",
+      "options": [
+        "10 pairs",
+        "12 pairs",
+        "8 pairs",
+        "14 pairs"
+      ],
+      "correct": 0,
+      "explanation": "Anamniotes (fishes and amphibians) possess 10 pairs of cranial nerves, whereas amniotes (reptiles, birds, mammals) possess 12 pairs."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Urogenital System",
+      "question": "What is the primary physiological role of the yellow finger-like Corpora Adiposa (fat bodies) anterior to the kidneys?",
+      "options": [
+        "Energy reserve for hibernation, aestivation, and gonad maturation",
+        "Secretion of digestive enzymes into the duodenum",
+        "Filtration of metabolic urea from blood",
+        "Sound resonance during croaking"
+      ],
+      "correct": 0,
+      "explanation": "Corpora adiposa store lipids that sustain the frog during winter hibernation and fuel sperm/egg development."
+    },
+    {
+      "category": "Circulatory & Hematology",
+      "topic": "Hematology",
+      "question": "How do the red blood cells (erythrocytes) of a frog differ structurally from human erythrocytes?",
+      "options": [
+        "Frog RBCs are oval, biconvex, and nucleated",
+        "Frog RBCs are circular, biconcave, and enucleated",
+        "Frog RBCs lack hemoglobin and use hemocyanin",
+        "Frog RBCs are produced solely in the thymus"
+      ],
+      "correct": 0,
+      "explanation": "All non-mammalian vertebrates (including amphibians) have nucleated, oval, biconvex erythrocytes."
+    },
+    {
+      "category": "External & Muscular",
+      "topic": "Sensory Organs",
+      "question": "What is the name of the single rod-shaped middle ear ossicle that transmits vibrations from the tympanum to the inner ear?",
+      "options": [
+        "Columella auris",
+        "Malleus",
+        "Incus",
+        "Otolith"
+      ],
+      "correct": 0,
+      "explanation": "Amphibians, reptiles, and birds have a single middle ear bone—the columella auris (homologous to the mammalian stapes)."
+    },
+    {
+      "category": "Digestive & Respiratory",
+      "topic": "Respiratory Physiology",
+      "question": "Which respiratory mode sustains a frog continuously during winter hibernation underwater or in moist mud?",
+      "options": [
+        "Cutaneous respiration across moist, vascularized skin",
+        "Pulmonary respiration using positive-pressure lungs",
+        "Branchial respiration via persistent external gills",
+        "Tracheal respiration through spiracles"
+      ],
+      "correct": 0,
+      "explanation": "During hibernation and underwater submergence, gas exchange occurs entirely via cutaneous respiration across the thin, mucus-moistened, capillary-rich skin."
+    },
+    {
+      "category": "Digestive & Respiratory",
+      "topic": "Buccopharyngeal Cavity",
+      "question": "How do the bulging eyeballs of a frog assist during the swallowing of large prey?",
+      "options": [
+        "They are retracted downward into the roof of the buccal cavity to push food into the pharynx",
+        "They secrete salivary amylase onto the prey",
+        "They close the internal nares mechanically",
+        "They vibrate to stun insects"
+      ],
+      "correct": 0,
+      "explanation": "Because frogs lack a hard bony palate separating the orbits from the mouth roof, retracting the eyeballs depresses the buccal roof and helps force prey down the esophagus."
+    },
+    {
+      "category": "Digestive & Respiratory",
+      "topic": "Digestive Anatomy",
+      "question": "What is the translucent, fan-shaped membrane that suspends the coiled ileum and carries blood vessels to the gut?",
+      "options": [
+        "Mesentery",
+        "Pericardium",
+        "Omentum majus",
+        "Pleura"
+      ],
+      "correct": 0,
+      "explanation": "The double-layered peritoneal fold known as the mesentery anchors the intestinal coils to the dorsal body wall and conducts mesenteric arteries, veins, and nerves."
+    },
+    {
+      "category": "Digestive & Respiratory",
+      "topic": "Digestive Physiology",
+      "question": "Which common duct opens into the U-shaped duodenum of the frog to deliver both bile and pancreatic juice?",
+      "options": [
+        "Hepatopancreatic duct",
+        "Cystic duct alone",
+        "Stensen's duct",
+        "Wolffian duct"
+      ],
+      "correct": 0,
+      "explanation": "The bile duct passes through the pancreas, uniting with pancreatic ducts to form the common hepatopancreatic duct entering the duodenum."
+    },
+    {
+      "category": "Circulatory & Hematology",
+      "topic": "Venous Portal Systems",
+      "question": "Which two portal venous systems are well developed in the frog?",
+      "options": [
+        "Hepatic portal system and Renal portal system",
+        "Hepatic portal system only (renal portal is absent)",
+        "Hypophyseal portal system only",
+        "Coronary portal system and Splenic portal system"
+      ],
+      "correct": 0,
+      "explanation": "Unlike mammals (which lose the renal portal system), amphibians retain both the hepatic portal system (draining the gut) and the renal portal system (draining hindlimbs into kidneys)."
+    },
+    {
+      "category": "Circulatory & Hematology",
+      "topic": "Heart Pacemaker",
+      "question": "Where does the heartbeat originate in the frog's myogenic heart?",
+      "options": [
+        "Sinus venosus (on the dorsal wall of the right atrium)",
+        "Apex of the single ventricle",
+        "Spiral valve of the conus arteriosus",
+        "Left pulmonary vein"
+      ],
+      "correct": 0,
+      "explanation": "The triangular, thin-walled sinus venosus acts as the primary pacemaker of the amphibian heart, initiating contraction waves that spread across both atria and then the ventricle."
+    },
+    {
+      "category": "Circulatory & Hematology",
+      "topic": "Arterial System",
+      "question": "Each trunk of the bifurcated truncus arteriosus divides into which three aortic arches?",
+      "options": [
+        "Carotid arch, Systemic arch, and Pulmocutaneous arch",
+        "Coronary arch, Renal arch, and Hepatic arch",
+        "Subclavian arch, Coeliac arch, and Iliac arch",
+        "Brachial arch, Sciatic arch, and Caudal arch"
+      ],
+      "correct": 0,
+      "explanation": "The anterior carotid arch supplies the head, the middle systemic arches unite to form the dorsal aorta, and the posterior pulmocutaneous arch supplies lungs and skin."
+    },
+    {
+      "category": "External & Muscular",
+      "topic": "Skeletal & Limb Adaptations",
+      "question": "Which two tarsal bones are markedly elongated in the frog's hindlimb to create an extra lever segment for leaping?",
+      "options": [
+        "Astragalus (tibiale) and Calcaneum (fibulare)",
+        "Radius and Ulna",
+        "Scapula and Coracoid",
+        "Ilium and Ischium"
+      ],
+      "correct": 0,
+      "explanation": "Elongation of the astragalus and calcaneum adds a fourth functional segment to the hindlimb, multiplying saltatorial (jumping) propulsion."
+    },
+    {
+      "category": "External & Muscular",
+      "topic": "Muscular Anatomy",
+      "question": "What are the transverse white fibrous bands dividing the longitudinal rectus abdominis muscle into segments?",
+      "options": [
+        "Inscriptiones tendineae",
+        "Columnae carneae",
+        "Chorda tendineae",
+        "Rugae"
+      ],
+      "correct": 0,
+      "explanation": "Inscriptiones tendineae are transverse tendinous intersections visible across the ventral rectus abdominis muscle."
+    },
+    {
+      "category": "External & Muscular",
+      "topic": "Nerve-Muscle Physiology",
+      "question": "Which classic hindlimb muscle and nerve pair from the frog is used in undergraduate physiology practicals to study muscle twitch and tetanus?",
+      "options": [
+        "Gastrocnemius muscle and Sciatic nerve",
+        "Pectoralis major and Vagus nerve",
+        "Sartorius muscle and Optic nerve",
+        "Mylohyoid muscle and Facial nerve"
+      ],
+      "correct": 0,
+      "explanation": "The sciatic nerve–gastrocnemius muscle preparation remains viable in amphibian Ringer's solution and is standard for kymograph/digital muscle contraction studies."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Neuroanatomy",
+      "question": "Which spinal nerves unite to form the large sciatic plexus supplying the frog's hindlimb?",
+      "options": [
+        "7th, 8th, and 9th spinal nerves",
+        "1st, 2nd, and 3rd spinal nerves",
+        "4th, 5th, and 6th spinal nerves",
+        "10th spinal nerve alone"
+      ],
+      "correct": 0,
+      "explanation": "The 7th, 8th, and 9th pairs of spinal nerves converge posteriorly in the coelom to form the sciatic plexus, giving rise to the large sciatic nerve."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Brain Morphology",
+      "question": "Which region of the dorsal frog brain consists of two prominent spherical swellings immediately posterior to the diencephalon?",
+      "options": [
+        "Optic lobes (Corpora bigemina) of the midbrain",
+        "Olfactory lobes",
+        "Cerebellum",
+        "Medulla oblongata"
+      ],
+      "correct": 0,
+      "explanation": "The midbrain dorsally displays a pair of large spherical optic lobes (corpora bigemina) responsible for visual integration."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Endocrine System",
+      "question": "Where are the adrenal glands located in a dissected frog specimen?",
+      "options": [
+        "As yellowish-orange longitudinal streaks embedded along the ventral surface of each kidney",
+        "Attached to the tip of the gall bladder",
+        "Inside the vocal sacs",
+        "Beneath the urinary bladder"
+      ],
+      "correct": 0,
+      "explanation": "Adrenal glands appear as thin, golden-yellow bands adhering directly to the ventral face of the dark-red mesonephric kidneys."
+    },
+    {
+      "category": "Urogenital & Nervous",
+      "topic": "Female Reproductive Anatomy",
+      "question": "In a female frog, how do mature ova released from the ovaries enter the coiled oviducts?",
+      "options": [
+        "Ova are shed into the coelom and swept into the ciliated funnels (ostia) of the oviducts near the base of the lungs",
+        "Ova pass directly through the kidneys via Bidder's canal",
+        "Ova travel through the hepatic portal vein",
+        "Ova exit through the urinary bladder"
+      ],
+      "correct": 0,
+      "explanation": "Oviducts are not directly attached to the ovaries; coelomic cilia sweep ruptured ova anteriorly into the ostia of the oviducts, where they receive their gelatinous coat."
+    },
+    {
+      "category": "Digestive & Respiratory",
+      "topic": "Dentition",
+      "question": "What type of teeth are present on the upper jaw and palate of Hoplobatrachus tigerinus?",
+      "options": [
+        "Homodont, acrodont, polyphyodont maxillary and vomerine teeth (lower jaw is toothless)",
+        "Heterodont, thecodont teeth on both jaws",
+        "Completely edentulous (toothless) upper and lower jaws",
+        "Venomous solenoglyphous fangs"
+      ],
+      "correct": 0,
+      "explanation": "Frogs possess uniform (homodont), surface-attached (acrodont), continuously replaced (polyphyodont) maxillary and vomerine teeth used solely to grip prey, not chew."
+    },
+    {
+      "category": "External & Muscular",
+      "topic": "Taxonomic Classification",
+      "question": "What is the valid scientific name and order of the common Indian Bullfrog studied in B.Sc. Zoology practicals?",
+      "options": [
+        "Hoplobatrachus tigerinus — Order Anura",
+        "Bufo melanostictus — Order Urodela",
+        "Ichthyophis glutinosus — Order Apoda",
+        "Ambystoma tigrinum — Order Anura"
+      ],
+      "correct": 0,
+      "explanation": "The Indian Bullfrog is classified under Class Amphibia, Order Anura (tailless amphibians), species Hoplobatrachus tigerinus (formerly Rana tigrina)."
+    }
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "layer": 1,
+      "tool": "pin",
+      "text": "Inspect Layer 1 (External Morphology): Examine external nares, tympanum, vocal sacs, and webbed hindlimbs."
+    },
+    {
+      "step": 2,
+      "layer": 2,
+      "tool": "scalpel",
+      "text": "Switch to Layer 2 (Skin & Muscle): Study pectoralis major, rectus abdominis, and the median linea alba."
+    },
+    {
+      "step": 3,
+      "layer": 3,
+      "tool": "probe",
+      "text": "Examine Layer 3 (Digestive & Respiratory): Click any organ hotspot with the <strong>Blunt Probe</strong> or use <strong>Forceps</strong> to retract viscera."
+    },
+    {
+      "step": 4,
+      "layer": 3,
+      "tool": "forceps",
+      "text": "Select <strong>Forceps (Peel)</strong> and click the liver, stomach, or coiled ileum to retract digestive viscera."
+    },
+    {
+      "step": 5,
+      "layer": 4,
+      "tool": "probe",
+      "text": "Examine Layer 4 (Circulatory System): Inspect the <strong>Right Atrium, Left Atrium, Ventricle,</strong> and <strong>Conus Arteriosus</strong>."
+    },
+    {
+      "step": 6,
+      "layer": 5,
+      "tool": "probe",
+      "text": "Inspect Layer 5 (Urogenital & Nervous): Explore kidneys, corpora adiposa, gonads, urinary bladder, and sciatic plexus."
+    }
+  ],
+  "notes": {
+    "lungs": "Notice the spongy pinkish-tan paired lungs flanking the heart on both sides. Identify them by their paired, sac-like appearance and anterolateral position; the internal walls contain faveoli.",
+    "liver": "Identify the large smooth lobed liver after establishing the specimen's orientation. Its position in a teaching photograph depends on how the specimen was laid out; do not infer right and left from the screen alone.",
+    "gall_bladder": "Observe the small emerald-green spherical sac nestled cleanly between the right and median liver lobes—a classic practical spotter structure.",
+    "ventricle": "Notice the conical muscular ventricle and the two darker anterior atria positioned centrally between the left and right lungs.",
+    "kidneys": "Identify the paired, elongated kidneys against the dorsal body wall after carefully retracting the viscera. The spleen is a separate, rounded organ and must not be confused with a kidney."
+  },
+  "coordinates": {
+    "1": {
+      "external_nares": {
+        "x": 881,
+        "y": 236,
+        "r": 14,
+        "label": "External Nares",
+        "side": "right"
+      },
+      "eyes": {
+        "x": 819,
+        "y": 204,
+        "r": 16,
+        "label": "Eye",
+        "side": "right"
+      },
+      "tympanum": {
+        "x": 773,
+        "y": 251,
+        "r": 16,
+        "label": "Tympanum (Ear Drum)",
+        "side": "right"
+      },
+      "vocal_sacs": {
+        "x": 500,
+        "y": 300,
+        "r": 20,
+        "label": "Vocal Sac (male; not exposed)",
+        "side": "right",
+        "unplaced": true
+      },
+      "forelimbs": {
+        "x": 655,
+        "y": 363,
+        "r": 25,
+        "label": "Forelimb",
+        "side": "right"
+      },
+      "hindlimbs": {
+        "x": 354,
+        "y": 366,
+        "r": 30,
+        "label": "Hindlimb",
+        "side": "left"
+      },
+      "cloaca": {
+        "x": 500,
+        "y": 450,
+        "r": 18,
+        "label": "Cloacal Aperture (not exposed)",
+        "side": "right",
+        "unplaced": true
+      }
+    },
+    "2": {
+      "pectoralis": {
+        "x": 340,
+        "y": 273,
+        "r": 20,
+        "label": "Pectoral Region",
+        "side": "left"
+      },
+      "linea_alba": {
+        "x": 352,
+        "y": 402,
+        "r": 14,
+        "label": "Linea Alba",
+        "side": "left"
+      },
+      "rectus_abdominis": {
+        "x": 319,
+        "y": 344,
+        "r": 24,
+        "label": "Rectus Abdominis",
+        "side": "left"
+      },
+      "hindlimb_muscles": {
+        "x": 415,
+        "y": 465,
+        "r": 30,
+        "label": "Deep Hindlimb Muscles (not exposed)",
+        "side": "left",
+        "unplaced": true
+      }
+    },
+    "3": {
+      "ventricle": {
+        "x": 495,
+        "y": 205,
+        "r": 22,
+        "label": "Heart (3-Chambered)",
+        "side": "right"
+      },
+      "lungs": {
+        "x": 540,
+        "y": 211,
+        "r": 22,
+        "label": "Spongy Lungs",
+        "side": "right"
+      },
+      "liver": {
+        "x": 452,
+        "y": 250,
+        "r": 28,
+        "label": "3-Lobed Liver",
+        "side": "left"
+      },
+      "gall_bladder": {
+        "x": 470,
+        "y": 260,
+        "r": 14,
+        "label": "Gall Bladder",
+        "side": "left"
+      },
+      "stomach": {
+        "x": 515,
+        "y": 267,
+        "r": 24,
+        "label": "J-Shaped Stomach",
+        "side": "right"
+      },
+      "small_intestine": {
+        "x": 480,
+        "y": 306,
+        "r": 30,
+        "label": "Small Intestine (Ileum)",
+        "side": "left"
+      },
+      "large_intestine": {
+        "x": 500,
+        "y": 365,
+        "r": 20,
+        "label": "Large Intestine (Rectum)",
+        "side": "left"
+      },
+      "fat_bodies": {
+        "x": 552,
+        "y": 309,
+        "r": 22,
+        "label": "Fat Bodies (Corpora Adiposa)",
+        "side": "right"
+      },
+      "kidneys": {
+        "x": 562,
+        "y": 275,
+        "r": 18,
+        "label": "Kidney",
+        "side": "right"
+      }
+    },
+    "4": {
+      "aortic_arches": {
+        "x": 494,
+        "y": 139,
+        "r": 20,
+        "label": "Aortic Arches",
+        "side": "left"
+      },
+      "right_atrium": {
+        "x": 382,
+        "y": 217,
+        "r": 18,
+        "label": "Right Atrium",
+        "side": "left"
+      },
+      "left_atrium": {
+        "x": 544,
+        "y": 224,
+        "r": 18,
+        "label": "Left Atrium",
+        "side": "right"
+      },
+      "ventricle": {
+        "x": 472,
+        "y": 350,
+        "r": 22,
+        "label": "Muscular Ventricle",
+        "side": "left"
+      },
+      "conus_arteriosus": {
+        "x": 391,
+        "y": 247,
+        "r": 15,
+        "label": "Truncus Arteriosus",
+        "side": "left"
+      },
+      "venous_system": {
+        "x": 500,
+        "y": 410,
+        "r": 22,
+        "label": "Postcaval & Portal Veins (not shown)",
+        "side": "right",
+        "unplaced": true
+      }
+    },
+    "5_male": {
+      "fat_bodies": {
+        "x": 452,
+        "y": 275,
+        "r": 24,
+        "label": "Corpora Adiposa (Fat Bodies)",
+        "side": "left"
+      },
+      "kidneys": {
+        "x": 468,
+        "y": 325,
+        "r": 24,
+        "label": "Mesonephric Kidney",
+        "side": "left"
+      },
+      "gonads": {
+        "x": 532,
+        "y": 315,
+        "r": 22,
+        "label": "Testis",
+        "side": "right"
+      },
+      "ureters": {
+        "x": 525,
+        "y": 365,
+        "r": 18,
+        "label": "Ureter (Wolffian Duct)",
+        "side": "right"
+      },
+      "urinary_bladder": {
+        "x": 500,
+        "y": 405,
+        "r": 24,
+        "label": "Bilobed Urinary Bladder",
+        "side": "left"
+      },
+      "nervous_system": {
+        "x": 455,
+        "y": 380,
+        "r": 20,
+        "label": "Sciatic Plexus",
+        "side": "left"
+      }
+    },
+    "5_female": {
+      "fat_bodies": {
+        "x": 452,
+        "y": 275,
+        "r": 24,
+        "label": "Corpora Adiposa (Fat Bodies)",
+        "side": "left"
+      },
+      "kidneys": {
+        "x": 468,
+        "y": 325,
+        "r": 24,
+        "label": "Mesonephric Kidney",
+        "side": "left"
+      },
+      "gonads": {
+        "x": 532,
+        "y": 315,
+        "r": 22,
+        "label": "Ovary",
+        "side": "right"
+      },
+      "ureters": {
+        "x": 525,
+        "y": 365,
+        "r": 18,
+        "label": "Ureter (Wolffian Duct)",
+        "side": "right"
+      },
+      "urinary_bladder": {
+        "x": 500,
+        "y": 405,
+        "r": 24,
+        "label": "Bilobed Urinary Bladder",
+        "side": "left"
+      },
+      "nervous_system": {
+        "x": 455,
+        "y": 380,
+        "r": 20,
+        "label": "Sciatic Plexus",
+        "side": "left"
+      },
+      "oviducts": {
+        "x": 500,
+        "y": 300,
+        "r": 20,
+        "label": "Oviducts (♀)",
+        "side": "right",
+        "unplaced": true
+      }
+    }
+  }
+}
