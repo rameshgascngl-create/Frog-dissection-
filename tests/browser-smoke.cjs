@@ -157,6 +157,24 @@ const server = http.createServer((req, res) => {
     await page.locator('#mcq-question').waitFor();
     assert.ok((await page.locator('#mcq-question').innerText()).length > 15);
     assert.deepEqual(errors, [], 'uncaught application errors');
+    // Migrating legacy browser settings must not reintroduce pre-review markers.
+    const migrationPage = await browser.newPage({viewport:{width:1200,height:800}});
+    await migrationPage.addInitScript(() => {
+      const old = {4:{ventricle:{x:500,y:242,r:22,label:'Old Ventricle',side:'right'}}};
+      localStorage.setItem('frog_dissection_layer_coords_v2', JSON.stringify(old));
+      localStorage.setItem('frog_sex_coords_v1', JSON.stringify({male:{gonads:{x:10,y:10,r:20,label:'Old Testis',side:'left'}}}));
+      localStorage.removeItem('frog_adjusted_plates_v1');
+    });
+    await migrationPage.goto('http://127.0.0.1:' + port, {waitUntil:'load'});
+    await migrationPage.locator('#layer-btn-4').click();
+    assert.equal(await migrationPage.locator('#calibrated-photo-hotspots [data-organ="ventricle"] .hotspot-dot').getAttribute('cx'), '472',
+      'old unadjusted coordinates must not replace revised heart landmarks');
+    assert.ok(await migrationPage.evaluate(() => localStorage.getItem('frog_legacy_coords_backup_v1')),
+      'legacy coordinates must be recoverable');
+    await migrationPage.locator('#layer-btn-5').click();
+    assert.notEqual(await migrationPage.locator('#calibrated-photo-hotspots [data-organ="gonads"] .hotspot-dot').getAttribute('cx'), '10',
+      'uncalibrated legacy gonad position must not be restored');
+    await migrationPage.close();
     console.log('PASS: male/female switch, image decoding, photo alignment, guided step, quiz and no page errors');
   } finally {
     await browser.close();
