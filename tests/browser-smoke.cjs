@@ -152,6 +152,20 @@ const server = http.createServer((req, res) => {
     await assertPlate('male', 'Internal deep male.avif');
     await page.locator('#layer-btn-3').click();
     await assertPlate('viscera', 'frog viscera.jpg');
+    // Photo hotspots must work without a pointer device.
+    const liverHotspot = page.locator('#calibrated-photo-hotspots [data-organ="liver"]');
+    assert.equal(await liverHotspot.getAttribute('role'), 'button');
+    assert.match(await liverHotspot.getAttribute('aria-label'), /Inspect .*Liver/i);
+    await liverHotspot.focus();
+    await page.keyboard.press('Enter');
+    assert.match(await page.locator('#insp-name').innerText(), /Liver/i);
+    assert.equal(await liverHotspot.getAttribute('aria-pressed'), 'true');
+    const stomachHotspot = page.locator('#calibrated-photo-hotspots [data-organ="stomach"]');
+    await stomachHotspot.focus();
+    await page.keyboard.press('Space');
+    assert.match(await page.locator('#insp-name').innerText(), /Stomach/i);
+    assert.equal(await stomachHotspot.getAttribute('aria-pressed'), 'true');
+
     await page.locator('#btn-next-step').click();
     await page.locator('#tab-quiz').click();
     await page.locator('#mcq-question').waitFor();
