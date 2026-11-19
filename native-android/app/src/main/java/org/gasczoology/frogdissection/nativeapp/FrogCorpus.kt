@@ -101,3 +101,26 @@ class FrogCorpus(
     fun organsForLayer(layer: Int, female: Boolean): List<Organ> =
         organs.values.filter { it.layer == layer && (female || it.key != "oviducts") }
 }
+
+/**
+ * Source organ records are bilingual but the reproductive record combines both
+ * sexes. Never display male testicular morphology as female ovarian morphology.
+ */
+fun sexSpecificOrgan(organ: Organ, female: Boolean): Organ {
+    if (organ.key != "gonads") return organ
+    return if (female) organ.copy(
+        name = "Ovaries",
+        tamil = "அண்டகங்கள்",
+        latin = "Ovarium",
+        morphology = "Paired ovaries contain developing ova. The coiled oviducts are separate structures; the ovaries are not directly connected to the oviducts.",
+        function = "Ovaries produce ova, which are shed into the coelom and enter the oviduct funnels. Fertilisation takes place externally in water.",
+        viva = "In female frogs, oviducts transport ova and ureters transport urine. These ducts are anatomically distinct."
+    ) else organ.copy(
+        name = "Testes",
+        tamil = "விந்தகங்கள்",
+        latin = "Testis",
+        morphology = "Two ovoid testes lie near the anterior kidneys and are suspended by mesorchia.",
+        function = "Testes produce spermatozoa that reach kidney-associated ducts through vasa efferentia.",
+        viva = "In male frogs, Wolffian ducts function as urinogenital ducts transporting urine and sperm."
+    )
+}
