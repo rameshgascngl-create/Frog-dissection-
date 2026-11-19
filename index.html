@@ -333,6 +333,11 @@
     #vector-diagram-svg { max-height: 530px; display: none; }
 
     .organ-hotspot { cursor: pointer; transition: opacity 0.2s; }
+    .organ-hotspot:focus-visible .hotspot-ring,
+    .organ-hotspot:focus-visible {
+      outline: 3px solid #facc15;
+      outline-offset: 3px;
+    }
     .organ-hotspot:hover .hotspot-ring { stroke: #facc15; stroke-width: 3; }
     .organ-hotspot.selected .hotspot-ring { stroke: #f59e0b; stroke-width: 3.5; fill: rgba(245, 158, 11, 0.25); }
     .organ-hotspot.selected .hotspot-dot { fill: #f59e0b; }
@@ -2168,10 +2173,21 @@
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute("class", "organ-hotspot" + (state.selectedOrgan === key ? " selected" : "") + (state.removedOrgans.has(key) ? " retracted" : ""));
         g.setAttribute("data-organ", key);
-        g.onclick = (e) => {
+        g.setAttribute("tabindex", "0");
+        g.setAttribute("role", "button");
+        g.setAttribute("aria-label", `Inspect ${pt.label} — Layer ${state.layer}${state.layer === 5 ? " " + state.sex : ""}`);
+        g.setAttribute("aria-pressed", String(state.selectedOrgan === key));
+        const activateHotspot = (e) => {
           if (state.isCalibrating) return;
           e.stopPropagation();
           inspectRealisticOrgan(key);
+        };
+        g.onclick = activateHotspot;
+        g.onkeydown = (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            activateHotspot(e);
+          }
         };
 
         const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -2201,8 +2217,12 @@
       if (quizGroup) {
         quizGroup.innerHTML = "";
         Object.entries(state.layerCoords[3]).forEach(([key, pt]) => {
+          if (pt.unplaced) return;
           const qCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
           qCircle.setAttribute("class", "organ-hotspot");
+          qCircle.setAttribute("tabindex", "0");
+          qCircle.setAttribute("role", "button");
+          qCircle.setAttribute("aria-label", `Choose ${pt.label} in the spotter quiz`);
           qCircle.setAttribute("cx", pt.x);
           qCircle.setAttribute("cy", pt.y);
           qCircle.setAttribute("r", pt.r);
@@ -2210,6 +2230,12 @@
           qCircle.setAttribute("stroke", "#38bdf8");
           qCircle.setAttribute("stroke-width", "2.5");
           qCircle.onclick = () => checkPinGuess(key);
+          qCircle.onkeydown = (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              checkPinGuess(key);
+            }
+          };
           quizGroup.appendChild(qCircle);
         });
       }
@@ -2509,7 +2535,9 @@
 
       state.selectedOrgan = key;
       document.querySelectorAll("#calibrated-photo-hotspots .organ-hotspot").forEach(el => {
-        el.classList.toggle("selected", el.getAttribute("data-organ") === key);
+        const selected = el.getAttribute("data-organ") === key;
+        el.classList.toggle("selected", selected);
+        el.setAttribute("aria-pressed", String(selected));
       });
       inspectOrgan(key);
     }
