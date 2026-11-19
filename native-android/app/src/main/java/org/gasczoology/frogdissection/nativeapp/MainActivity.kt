@@ -156,17 +156,21 @@ private fun NativeFrogLab() {
         topBar = {
             Surface(color = Panel) {
                 Row(
-                    Modifier.fillMaxWidth().padding(horizontal = 15.dp, vertical = 10.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 5.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Outlined.Biotech, null, tint = Sea, modifier = Modifier.size(31.dp))
-                    Spacer(Modifier.width(10.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text("FROG DISSECTION LAB", fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text("Native Android · Undergraduate Zoology", fontSize = 11.sp, color = Muted)
+                    Icon(Icons.Outlined.Biotech, contentDescription = null,
+                        tint = Sea, modifier = Modifier.size(25.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                        Text("Frog Dissection", fontSize = 15.sp, fontWeight = FontWeight.Bold,
+                            maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis)
+                        Text("Native Zoology Lab", fontSize = 10.sp, color = Muted,
+                            maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis)
                     }
                     TextButton(onClick = { showTamil = !showTamil }) {
-                        Text(if (showTamil) "EN / தமிழ்" else "EN", fontSize = 12.sp)
+                        Text(if (showTamil) "தமிழ்" else "EN", fontSize = 11.sp,
+                            maxLines = 1, softWrap = false)
                     }
                 }
             }
@@ -180,7 +184,7 @@ private fun NativeFrogLab() {
                         selected = tab == index,
                         onClick = { tab = index },
                         icon = { Icon(icons[index], contentDescription = null) },
-                        label = { Text(name) }
+                        label = { Text(name, fontSize = 11.sp, maxLines = 1) }
                     )
                 }
             }
@@ -193,8 +197,10 @@ private fun NativeFrogLab() {
                 verticalArrangement = Arrangement.spacedBy(11.dp)
             ) {
                 item {
-                    Text("Interactive dissection", fontSize = 21.sp, fontWeight = FontWeight.Bold)
-                    Text("Select a photographic layer and explore its anatomy.", color = Muted, fontSize = 13.sp)
+                    Text("Anatomical plates", fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                        maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text("Choose a layer · Tap an organ for notes", color = Muted,
+                        fontSize = 11.sp, maxLines = 2)
                 }
                 item {
                     LayerPicker(corpus, layer, selectLayer)
@@ -361,19 +367,30 @@ private fun NativeFrogLab() {
 @Composable
 private fun LayerPicker(corpus: FrogCorpus, layer: Int, onChoose: (Int) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            items(corpus.layers.size) { index ->
-                val item = corpus.layers[index]
-                FilterChip(
-                    selected = layer == item.id,
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            corpus.layers.forEach { item ->
+                val selected = layer == item.id
+                Button(
                     onClick = { onChoose(item.id) },
-                    label = { Text(item.id.toString() + " · " + item.title,
-                        maxLines = 1, fontSize = 12.sp) }
-                )
+                    modifier = Modifier.weight(1f).heightIn(min = 46.dp),
+                    shape = RoundedCornerShape(9.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selected) Sea else Panel,
+                        contentColor = if (selected) Background else Color(0xFFE2E8F0)
+                    )
+                ) {
+                    Text(item.id.toString(), fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold, maxLines = 1)
+                }
             }
         }
-        Text("Layer " + layer + ": " + corpus.layers.first { it.id == layer }.title,
-            fontWeight = FontWeight.SemiBold, color = Sea, fontSize = 13.sp)
+        Text("Layer $layer · " + corpus.layers.first { it.id == layer }.title,
+            fontWeight = FontWeight.SemiBold, color = Sea,
+            fontSize = 12.sp, maxLines = 2)
     }
 }
 
