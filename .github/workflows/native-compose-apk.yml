@@ -57,6 +57,9 @@ jobs:
       - name: Native JVM unit tests
         working-directory: native-android
         run: gradle --no-daemon --stacktrace :app:testDebugUnitTest
+      - name: Compile Compose Android instrumentation tests
+        working-directory: native-android
+        run: gradle --no-daemon --stacktrace :app:assembleDebugAndroidTest
       - name: Compile native APK (no WebView)
         working-directory: native-android
         run: gradle --no-daemon --stacktrace :app:assembleDebug
